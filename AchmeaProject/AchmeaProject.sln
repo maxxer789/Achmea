@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchmeaProject", "AchmeaProject\AchmeaProject.csproj", "{DFC276A9-464F-4A32-8D97-95ACF574742A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F6BEF3F-5806-4538-A5EB-89B49A30D620} = {1F6BEF3F-5806-4538-A5EB-89B49A30D620}
+		{868EACF3-C148-456D-882A-CE84253E05D5} = {868EACF3-C148-456D-882A-CE84253E05D5}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchmeaTestss", "AchmeaTestss\AchmeaTestss.csproj", "{868EACF3-C148-456D-882A-CE84253E05D5}"

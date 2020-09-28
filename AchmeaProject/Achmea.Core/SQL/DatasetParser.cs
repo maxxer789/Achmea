@@ -7,7 +7,7 @@ using System.Text;
 namespace Achmea.Core
 {
     public class DatasetParser
-    //Data uit Database wordt omgezet in een klasse.
+    //Data uit Database wordt omgezet in een klasse..
     {
         public static UserModel DatasetToUser(DataSet D, int RowIndex)
         {

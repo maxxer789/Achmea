@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AchmeaProject.Database
 {
-    public class Project : DatabaseHandler
+    public class ProjectDAL : DatabaseHandler
     {
         public void AddNewProject(string title, int ID)
         {
