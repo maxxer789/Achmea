@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using AchmeaProject.Models;
 
 namespace AchmeaProject.Controllers
-{
+{//test
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
