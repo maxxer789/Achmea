@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchmeaProject", "AchmeaProj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchmeaTestss", "AchmeaTestss\AchmeaTestss.csproj", "{868EACF3-C148-456D-882A-CE84253E05D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Achmea.Core", "Achmea.Core\Achmea.Core.csproj", "{1F6BEF3F-5806-4538-A5EB-89B49A30D620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Achmea.Core", "Achmea.Core\Achmea.Core.csproj", "{1F6BEF3F-5806-4538-A5EB-89B49A30D620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
