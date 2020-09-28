@@ -9,6 +9,10 @@ namespace Achmea.Core.SQL
 {
     public class UserDAL : BaseDAL, IUser
     {
+        public UserDAL(string Connectionstring) : base(Connectionstring)
+        {
+
+        }
         public void DeleteUser(int id)
         {
             throw new NotImplementedException();
@@ -35,7 +39,7 @@ namespace Achmea.Core.SQL
             UserModel user = null;
             if (result != null)
             {
-                user = DatasetParser.DatasetToAccount(result, 0);
+                user = DatasetParser.DatasetToUser(result, 0);
             }
             return user;
         }
