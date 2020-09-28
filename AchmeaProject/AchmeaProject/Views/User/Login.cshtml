@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Login";
+}
+@model AchmeaProject.Models.LoginViewModel
+
+
+<head>
+    <style>
+        .login {
+            width: 100%;
+            max-width: 420px;
+            padding: 10px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <section>
+            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-label-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="Email" required="" autofocus="" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-label-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" class="form-control" placeholder="Password" required="" autofocus="" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <hr />
+
+                <div class="form-label-group">
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+
+                </div>
+            </form>
+        </section>
+    </div>
+</body>
