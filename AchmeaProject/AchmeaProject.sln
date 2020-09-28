@@ -1,3 +1,42 @@
+<<<<<<< HEAD
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchmeaProject", "AchmeaProject\AchmeaProject.csproj", "{DFC276A9-464F-4A32-8D97-95ACF574742A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchmeaTestss", "AchmeaTestss\AchmeaTestss.csproj", "{868EACF3-C148-456D-882A-CE84253E05D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Achmea.Core", "Achmea.Core\Achmea.Core.csproj", "{1F6BEF3F-5806-4538-A5EB-89B49A30D620}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFC276A9-464F-4A32-8D97-95ACF574742A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC276A9-464F-4A32-8D97-95ACF574742A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC276A9-464F-4A32-8D97-95ACF574742A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC276A9-464F-4A32-8D97-95ACF574742A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{868EACF3-C148-456D-882A-CE84253E05D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{868EACF3-C148-456D-882A-CE84253E05D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{868EACF3-C148-456D-882A-CE84253E05D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{868EACF3-C148-456D-882A-CE84253E05D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6BEF3F-5806-4538-A5EB-89B49A30D620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6BEF3F-5806-4538-A5EB-89B49A30D620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6BEF3F-5806-4538-A5EB-89B49A30D620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6BEF3F-5806-4538-A5EB-89B49A30D620}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {59456C57-55E6-4B6F-BB17-494856C392DB}
+	EndGlobalSection
+EndGlobal
+=======
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
@@ -39,3 +78,4 @@ Global
 		SolutionGuid = {59456C57-55E6-4B6F-BB17-494856C392DB}
 	EndGlobalSection
 EndGlobal
+>>>>>>> Development
