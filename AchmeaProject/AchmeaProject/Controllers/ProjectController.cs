@@ -11,10 +11,10 @@ namespace AchmeaProject.Controllers
     public class ProjectController : Controller
     {
 
-        public IActionResult CreateProject(string PlaylistName)
-        {
+        //public IActionResult CreateProject(string PlaylistName)
+        //{
             
-        }
+        //}
 
     }
 }
