@@ -1,5 +1,4 @@
-﻿@page
-@model AchmeaProject.Views.ESA.IndexModel
+﻿@model List<AchmeaProject.Models.ESA_AspectViewModel>;
 @{
     <link rel="stylesheet" href="~/css/ESA-checklist.css" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -8,44 +7,60 @@
 <div class="tasks">
     <!-- title -->
     <h1>ESA checklist</h1>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <!-- task 1 -->
+        <input id='label-@(i+1)' type='checkbox' />
+        <label for='label-@(i+1)'>
+            <h2>
+                @Model[i].Title
+                <span>@Model[i].Description</span>
+            </h2>
+        </label>
+    }
+</div>
+
+<!--<div class="tasks">-->
+    <!-- title -->
+    <!--<h1>ESA checklist</h1>-->
     <!-- task 1 -->
-    <input id='label-1' type='checkbox' checked />
+    <!--<input id='label-1' type='checkbox' checked />
     <label for='label-1'>
         <h2>
-            ESA 1
-            <span>ESA description 1</span>
+            
+            <span></span>
         </h2>
-    </label>
+    </label>-->
     <!-- task 2 -->
-    <input id='label-2' type='checkbox' checked />
+    <!--<input id='label-2' type='checkbox' checked />
     <label for='label-2'>
         <h2>
-            ESA 2
-            <span>ESA description 2</span>
+            
+            <span>e</span>
         </h2>
-    </label>
+    </label>-->
     <!-- task 3 -->
-    <input id='label-3' type='checkbox' />
+    <!--<input id='label-3' type='checkbox' />
     <label for='label-3'>
         <h2>
             ESA 3
             <span>ESA description 3</span>
         </h2>
-    </label>
+    </label>-->
     <!-- task 4 -->
-    <input id='label-4' type='checkbox' />
+    <!--<input id='label-4' type='checkbox' />
     <label for='label-4'>
         <h2>
-            ESA 5
+            ESA 4
             <span>ESA description 4</span>
         </h2>
-    </label>
+    </label>-->
     <!-- task 5 -->
-    <input id='label-5' type='checkbox' />
+    <!--<input id='label-5' type='checkbox' />
     <label for='label-5'>
         <h2>
             ESA 5
             <span>ESA description 5</span>
         </h2>
     </label>
-</div>
+</div>-->

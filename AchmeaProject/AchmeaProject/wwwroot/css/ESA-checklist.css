@@ -1,4 +1,4 @@
-﻿/* tiny reset */
+﻿
 html, body {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@ html, body {
 }
 /* body */
 body {
-    background: #4d244e;
+    background: white;
     font-family: sans-serif;
     border-top: 5px solid #aa8e8d;
 }
@@ -34,12 +34,12 @@ input[type=checkbox] {
 }
 
 label {
-    background: #ae5f75;
+    background: grey;
     height: 69px;
     width: 100%;
     display: block;
     border-bottom: 1px solid #2C3E50;
-    color: #fff;
+    color: black;
     text-transform: capitalize;
     font-weight: 900;
     font-size: 11px;
