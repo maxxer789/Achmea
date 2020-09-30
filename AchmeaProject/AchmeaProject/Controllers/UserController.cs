@@ -20,7 +20,7 @@ namespace AchmeaProject.Controllers
         private readonly IUser Interface;
         public UserController(IConfiguration config)
         {
-            Interface = new UserDAL(config.GetConnectionString("MSSQLfhict"));
+            Interface = new UserDAL(config.GetConnectionString("DefaultConnection"));
             Logic = new UserLogic(Interface);
         }
 
