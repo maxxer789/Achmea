@@ -32,8 +32,12 @@ namespace AchmeaProject.Controllers
                 {
                     Title = model.GetTitle(),
                     Status = model.GetStatus(),
-                    Owner = model.GetUser().ToString()
+                    CreationDate = model.GetCreationDate().ToShortDateString()
                 };
+                if(viewModel.CreationDate == "1-1-0001")
+                {
+                    viewModel.CreationDate = "Unset";
+                }
                 listModel.Add(viewModel);
             }
             return View(listModel);
