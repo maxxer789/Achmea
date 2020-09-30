@@ -12,9 +12,12 @@ namespace AchmeaProject.Database
     {
         public void AddNewProject(ProjectModel projectModel)
         {
-            SqlCommand cmd = new SqlCommand(@"INSERT INTO[dbo].[Project] (Title, userID) values (@Title, @userID)", con);
+            SqlCommand cmd = new SqlCommand(@"INSERT INTO[dbo].[Project] (Title, userID, CreationDate, Description, Status) values (@Title, @userID, @Date, @Description, @Status)", con);
             cmd.Parameters.AddWithValue("@Title", projectModel.GetTitle());
             cmd.Parameters.AddWithValue("@userID", projectModel.GetUser());
+            cmd.Parameters.AddWithValue("@Date", projectModel.GetDate());
+            cmd.Parameters.AddWithValue("@Description", projectModel.GetDescription());
+            cmd.Parameters.AddWithValue("@Status", projectModel.GetStatus());
             con.Open();
             cmd.ExecuteNonQuery();
             con.Close();

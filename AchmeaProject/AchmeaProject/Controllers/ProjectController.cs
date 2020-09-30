@@ -23,9 +23,9 @@ namespace AchmeaProject.Controllers
             projectLogic = new ProjectLogic(projectDAL);
         }
 
-        public IActionResult CreateProject(string ProjectTitle)
+        public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
         {
-            ProjectModel projectModel = new ProjectModel(1, 1, ProjectTitle, "test", "idk");
+            ProjectModel projectModel = new ProjectModel(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try
