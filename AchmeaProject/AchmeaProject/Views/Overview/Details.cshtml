@@ -1,0 +1,16 @@
+﻿@using Achmea.Core.Model 
+@model ProjectDetailViewModel 
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<ul>
+    <li>@Model.ProjectId</li>
+    <li>@Model.UserId</li>
+    <li>@Model.Title</li>
+    <li>@Model.Description</li>
+    <li>@Model.Status</li>
+    <li>@Model.CreationDate</li>
+</ul>

@@ -8,6 +8,7 @@ using AchmeaProject.Models;
 using Achmea.Core;
 using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.CodeAnalysis;
 
 namespace AchmeaProject.Controllers
 {
@@ -30,6 +31,7 @@ namespace AchmeaProject.Controllers
             {
                 ProjectViewModel viewModel = new ProjectViewModel()
                 {
+                    ProjectId = model.GetProjectId(),
                     Title = model.GetTitle(),
                     Status = model.GetStatus(),
                     CreationDate = model.GetCreationDate().ToShortDateString()
@@ -41,6 +43,23 @@ namespace AchmeaProject.Controllers
                 listModel.Add(viewModel);
             }
             return View(listModel);
+        }
+
+        public IActionResult Details(int projectId)
+        {
+            ProjectModel project = Interface.GetProject(projectId);
+
+            ProjectDetailViewModel model = new ProjectDetailViewModel()
+            {
+                ProjectId = project.GetProjectId(),
+                UserId = project.GetUser(),
+                Title = project.GetTitle(),
+                Description = project.GetDescription(),
+                Status = project.GetStatus(),
+                CreationDate = project.GetCreationDate().ToShortDateString()
+            };
+
+            return View(model);
         }
     }
 }
