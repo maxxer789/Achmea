@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AchmeaProject.Sessions;
 using Microsoft.AspNetCore.Mvc;
 using Achmea.Core.Logic;
 using Achmea.Core.Interface;
@@ -39,9 +40,14 @@ namespace AchmeaProject.Controllers
 
                     if (VM.Password == User.Password)
                     {
-                        /*HttpContext.Session.SetString("Firstname", User.Firstname);
-                        HttpContext.Session.SetInt32("RoleID", User.RoleID);
-                        HttpContext.Session.SetInt32("UserID", User.UserID);*/
+                        HttpContext.Session.SetInt32("UserID", User.UserID);
+                        HttpContext.Session.SetString("Firstname", User.Firstname);
+                        HttpContext.Session.SetInt32("RoleID", User.RoleID);      
+
+                        if (User.RoleID == 2)
+                        {
+                            return RedirectToAction("Privacy", "Home");
+                        }
 
                         return RedirectToAction("Index", "Home");
                     }
@@ -51,12 +57,14 @@ namespace AchmeaProject.Controllers
                     }
                 }
 
+#pragma warning disable CA1031 // Do not catch general exception types
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     ModelState.AddModelError(string.Empty, "The data is not correct");
                     return View("Views/User/Login.cshtml");
                 }
+#pragma warning restore CA1031 // Do not catch general exception types
             }
             ModelState.AddModelError(string.Empty, "Fill in all Data");
 
