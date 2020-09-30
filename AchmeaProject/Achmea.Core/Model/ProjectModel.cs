@@ -8,7 +8,7 @@ namespace Achmea.Core.Model
 {
     public class ProjectModel
     {
-        private int ProjectId { get; set; }
+        private int ProjectId { get; set;}
         private int UserId { get; set; }
         private string Title { get; set; }
         private string Description { get; set; }
@@ -39,5 +39,6 @@ namespace Achmea.Core.Model
         {
             return Status;
         }
+
     }
 }
