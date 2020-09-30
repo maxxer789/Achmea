@@ -20,7 +20,7 @@ namespace Achmea.Core.SQL
 
             List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
             {
-                
+
             };
 
             DataSet result = ExecuteSQL(sql, parameters);
@@ -30,10 +30,14 @@ namespace Achmea.Core.SQL
 
             if (result != null)
             {
-                foreach (int dr in result.Tables[0].Rows)
+                foreach (DataTable table in result.Tables)
                 {
-                    AspectAreaModel aspectarea = DatasetParser.DatasetToAspectArea(result, dr);
-                    aspects.Add(aspectarea);
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        int index = table.Rows.IndexOf(dr);
+                        AspectAreaModel aspectarea = DatasetParser.DatasetToAspectArea(result, index);
+                        aspects.Add(aspectarea);
+                    }
                 }
             }
 

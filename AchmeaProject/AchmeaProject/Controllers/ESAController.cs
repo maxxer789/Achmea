@@ -8,6 +8,7 @@ using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
@@ -16,7 +17,7 @@ namespace AchmeaProject.Controllers
         private readonly AspectAreaLogic Logic;
         private readonly IAspectArea Interface;
 
-        public ESAController(IAspectArea aspectArea)
+        public ESAController(IConfiguration config)
         {
             Interface = new AspectAreaDAL(config.GetConnectionString("MSSQLfhict"));
             Logic = new AspectAreaLogic(Interface);
