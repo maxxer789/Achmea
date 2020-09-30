@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
@@ -39,5 +40,19 @@ namespace Achmea.Core.Model
         {
             return Status;
         }
+
+        public DateTime GetDate()
+        {
+            CreationDate = DateTime.UtcNow;
+
+            return CreationDate;
+        }
+
+        public string GetDescription()
+        {
+
+            return Description;
+        }
+
     }
 }
