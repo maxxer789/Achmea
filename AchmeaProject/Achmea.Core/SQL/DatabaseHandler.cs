@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace AchmeaProject.Database
+namespace AchmeaProject.Core
 {
     public class DatabaseHandler
     {

@@ -24,6 +24,20 @@ namespace Achmea.Core.Model
             Status = status;
             CreationDate = DateTime.Now;
         }
+        public ProjectModel(int projectId, int userId, string title, string description, string status, DateTime creationDate)
+        {
+            ProjectId = projectId;
+            UserId = userId;
+            Title = title;
+            Description = description;
+            Status = status;
+            CreationDate = creationDate;
+        }
+
+        public ProjectModel()
+        {
+
+        }
 
         public string GetTitle()
         {
