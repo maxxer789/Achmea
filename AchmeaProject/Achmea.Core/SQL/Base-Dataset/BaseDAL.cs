@@ -46,11 +46,13 @@ namespace Achmea.Core
                 DA.Fill(DS);
                 Conn.Close();
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return null;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
             return DS;
         }
     }
