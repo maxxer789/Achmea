@@ -10,6 +10,7 @@ body {
     background: white;
     font-family: sans-serif;
     border-top: 5px solid #aa8e8d;
+
 }
 /* title */
 h1 {
@@ -33,7 +34,7 @@ label {
     color: black;
     text-transform: capitalize;
     font-weight: 900;
-    font-size: 11px;
+    font-size: 1vw;
     letter-spacing: 1px;
     text-indent: 20px;
     cursor: pointer;
@@ -47,7 +48,7 @@ label {
 
     label h2 span {
         display: block;
-        font-size: 12px;
+        font-size: 1vw;
         text-transform: capitalize;
         font-weight: normal;
         color: #fff;
@@ -77,8 +78,11 @@ label {
 #label-9:checked ~ label[for=label-9],
 #label-10:checked ~ label[for=label-10],
 #label-11:checked ~ label[for=label-11],
-#label-12:checked ~ label[for=label-12]{
-    background: darkgreen;
+#label-12:checked ~ label[for=label-12],
+#label-13:checked ~ label[for=label-13],
+#label-14:checked ~ label[for=label-14],
+#label-15:checked ~ label[for=label-15] {
+    background: #00FF4D;
     border-bottom: 1px solid #34495E;
     color: black;
 }
@@ -94,7 +98,10 @@ label {
     #label-9:checked ~ label[for=label-9] h2 span,
     #label-10:checked ~ label[for=label-10] h2 span,
     #label-11:checked ~ label[for=label-11] h2 span,
-    #label-12:checked ~ label[for=label-12] h2 span {
+    #label-12:checked ~ label[for=label-12] h2 span,
+    #label-13:checked ~ label[for=label-13] h2 span,
+    #label-14:checked ~ label[for=label-14] h2 span,
+    #label-15:checked ~ label[for=label-15] h2 span {
         color: black;
     }
 
@@ -109,6 +116,9 @@ label {
     #label-9:checked ~ label[for=label-9]:before,
     #label-10:checked ~ label[for=label-10]:before,
     #label-11:checked ~ label[for=label-11]:before,
-    #label-12:checked ~ label[for=label-12]:before {
+    #label-12:checked ~ label[for=label-12]:before,
+    #label-13:checked ~ label[for=label-13]:before,
+    #label-14:checked ~ label[for=label-14]:before,
+    #label-15:checked ~ label[for=label-15]:before {
         background: url("https://i.imgur.com/eoPQ05r.png") no-repeat center center;
     }

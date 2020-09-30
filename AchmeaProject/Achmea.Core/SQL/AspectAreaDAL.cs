@@ -30,15 +30,12 @@ namespace Achmea.Core.SQL
 
             if (result != null)
             {
-                foreach (DataTable table in result.Tables)
-                {
-                    foreach (DataRow dr in table.Rows)
+                    foreach (DataRow dr in result.Tables[0].Rows)
                     {
-                        int index = table.Rows.IndexOf(dr);
+                        int index = result.Tables[0].Rows.IndexOf(dr);
                         AspectAreaModel aspectarea = DatasetParser.DatasetToAspectArea(result, index);
                         aspects.Add(aspectarea);
                     }
-                }
             }
 
             return aspects;
