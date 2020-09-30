@@ -39,21 +39,5 @@ namespace Achmea.Core.SQL
 
             return aspects;
         }
-
-        public UserModel Login(string Email)
-        {
-            string sql = "SELECT * FROM [User] WHERE Email = @Email";
-            List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
-            {
-                new KeyValuePair<object, object>("Email", Email)
-            };
-            DataSet result = ExecuteSQL(sql, parameters);
-            UserModel user = null;
-            if (result != null)
-            {
-                user = DatasetParser.DatasetToUser(result, 0);
-            }
-            return user;
-        }
     }
 }
