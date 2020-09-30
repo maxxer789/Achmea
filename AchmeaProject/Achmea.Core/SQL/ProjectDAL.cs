@@ -1,7 +1,7 @@
 ﻿using Achmea.Core;
 using Achmea.Core.Interface;
 using Achmea.Core.Model;
-using AchmeaProject.Core;
+using AchmeaProject.Database;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,12 +14,19 @@ namespace Achmea.Core
 
     public class ProjectDAL : DatabaseHandler, IProject
     {
+        ProjectModel projectModel;
+
+        public ProjectDAL()
+        {
+            projectModel = new ProjectModel();
+        }
+        
         public ProjectDAL(string ConnectionString)
         {
 
         }
 
-        public void AddNewProject(string title, int ID)
+        public void AddNewProject(ProjectModel projectModel)
         {
             SqlCommand cmd = new SqlCommand(@"INSERT INTO[dbo].[Project] (Title, userID, CreationDate, Description, Status) values (@Title, @userID, @Date, @Description, @Status)", con);
             cmd.Parameters.AddWithValue("@Title", projectModel.GetTitle());
