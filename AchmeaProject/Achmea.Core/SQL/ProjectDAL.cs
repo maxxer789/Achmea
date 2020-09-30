@@ -1,7 +1,7 @@
 ﻿using Achmea.Core;
 using Achmea.Core.Interface;
 using Achmea.Core.Model;
-using AchmeaProject.Database;
+using AchmeaProject.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,6 +37,11 @@ namespace Achmea.Core
             con.Open();
             cmd.ExecuteNonQuery();
             con.Close();
+        }
+
+        public void AddNewProject(string title, int ID)
+        {
+            throw new NotImplementedException();
         }
 
         public List<ProjectModel> GetProjects()

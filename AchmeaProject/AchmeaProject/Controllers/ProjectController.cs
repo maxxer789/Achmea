@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Achmea.Core;
-using AchmeaProject.Database;
 using Achmea.Core.Logic;
 using Achmea.Core.Model;
 using Achmea.Core.Interface;

@@ -32,7 +32,7 @@ namespace AchmeaProject.Controllers
                 {
                     Title = model.GetTitle(),
                     Status = model.GetStatus(),
-                    CreationDate = model.GetCreationDate().ToShortDateString()
+                    CreationDate = model.GetDate().ToShortDateString()
                 };
                 if(viewModel.CreationDate == "1-1-0001")
                 {
