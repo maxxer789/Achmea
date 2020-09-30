@@ -56,7 +56,7 @@ namespace AchmeaProject.Controllers
                 Title = project.GetTitle(),
                 Description = project.GetDescription(),
                 Status = project.GetStatus(),
-                CreationDate = project.GetCreationDate().ToShortDateString()
+                CreationDate = project.GetDate().ToShortDateString()
             };
 
             return View(model);
