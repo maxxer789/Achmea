@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace Achmea.Core
@@ -65,7 +66,27 @@ namespace Achmea.Core
                     i++;
                 }
             }
+            con.Close();
             return list;
+        }
+
+        public ProjectModel GetProject(int projectId)
+        {
+            string sql = "SELECT * FROM [Project] WHERE ProjectID = @projectId";
+
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@projectId", projectId);
+            con.Open();
+            DataSet set = new DataSet();
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(set);
+
+            ProjectModel project = new ProjectModel();
+            if(set != null)
+            {
+                project = DatasetParser.DataSetToProject(set, 0);
+            }
+            return project;
         }
     }
 }

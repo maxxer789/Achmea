@@ -61,11 +61,14 @@ namespace Achmea.Core.Model
             return CreationDate;
         }
 
+        public int GetProjectId()
+        {
+            return ProjectId;
+        }
+        
         public string GetDescription()
         {
-
             return Description;
         }
-
     }
 }
