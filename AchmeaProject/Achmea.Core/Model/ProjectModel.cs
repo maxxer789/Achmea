@@ -70,5 +70,10 @@ namespace Achmea.Core.Model
         {
             return Description;
         }
+        
+        public DateTime GetCreationDate()
+        {
+            return CreationDate;
+        }
     }
 }

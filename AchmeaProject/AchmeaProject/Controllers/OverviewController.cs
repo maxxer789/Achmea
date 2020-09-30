@@ -34,7 +34,7 @@ namespace AchmeaProject.Controllers
                     ProjectId = model.GetProjectId(),
                     Title = model.GetTitle(),
                     Status = model.GetStatus(),
-                    CreationDate = model.GetDate().ToShortDateString()
+                    CreationDate = model.GetCreationDate().ToShortDateString()
                 };
                 if(viewModel.CreationDate == "1-1-0001")
                 {
@@ -56,7 +56,7 @@ namespace AchmeaProject.Controllers
                 Title = project.GetTitle(),
                 Description = project.GetDescription(),
                 Status = project.GetStatus(),
-                CreationDate = project.GetDate().ToShortDateString()
+                CreationDate = project.GetCreationDate().ToShortDateString()
             };
 
             return View(model);
