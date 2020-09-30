@@ -19,7 +19,7 @@ namespace AchmeaProject.Controllers
 
         public ESAController(IConfiguration config)
         {
-            Interface = new AspectAreaDAL(config.GetConnectionString("MSSQLfhict"));
+            Interface = new AspectAreaDAL(config.GetConnectionString("DefaultConnection"));
             Logic = new AspectAreaLogic(Interface);
         }
 
