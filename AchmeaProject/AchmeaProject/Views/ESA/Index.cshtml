@@ -1,24 +1,42 @@
-﻿@model List<AchmeaProject.Models.ESA_AspectViewModel>;
+﻿@model AspectSelectViewModel;
 @{
     <link rel="stylesheet" href="~/css/ESA-checklist.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 }
 <div class="container" style="margin-bottom:50px">
+
+    <div>
+        <h1>@Model.project.Title</h1>
+    </div>
+
     <form method="post">
         <!-- title -->
         <h1>ESA aspect areas</h1>
 
-        @for (var i = 0; i < Model.Count; i++)
+        @for (var i = 0; i < @Model.AspectAreas.Count; i++)
         {
             <!-- ESA aspect -->
-                <input name="AreChecked" id='label-@(i+1)' type="checkbox" value="@Model[i].ID" />
-                <label for='label-@(i+1)'>
+            <div class="row">
+                <input name="AreChecked" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
+                <label data-toggle="tooltip" data-placement="left" title="@Model.AspectAreas[i].Description" for='label-@(i+1)'>
                     <h2>
-                        @Model[i].Title
-                        <span>@Model[i].Description</span>
+                        @Model.AspectAreas[i].Title
+                        @*<span >@Model.AspectAreas[i].Description</span>*@
                     </h2>
                 </label>
+            </div>
+
+            <div class="row">
+                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
+                <div class="content">
+                    <p>@Model.AspectAreas[i].Description</p>
+                </div>
+            </div>
+
         }
+        </br>
         <div class="col-md-12 text-right">
             <button>Next</button>
         </div>
@@ -26,3 +44,25 @@
 </div>
 
 
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Achmea.Core.Interface;
 using Achmea.Core.Logic;
+using Achmea.Core.Model;
 using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
@@ -23,11 +24,15 @@ namespace AchmeaProject.Controllers
             Logic = new AspectAreaLogic(Interface);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(ProjectViewModel project)
         {
-            List<ESA_AspectViewModel> vms = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+            AspectSelectViewModel vm = new AspectSelectViewModel()
+            {
+                project = project,
+                AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas())
+            };
 
-            return View(vms);
+            return View(vm);
         }
     }
 }
