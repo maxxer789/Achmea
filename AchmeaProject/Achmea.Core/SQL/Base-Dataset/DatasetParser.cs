@@ -37,5 +37,14 @@ namespace Achmea.Core
             }
             return new ProjectModel(projectId, userId, title, description, status);
         }
+
+        public static AspectAreaModel DatasetToAspectArea (DataSet D, int RowIndex)
+        {
+            return new AspectAreaModel(
+                    Convert.ToInt32(D.Tables[0].Rows[RowIndex][0]), 
+                    D.Tables[0].Rows[RowIndex][1].ToString(), 
+                    D.Tables[0].Rows[RowIndex][2].ToString()
+                );
+        }
     }
 }

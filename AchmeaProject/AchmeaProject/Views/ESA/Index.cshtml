@@ -1,0 +1,28 @@
+﻿@model List<AchmeaProject.Models.ESA_AspectViewModel>;
+@{
+    <link rel="stylesheet" href="~/css/ESA-checklist.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+}
+<div class="container" style="margin-bottom:50px">
+    <form method="post">
+        <!-- title -->
+        <h1>ESA aspect areas</h1>
+
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <!-- ESA aspect -->
+                <input name="AreChecked" id='label-@(i+1)' type="checkbox" value="@Model[i].ID" />
+                <label for='label-@(i+1)'>
+                    <h2>
+                        @Model[i].Title
+                        <span>@Model[i].Description</span>
+                    </h2>
+                </label>
+        }
+        <div class="col-md-12 text-right">
+            <button>Next</button>
+        </div>
+    </form>
+</div>
+
+
