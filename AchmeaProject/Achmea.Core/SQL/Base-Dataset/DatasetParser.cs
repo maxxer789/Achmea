@@ -19,7 +19,7 @@ namespace Achmea.Core
                 Firstname = D.Tables[0].Rows[RowIndex][3].ToString(),
                 Lastname = D.Tables[0].Rows[RowIndex][4].ToString(),
                 PhoneNumber = Convert.ToInt32(D.Tables[0].Rows[RowIndex][5]),
-                RoleID = Convert.ToInt32(D.Tables[0].Rows[RowIndex][6]),
+                RoleID = D.Tables[0].Rows[RowIndex][6].ToString(),
             };
         }
 

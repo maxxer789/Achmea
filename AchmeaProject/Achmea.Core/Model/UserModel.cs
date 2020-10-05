@@ -12,6 +12,6 @@ namespace Achmea.Core.Model
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public int PhoneNumber { get; set; }
-        public int RoleID { get; set; }
+        public string RoleID { get; set; }
     }
 }
