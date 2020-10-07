@@ -37,21 +37,35 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(List<int> A)
+        public IActionResult Index(List<string> Ids)
         {
-            if (ModelState.IsValid && A.Count > 0)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Test", new { selected = A });
+                if (Ids.Count > 0)
+                {
+                    return RedirectToAction("Test", new { Ids = Ids });
+                }
+                else
+                {
+                    ViewBag.Error = TempData["Please select atleast one Aspect area"];
+                    return RedirectToAction("Index");
+                }     
             }
 
             else return RedirectToAction("Index");
         }
 
-        public IActionResult Test(List<int> selected)
+        public IActionResult Test(List<string> Ids)
         {
+            List<int> ids = new List<int>();
+            foreach (string id in Ids)
+            {
+                ids.Add(Convert.ToInt32(id));
+            }
+            
             List<ESA_AspectViewModel> AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
             List<ESA_AspectViewModel> Selected = new List<ESA_AspectViewModel>();
-            Selected = AspectAreas.Where(x => selected.Contains(x.ID)).ToList();
+            Selected = AspectAreas.Where(x => ids.Contains(x.ID)).ToList();
 
             return View("Test", Selected);
         }

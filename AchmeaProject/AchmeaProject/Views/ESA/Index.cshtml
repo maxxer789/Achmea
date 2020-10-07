@@ -14,6 +14,7 @@
     <form method="post">
         <!-- title -->
         <h1>ESA aspect areas</h1>
+        <p>@ViewBag.Error</p>
 
         @for (var i = 0; i < @Model.AspectAreas.Count; i++)
         {
@@ -37,9 +38,7 @@
                 </div>
                 <div class="col-2">
                     <div class="form-check mb-2">
-                        <input name="A" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
-                        <label class="form-check-label" for="label-@(i+1)">
-                        </label>
+                        <input name="Ids" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
                     </div>
                 </div>
             </div>
@@ -50,10 +49,9 @@
         <div class="row">
             <div class="col-9"></div>
             <div class="col-3">
-                <button>submit</button>
+                <button type="submit" id="submitButton" name="submitButton">submit</button>
             </div>
         </div>
-
     </form>
 </div>
 
@@ -80,25 +78,4 @@
             }
         });
     }
-
-    function setCheckbox(elem) {
-        if ($(elem).is(':checked')) {
-            $(elem).prev('.custom-checkbox').addClass('checked');
-        } else {
-            $(elem).prev('.custom-checkbox').removeClass('checked');
-        }
-    }
-
-    $(document).ready(function () {
-        // apply custom checkbox on page ready
-        $('input[type="checkbox"]').before('<span class="custom-checkbox">');
-        $('input[type="checkbox"]').each(function () {
-            setCheckbox($(this));
-        });
-    });
-
-    // on input change, change custom checkbox
-    $('body').on('change', 'input[type="checkbox"]', function () {
-        setCheckbox($(this));
-    });
 </script>
