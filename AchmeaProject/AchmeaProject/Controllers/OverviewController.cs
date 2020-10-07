@@ -9,21 +9,24 @@ using Achmea.Core;
 using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.CodeAnalysis;
+using Achmea.Core.Logic;
 
 namespace AchmeaProject.Controllers
 {
     public class OverviewController : Controller
     {
         private readonly IProject Interface;
+        ProjectLogic projectLogic;
 
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
+            projectLogic = new ProjectLogic(Interface);
         }
 
         public IActionResult Index()
         {
-            List<ProjectModel> list = Interface.GetProjects();
+            List<ProjectModel> list = projectLogic.GetProjects();
 
             List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
@@ -47,7 +50,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details(int projectId)
         {
-            ProjectModel project = Interface.GetProject(projectId);
+            ProjectModel project = projectLogic.GetProject(projectId);
 
             ProjectDetailViewModel model = new ProjectDetailViewModel()
             {
