@@ -35,7 +35,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 UserID = VM.UserID,
                 Email = VM.Email,
                 Password = VM.Password,
-                Firstname = VM.Password,
+                Firstname = VM.Firstname,
                 Lastname = VM.Lastname,
                 PhoneNumber = VM.PhoneNumber,
                 RoleID = VM.RoleID

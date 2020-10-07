@@ -73,11 +73,36 @@ namespace AchmeaProject.Controllers
             }
             return View("Views/Accounts/Admin/UserList.cshtml", vm);
         }
+
         public IActionResult Delete_User(int id)
         {
             logic.DeleteUser(id);
 
             return RedirectToAction("UserList", "Admin");
+        }
+
+        [HttpGet]
+        public IActionResult Edit_User(int id)
+        {
+            UserViewModel vm = ViewModelConverter.UserToVm(logic.GetUserByID(id));
+            return View("Views/Accounts/Admin/UserEdit.cshtml", vm);
+        }
+        [HttpPost]
+        public IActionResult Edit_User(UserViewModel vm)
+        {
+            UserModel user = ViewModelConverter.VmtoUser(vm);
+
+            logic.UpdateUser(user);
+
+            return View("Views/Accounts/Admin/UserDetails.cshtml", vm);
+        }
+
+        public IActionResult Details_User(int id)
+        {
+            UserModel user = logic.GetUserByID(id);
+            UserViewModel vm = ViewModelConverter.UserToVm(user);
+
+            return View("Views/Accounts/Admin/UserDetails.cshtml", vm);
         }
     }
 }
