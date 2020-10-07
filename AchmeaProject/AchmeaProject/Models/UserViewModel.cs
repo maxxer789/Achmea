@@ -20,6 +20,6 @@ namespace AchmeaProject.Models
         [Required]
         public int PhoneNumber { get; set; }
         [Required]
-        public int RoleID { get; set; }
+        public string RoleID { get; set; }
     }
 }

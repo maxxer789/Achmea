@@ -27,5 +27,33 @@ namespace AchmeaProject.Models.ViewModelConverter
 
             return vms;
         }
+
+        public static UserModel VmtoUser(UserViewModel VM)
+        {
+            return new UserModel
+            {
+                UserID = VM.UserID,
+                Email = VM.Email,
+                Password = VM.Password,
+                Firstname = VM.Password,
+                Lastname = VM.Lastname,
+                PhoneNumber = VM.PhoneNumber,
+                RoleID = VM.RoleID
+            };
+        }
+
+        public static UserViewModel UserToVm(UserModel User)
+        {
+            return new UserViewModel
+            {
+                UserID = User.UserID,
+                Email = User.Email,
+                Password = User.Password,
+                Firstname = User.Firstname,
+                Lastname = User.Lastname,
+                PhoneNumber = User.PhoneNumber,
+                RoleID = User.RoleID
+            };
+        }
     }
 }
