@@ -44,7 +44,20 @@ namespace Achmea.Core.SQL
 
         public UserModel GetUserByID(int id)
         {
-            throw new NotImplementedException();
+            string sql = "SELECT * FROM [User] WHERE UserID = @UserID";
+            List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
+            {
+                new KeyValuePair<object, object>("UserID", id.ToString())
+            };
+
+            DataSet result = ExecuteSQL(sql, parameters);
+            UserModel user = null;
+
+            if (result != null)
+            {
+                user = DatasetParser.DatasetToUser(result, 0);
+            }
+            return user;
         }
 
         public int InsertUser(UserModel user)
@@ -83,7 +96,18 @@ namespace Achmea.Core.SQL
 
         public void UpdateUser(UserModel user)
         {
-            throw new NotImplementedException();
+            string sql = "UPDATE [User] SET Email=@Email, Password=@Password, Firstname=@Firstname, Lastname=@Lastname, PhoneNumber=@PhoneNumber, RoleID=@RoleID WHERE UserID=@UserID;";
+            List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
+            {
+                new KeyValuePair<object, object>("UserID", user.UserID.ToString()),
+                new KeyValuePair<object, object>("Email", user.Email),
+                new KeyValuePair<object, object>("Password", user.Password),
+                new KeyValuePair<object, object>("Firstname", user.Firstname),
+                new KeyValuePair<object, object>("Lastname", user.Lastname),
+                new KeyValuePair<object, object>("PhoneNumber", user.PhoneNumber.ToString()),
+                new KeyValuePair<object, object>("RoleID", user.RoleID)
+            };
+           DataSet result = ExecuteSQL(sql, parameters);
         }
     }
 }

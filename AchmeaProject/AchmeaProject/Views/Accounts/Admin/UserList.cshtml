@@ -59,8 +59,8 @@
                     @Html.DisplayFor(modelItem => item.RoleID)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Edit_User">Edit</a> |
+                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Details_User">Details</a> |
                     <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Delete_User">Delete</a>
                 </td>
                 
