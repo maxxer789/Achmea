@@ -30,15 +30,38 @@ namespace Achmea.Core.SQL
 
             if (result != null)
             {
-                    foreach (DataRow dr in result.Tables[0].Rows)
-                    {
-                        int index = result.Tables[0].Rows.IndexOf(dr);
-                        AspectAreaModel aspectarea = DatasetParser.DatasetToAspectArea(result, index);
-                        aspects.Add(aspectarea);
-                    }
+                foreach (DataRow dr in result.Tables[0].Rows)
+                {
+                    int index = result.Tables[0].Rows.IndexOf(dr);
+                    AspectAreaModel aspectarea = DatasetParser.DatasetToAspectArea(result, index);
+                    aspects.Add(aspectarea);
+                }
             }
 
             return aspects;
+        }
+
+        public AspectAreaModel GetAspectAreaById(int Id)
+        {
+            AspectAreaModel aspectarea = new AspectAreaModel();
+            string sql = @"SELECT *
+                              FROM[ESA_Aspect]
+                              WHERE AspectID = @ID";
+            List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
+                {
+                    new KeyValuePair<object, object>("ID", Id)
+                };
+
+            DataSet result = ExecuteSQL(sql, parameters);
+
+
+            AspectAreaModel aspects = new AspectAreaModel();
+
+            if (result != null)
+            {
+                aspectarea = DatasetParser.DatasetToAspectArea(result, 0);
+            }
+            return aspectarea;
         }
     }
 }

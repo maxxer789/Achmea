@@ -19,5 +19,10 @@ namespace Achmea.Core.Logic
             {
                 return _IAspectArea.GetAspectAreas();
             }
+
+            public AspectAreaModel GetAspectAreaById(int Id)
+            {
+                return _IAspectArea.GetAspectAreaById(Id);
+            }
         }
     }

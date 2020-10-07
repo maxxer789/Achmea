@@ -8,5 +8,6 @@ namespace Achmea.Core.Interface
     public interface IAspectArea
     {
         List<AspectAreaModel> GetAspectAreas();
+        AspectAreaModel GetAspectAreaById(int Id);
     }
 }

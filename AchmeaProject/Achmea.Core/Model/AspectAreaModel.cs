@@ -10,6 +10,10 @@ namespace Achmea.Core.Model
         public string Title { get; }
         public string Description { get;}
 
+        public AspectAreaModel()
+        {
+
+        }
         public AspectAreaModel(int aspectAreaId, string title, string description)
         {
             AspectAreaId = aspectAreaId;
