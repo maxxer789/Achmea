@@ -17,17 +17,18 @@ namespace AchmeaProject.Controllers
     {
         private readonly IProject Interface;
         ProjectLogic projectLogic;
+        RequirementLogic requirementLogic;
 
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
             projectLogic = new ProjectLogic(Interface);
+            requirementLogic = new RequirementLogic();
         }
 
         public IActionResult Index()
         {
             List<ProjectModel> list = projectLogic.GetProjects();
-
             List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
             foreach (ProjectModel model in list)
@@ -59,7 +60,9 @@ namespace AchmeaProject.Controllers
                 Title = project.GetTitle(),
                 Description = project.GetDescription(),
                 Status = project.GetStatus(),
-                CreationDate = project.GetCreationDate().ToShortDateString()
+                CreationDate = project.GetCreationDate().ToShortDateString(),
+                Requirements = requirementLogic.GetRequirementsForProject(projectId),
+                Statuses = requirementLogic.GetStatuses(projectId)
             };
 
             return View(model);
