@@ -11,11 +11,13 @@
         @for (var i = 0; i < Model.Count; i++)
         {
             <!-- ESA aspect -->
-            <label for='label-@(i+1)'>
-                <h2>
+            <ul for='label-@(i+1)'>
+                
+                    <li>
                     @Model[i].Naam
-                </h2>
-            </label>
+                </li>
+           
+            </ul>
         }
     </form>
 </div>
