@@ -46,5 +46,16 @@ namespace Achmea.Core
                     D.Tables[0].Rows[RowIndex][2].ToString()
                 );
         }
+
+        public static BivModel DatasetToBiv(DataSet D, int RowIndex)
+        {
+                 return new BivModel(
+                    Convert.ToInt32(D.Tables[0].Rows[RowIndex][0]),
+                    D.Tables[0].Rows[RowIndex][1].ToString()
+                );
+
+
+
+        }
     }
 }

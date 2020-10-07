@@ -1,0 +1,23 @@
+﻿@model List<AchmeaProject.Models.BivViewModel>;
+@{
+    <link rel="stylesheet" href="~/css/BIV-checklist.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+}
+<div class="container" style="margin-bottom:50px">
+    <form method="post">
+        <!-- title -->
+        <h1>Biv</h1>
+
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <!-- ESA aspect -->
+            <label for='label-@(i+1)'>
+                <h2>
+                    @Model[i].Naam
+                </h2>
+            </label>
+        }
+    </form>
+</div>
+
+
