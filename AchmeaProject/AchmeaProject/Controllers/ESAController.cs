@@ -9,6 +9,7 @@ using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
@@ -33,6 +34,26 @@ namespace AchmeaProject.Controllers
             };
 
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Index(List<int> A)
+        {
+            if (ModelState.IsValid && A.Count > 0)
+            {
+                return RedirectToAction("Test", new { selected = A });
+            }
+
+            else return RedirectToAction("Index");
+        }
+
+        public IActionResult Test(List<int> selected)
+        {
+            List<ESA_AspectViewModel> AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+            List<ESA_AspectViewModel> Selected = new List<ESA_AspectViewModel>();
+            Selected = AspectAreas.Where(x => selected.Contains(x.ID)).ToList();
+
+            return View("Test", Selected);
         }
     }
 }

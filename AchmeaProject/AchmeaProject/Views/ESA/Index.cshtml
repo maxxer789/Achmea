@@ -18,37 +18,52 @@
         @for (var i = 0; i < @Model.AspectAreas.Count; i++)
         {
             <!-- ESA aspect -->
-            <div class="row">
+            @*<div class="row">
                 <input name="AreChecked" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
                 <label data-toggle="tooltip" data-placement="left" title="@Model.AspectAreas[i].Description" for='label-@(i+1)'>
                     <h2>
                         @Model.AspectAreas[i].Title
-                        @*<span >@Model.AspectAreas[i].Description</span>*@
                     </h2>
                 </label>
-            </div>
+            </div>*@
 
-            <div class="row">
-                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
-                <div class="content">
-                    <p>@Model.AspectAreas[i].Description</p>
+            <!-- Selection form -->
+            <div class="form-row align-items-center">
+                <div class="col-10">
+                    <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
+                    <div class="content">
+                        <p>@Model.AspectAreas[i].Description</p>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-check mb-2">
+                        <input name="A" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
+                        <label class="form-check-label" for="label-@(i+1)">
+                        </label>
+                    </div>
                 </div>
             </div>
 
         }
-        </br>
-        <div class="col-md-12 text-right">
-            <button>Next</button>
+
+        <br />
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <button>submit</button>
+            </div>
         </div>
+
     </form>
 </div>
 
 
-<script>
+
+@*<script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-</script>
+</script>*@
 
 <script>
     var coll = document.getElementsByClassName("collapsible");
@@ -65,4 +80,25 @@
             }
         });
     }
+
+    function setCheckbox(elem) {
+        if ($(elem).is(':checked')) {
+            $(elem).prev('.custom-checkbox').addClass('checked');
+        } else {
+            $(elem).prev('.custom-checkbox').removeClass('checked');
+        }
+    }
+
+    $(document).ready(function () {
+        // apply custom checkbox on page ready
+        $('input[type="checkbox"]').before('<span class="custom-checkbox">');
+        $('input[type="checkbox"]').each(function () {
+            setCheckbox($(this));
+        });
+    });
+
+    // on input change, change custom checkbox
+    $('body').on('change', 'input[type="checkbox"]', function () {
+        setCheckbox($(this));
+    });
 </script>
