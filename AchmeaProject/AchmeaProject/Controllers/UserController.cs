@@ -48,8 +48,14 @@ namespace AchmeaProject.Controllers
                         {
                             return RedirectToAction("Index", "Admin");
                         }
-
-                        return RedirectToAction("Index", "Home");
+                        if (User.RoleID == "Security")
+                        {
+                            return RedirectToAction("Index", "Security");
+                        }
+                        if (User.RoleID == "Developer")
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
