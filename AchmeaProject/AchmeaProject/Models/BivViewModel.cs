@@ -7,15 +7,14 @@ namespace AchmeaProject.Models
 {
     public class BivViewModel
     {
-        public int Id { get; }
+        public int Id { get; set; }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public BivViewModel(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
+        public bool isSelected { get; set; }
+
+
+
 
     }
 }
