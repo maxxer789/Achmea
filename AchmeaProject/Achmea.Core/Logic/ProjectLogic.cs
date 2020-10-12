@@ -24,7 +24,8 @@ namespace Achmea.Core.Logic
             Projects = projectDAL.GetProjects();
         }
 
-            public void MakeNewProject(ProjectModel projectModel)
+
+        public void MakeNewProject(ProjectModel projectModel)
         {
             try
             {
