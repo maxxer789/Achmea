@@ -27,7 +27,7 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View("Views/Accounts/User/Login.cshtml");
+            return View();
         }
         [HttpPost]
         public IActionResult Login(LoginViewModel VM)
@@ -42,20 +42,14 @@ namespace AchmeaProject.Controllers
                     {
                         HttpContext.Session.SetInt32("UserID", User.UserID);
                         HttpContext.Session.SetString("Firstname", User.Firstname);
-                        HttpContext.Session.SetString("RoleID", User.RoleID);      
+                        HttpContext.Session.SetInt32("RoleID", User.RoleID);      
 
-                        if (User.RoleID == "Admin")
+                        if (User.RoleID == 2)
                         {
-                            return RedirectToAction("Index", "Admin");
+                            return RedirectToAction("Privacy", "Home");
                         }
-                        if (User.RoleID == "Security")
-                        {
-                            return RedirectToAction("Index", "Security");
-                        }
-                        if (User.RoleID == "Developer")
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -68,15 +62,14 @@ namespace AchmeaProject.Controllers
                 {
                     Console.WriteLine(e.Message);
                     ModelState.AddModelError(string.Empty, "The data is not correct");
-                    return View("Views/Accounts/User/Login.cshtml");
+                    return View("Views/User/Login.cshtml");
                 }
 #pragma warning restore CA1031 // Do not catch general exception types
             }
             ModelState.AddModelError(string.Empty, "Fill in all Data");
 
-            return View("Views/Accounts/User/Login.cshtml", VM);
+            return View("Views/User/Login.cshtml", VM);
         }
-
         public IActionResult Log_Out()
         {
             HttpContext.Session.Remove("Firstname");

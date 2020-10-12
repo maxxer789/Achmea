@@ -10,9 +10,7 @@ using Achmea.Core.Interface;
 
 namespace AchmeaProject.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProjectController : ControllerBase
+    public class ProjectController : Controller
     {
         ProjectDAL projectDAL;
         ProjectLogic projectLogic;
@@ -23,25 +21,6 @@ namespace AchmeaProject.Controllers
             projectDAL = new ProjectDAL();
             projectLogic = new ProjectLogic(projectDAL);
         }
-
-        //[HttpGet("{search}")]
-        //public List<ProjectModel> Search(string SearchTerm)
-        //{
-        //    List<ProjectModel> result;
-            
-        //    try
-        //    {
-        //        result = projectDAL.Search(SearchTerm);
-                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.ToString());
-        //    }
-
-        //    return result;
-
-        //}
 
         public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
         {
@@ -58,10 +37,10 @@ namespace AchmeaProject.Controllers
                 ProjectMade = false;
             }
 
-            //if(ProjectMade == true)
-            //{
-            //    ViewBag.ProjectMade = "Project was made succesfully";
-            //}
+            if(ProjectMade == true)
+            {
+                ViewBag.ProjectMade = "Project was made succesfully";
+            }
 
             return RedirectToAction("Index", "Home");
 

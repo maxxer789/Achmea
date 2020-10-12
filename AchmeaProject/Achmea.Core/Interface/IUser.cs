@@ -12,6 +12,5 @@ namespace Achmea.Core.Interface
         int InsertUser(UserModel user);
         void DeleteUser(int id);
         void UpdateUser(UserModel user);
-        List<UserModel> GetAllUsers();
     }
 }

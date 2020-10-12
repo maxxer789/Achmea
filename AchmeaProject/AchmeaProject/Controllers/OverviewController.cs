@@ -26,14 +26,14 @@ namespace AchmeaProject.Controllers
 
             List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
-            foreach (Project model in list)
+            foreach (ProjectModel model in list)
             {
                 ProjectViewModel viewModel = new ProjectViewModel()
                 {
-                    ProjectId = model.ProjectId,
-                    Title = model.Title,
-                    Status = model.Status,
-                    CreationDate = model.CreationDate.ToString()
+                    ProjectId = model.GetProjectId(),
+                    Title = model.GetTitle(),
+                    Status = model.GetStatus(),
+                    CreationDate = model.GetCreationDate().ToShortDateString()
                 };
                 if(viewModel.CreationDate == "1-1-0001")
                 {
