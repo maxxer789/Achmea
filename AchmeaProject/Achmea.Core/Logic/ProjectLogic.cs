@@ -15,7 +15,7 @@ namespace Achmea.Core.Logic
 
         readonly IProject _IUser;
 
-        private List<ProjectModel> Projects;
+        private IEnumerable<Project> Projects;
 
         public ProjectLogic(IProject IUser)
         {
@@ -40,14 +40,14 @@ namespace Achmea.Core.Logic
 
         }
 
-        public List<ProjectModel> GetProjects()
+        public List<Project> GetProjects()
         {
-            return new List<ProjectModel>(Projects);
+            return new List<Project>(Projects);
         }
 
-        public ProjectModel GetProject(int projectId)
+        public Project GetProject(int projectId)
         {
-            return Projects.FirstOrDefault(x => x.GetProjectId() == projectId);
+            return Projects.FirstOrDefault(x => x.ProjectId == projectId);
         }
     }
 }
