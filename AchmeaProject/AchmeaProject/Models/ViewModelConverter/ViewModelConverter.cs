@@ -9,20 +9,30 @@ namespace AchmeaProject.Models.ViewModelConverter
 {
     public class ViewModelConverter
     {
-        public static ESA_AspectViewModel AspectAreaModelToESA_AspectViewModel(AspectAreaModel model)
+        public static ESA_AspectViewModel AspectAreaModelToESA_AspectViewModel(EsaAspect model)
         {
-            ESA_AspectViewModel vm = new ESA_AspectViewModel(model.AspectAreaId, model.Title, model.Description);
+            ESA_AspectViewModel vm = new ESA_AspectViewModel()
+            {
+                ID = model.AspectId,
+                Title = model.Name,
+                Description = model.Description
+            };
 
             return vm;
         }
 
-        public static List<ESA_AspectViewModel> AspectAreaModelToESA_AspectViewModel(List<AspectAreaModel> models)
+        public static List<ESA_AspectViewModel> AspectAreaModelToESA_AspectViewModel(List<EsaAspect> models)
         {
             List<ESA_AspectViewModel> vms = new List<ESA_AspectViewModel>();
 
             foreach (var model in models)
             {
-                ESA_AspectViewModel vm = new ESA_AspectViewModel(model.AspectAreaId, model.Title, model.Description);
+                ESA_AspectViewModel vm = new ESA_AspectViewModel()
+                {
+                    ID = model.AspectId,
+                    Title = model.Name,
+                    Description = model.Description
+                };
                 vms.Add(vm);
             }    
 

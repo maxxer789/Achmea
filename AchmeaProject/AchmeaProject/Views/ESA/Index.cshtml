@@ -1,4 +1,4 @@
-﻿@model AspectSelectViewModel;
+@model AspectSelectViewModel;
 @{
     <link rel="stylesheet" href="~/css/ESA-checklist.css" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -7,58 +7,58 @@
 }
 <div class="container" style="margin-bottom:50px">
 
-    <div>
-        <h1>@Model.project.Title</h1>
-    </div>
+    @if (Model.Project != null)
+    {
+        <div>
+            <h1>@Model.Project.Title</h1>
+            <p>@Model.Project.CreationDate, @Model.Project.Status</p>
+        </div>
+    }
 
-    <form method="post">
-        <!-- title -->
-        <h1>ESA aspect areas</h1>
-        <p>@ViewBag.Error</p>
 
-        @for (var i = 0; i < @Model.AspectAreas.Count; i++)
-        {
-            <!-- ESA aspect -->
-            @*<div class="row">
-                <input name="AreChecked" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
-                <label data-toggle="tooltip" data-placement="left" title="@Model.AspectAreas[i].Description" for='label-@(i+1)'>
-                    <h2>
-                        @Model.AspectAreas[i].Title
-                    </h2>
-                <input name="AreChecked" id='label-@(i+1)' type="checkbox" value="@Model[i].ID" />
-                <label for='label-@(i+1)'>
-                    <p>
-                        @Model[i].Title
-                        <span>@Model[i].Description</span>
-                    </p>
-                </label>
-            </div>*@
+<form asp-controller="ESA" asp-action="Testing" method="post">
+    <!-- title -->
+    <h1>ESA aspect areas</h1>
+    <p>@ViewBag.Error</p>
 
-            <!-- Selection form -->
-            <div class="form-row align-items-center">
-                <div class="col-10">
-                    <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
-                    <div class="content">
-                        <p>@Model.AspectAreas[i].Description</p>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="form-check mb-2">
-                        <input name="Ids" id='label-@(i+1)' type="checkbox" value="@Model.AspectAreas[i].ID" />
-                    </div>
+    @Html.HiddenFor(model => Model.Project.ProjectId)
+    @Html.HiddenFor(model => Model.Project.SearchTerm)
+    @Html.HiddenFor(model => Model.Project.Title)
+    @Html.HiddenFor(model => Model.Project.CreationDate)
+    @Html.HiddenFor(model => Model.Project.Status)
+
+    @for (var i = 0; i < @Model.AspectAreas.Count; i++)
+    {
+
+
+        <!-- Selection form -->
+        <div class="form-row align-items-center">
+            <div class="col-10">
+                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
+                <div class="content">
+                    <p>@Model.AspectAreas[i].Description</p>
                 </div>
             </div>
-
-        }
-
-        <br />
-        <div class="row">
-            <div class="col-9"></div>
-            <div class="col-3">
-                <button type="submit" id="submitButton" name="submitButton">submit</button>
+            <div class="col-2">
+                <div class="form-check mb-2">
+                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                    @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
+                </div>
             </div>
         </div>
-    </form>
+
+    }
+
+    <br />
+    <div class="row">
+        <div class="col-9"></div>
+        <div class="col-3">
+            <button type="submit" id="submitButton" name="submitButton">submit</button>
+        </div>
+    </div>
+</form>
 </div>
 
 
@@ -84,4 +84,14 @@
             }
         });
     }
+</script>
+
+<script>
+    $(document).on("click", "[type='checkbox']", function (e) {
+        if (this.checked) {
+            $(this).attr("value", "true");
+        } else {
+            $(this).attr("value", "false");
+        }
+    });
 </script>

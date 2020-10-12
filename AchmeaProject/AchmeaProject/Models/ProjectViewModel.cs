@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AchmeaProject.Models
 {
-    public class ProjectViewModel : PageModel
+    public class ProjectViewModel
     {
         public int ProjectId { get; set; }
         public string SearchTerm { get; set; }
