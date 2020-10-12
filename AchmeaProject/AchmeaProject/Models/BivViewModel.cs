@@ -9,12 +9,12 @@ namespace AchmeaProject.Models
     {
         public int Id { get; }
 
-        public string Naam { get; }
+        public string Name { get; }
 
-        public BivViewModel(int id, string naam)
+        public BivViewModel(int id, string name)
         {
             Id = id;
-            Naam = naam;
+            Name = name;
         }
 
     }

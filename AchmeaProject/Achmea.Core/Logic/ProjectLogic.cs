@@ -40,9 +40,9 @@ namespace Achmea.Core.Logic
             return new List<Project>(Projects);
         }
 
-        public Project GetProject(int projectId)
-        {
-            return Projects.FirstOrDefault(x => x.ProjectId == projectId);
-        }
+       // public Project GetProject(int projectId)
+        //{
+           // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
+        //}
     }
 }

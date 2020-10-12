@@ -67,20 +67,20 @@ namespace AchmeaProject.Models.ViewModelConverter
             };
         }
       
-        public static BivViewModel BivModelToBivViewModel(BivModel model)
+        public static BivViewModel BivModelToBivViewModel(Biv model)
         {
-            BivViewModel vm = new BivViewModel(model.Id, model.Naam);
+            BivViewModel vm = new BivViewModel(model.Id, model.Name);
 
             return vm;
         }
 
-        public static List<BivViewModel> BivModelToBivViewModel(List<BivModel> models)
+        public static List<BivViewModel> BivModelToBivViewModel(List<Biv> models)
         {
             List<BivViewModel> vms = new List<BivViewModel>();
 
             foreach (var model in models)
             {
-                BivViewModel vm = new BivViewModel(model.Id, model.Naam);
+                BivViewModel vm = new BivViewModel(model.Id, model.Name);
                 vms.Add(vm);
             }
 
