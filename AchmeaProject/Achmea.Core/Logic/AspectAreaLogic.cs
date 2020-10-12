@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Achmea.Core.Interface;
 using Achmea.Core.Model;
+using AchmeaProject.Models;
 
 namespace Achmea.Core.Logic
 {
@@ -15,7 +16,7 @@ namespace Achmea.Core.Logic
                 _IAspectArea = IAspectArea;
             }
 
-            public List<AspectAreaModel> GetAspectAreas()
+            public List<EsaAspect> GetAspectAreas()
             {
                 return _IAspectArea.GetAspectAreas();
             }
