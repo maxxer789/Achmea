@@ -1,54 +1,59 @@
-﻿using Achmea.Core.Interface;
+﻿using Achmea.Core;
+using Achmea.Core.Interface;
+using Achmea.Core.Logic;
 using Achmea.Core.Model;
+using AchmeaProject.Core;
+using AchmeaProject.Models;
+using Dapper;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Threading.Tasks;
 
 namespace Achmea.Core.SQL
 {
-    public class RequiermentDAL : BaseDAL, IRequirement
+    public class RequiermentDAL : DbContext, IRequirement
     {
-        public RequiermentDAL(string Connectionstring) : base(Connectionstring)
+        public RequiermentDAL(string Connectionstring)
         {
 
         }
 
-        public List<RequirementModel> getRequiermentsFromAreas(List<AspectAreaModel> areas)
+        public IEnumerable<SecurityRequirement> getRequiermentsFromAreas(List<EsaArea> areas)
         {
-            List<RequirementModel> requierments = new List<RequirementModel>();
+            List<SecurityRequirement> requierments = new List<SecurityRequirement>();
             string sql = @"SELECT * FROM [Security_Requirement] AS SR WHERE SR.RequirementID IN
                             (SELECT RequirementID FROM[ESA-Aspect-Security_Requirement] WHERE AspectID IN
                                 (SELECT ESA_AreaID FROM[ESA_Aspect-Area] AS EAA WHERE EAA.ESA_AspectID = @ID))";
-            
-            foreach (AspectAreaModel aspectArea in areas)
+
+            //DataSet result = ExecuteSQL(sql, parameters);
+            foreach (EsaArea aam in areas)
             {
-                List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
-                {
-                    new KeyValuePair<object, object>("ID", aspectArea.AspectAreaId)
-                };
-
-                DataSet result = ExecuteSQL(sql, parameters);
-
-                if (result != null)
-                {
-                    foreach(DataRow dr in result.Tables[0].Rows)
-                    {
-                        RequirementModel newRequierment = FillRequirment(dr);
-                        if(requierments.Find(m => m.RequiermentID == newRequierment.RequiermentID) == null)
-                        {
-                            requierments.Add(newRequierment);
-                        }
-                    }
-                }
+                
             }
+
+            requierments = requierments.Distinct().ToList();
 
             return requierments;
         }
 
-        private RequirementModel FillRequirment(DataRow dr)
+        public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, int projectId)
         {
-            return new RequirementModel(Convert.ToInt32(dr["RequirementID"]), dr["Name"].ToString(), dr["Description"].ToString(), dr["Details"].ToString(), dr["Family"].ToString(), dr["RequirementNumber"].ToString(), dr["MainGroup"].ToString(), 0);
+            foreach(SecurityRequirement req in requirements)
+            {
+                SecurityRequirementProject srm = new SecurityRequirementProject();
+                srm.SecurityRequirementId = req.RequirementId;
+                srm.ProjectId = projectId;
+                srm.Status = Status.ToDo.ToString();
+
+                SecurityRequirementProject.Add(srm);
+                SaveChanges();
+            }
+            return SecurityRequirementProject.ToList().Where(sr => sr.ProjectId == projectId);
         }
     }
 }

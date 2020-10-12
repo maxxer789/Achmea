@@ -25,8 +25,12 @@ namespace AchmeaProject.Controllers
             Logic = new AspectAreaLogic(Interface);
         }
 
-        public IActionResult Index(ProjectViewModel project)
+        public IActionResult Index(/*ProjectViewModel project*/)
         {
+            ProjectViewModel project = new ProjectViewModel()
+            {
+                ProjectId = 1
+            };
             AspectSelectViewModel vm = new AspectSelectViewModel()
             {
                 project = project,
@@ -43,7 +47,7 @@ namespace AchmeaProject.Controllers
             {
                 if (Ids.Count > 0)
                 {
-                    return RedirectToAction("Test", new { Ids = Ids });
+                    return RedirectToAction("GetRequirementsFromAreas", "Requirement", new { AreaIds = Ids , projectId = 1});
                 }
                 else
                 {
