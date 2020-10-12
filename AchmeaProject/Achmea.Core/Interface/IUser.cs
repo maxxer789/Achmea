@@ -1,4 +1,6 @@
-﻿using Achmea.Core.Model;
+﻿
+using Achmea.Core.Model;
+using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,11 +9,11 @@ namespace Achmea.Core.Interface
 {
     public interface IUser
     {
-        UserModel GetUserByID(int id);
-        UserModel Login(string Email);
-        int InsertUser(UserModel user);
+        User GetUserByID(int id);
+        int InsertUser(User givenUser);
         void DeleteUser(int id);
-        void UpdateUser(UserModel user);
-        List<UserModel> GetAllUsers();
+        void UpdateUser(User givenUser);
+        IEnumerable<User> GetAllUsers();
+        User GetUserByEmail(string email);
     }
 }

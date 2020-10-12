@@ -1,4 +1,6 @@
-﻿using Achmea.Core.Model;
+
+
+using Achmea.Core.Model;
 using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
@@ -10,17 +12,17 @@ namespace Achmea.Core
     public class DatasetParser
     //Data uit Database wordt omgezet in een klasse..
     {
-        public static UserModel DatasetToUser(DataSet D, int RowIndex)
+        public static User DatasetToUser(DataSet D, int RowIndex)
         {
-            return new UserModel()
+            return new User()
             {
-                UserID = Convert.ToInt32(D.Tables[0].Rows[RowIndex][0]),
+                UserId = Convert.ToInt32(D.Tables[0].Rows[RowIndex][0]),
                 Email = D.Tables[0].Rows[RowIndex][1].ToString(),
                 Password = D.Tables[0].Rows[RowIndex][2].ToString(),
                 Firstname = D.Tables[0].Rows[RowIndex][3].ToString(),
                 Lastname = D.Tables[0].Rows[RowIndex][4].ToString(),
                 PhoneNumber = Convert.ToInt32(D.Tables[0].Rows[RowIndex][5]),
-                RoleID = D.Tables[0].Rows[RowIndex][6].ToString(),
+                RoleId = D.Tables[0].Rows[RowIndex][6].ToString(),
             };
         }
 
