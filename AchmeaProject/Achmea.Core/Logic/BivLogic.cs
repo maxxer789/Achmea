@@ -1,5 +1,6 @@
 ﻿using Achmea.Core.Interface;
 using Achmea.Core.Model;
+using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Achmea.Core.Logic
             _IBiv = IBiv;
         }
 
-        public List<BivModel> GetBiv()
+        public List<Biv> GetBiv()
         {
             return _IBiv.GetBiv();
         }

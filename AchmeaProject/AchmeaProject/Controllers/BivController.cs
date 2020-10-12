@@ -19,7 +19,7 @@ namespace AchmeaProject.Controllers
 
         public BivController(IConfiguration config)
         {
-            Interface = new BivDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new BivDAL();
             Logic = new BivLogic(Interface);
         }
         public IActionResult Index()
