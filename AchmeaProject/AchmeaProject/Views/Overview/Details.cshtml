@@ -1,16 +1,31 @@
-﻿@using Achmea.Core.Model 
-@model ProjectDetailViewModel 
+﻿@using Achmea.Core.Model
+@model ProjectDetailViewModel
 @{
     ViewData["Title"] = "Details";
 }
-
+<link rel="stylesheet" href="~/css/Details.css" />
 <h1>Details</h1>
 
-<ul>
-    <li>@Model.ProjectId</li>
-    <li>@Model.UserId</li>
-    <li>@Model.Title</li>
-    <li>@Model.Description</li>
-    <li>@Model.Status</li>
-    <li>@Model.CreationDate</li>
-</ul>
+<div class="con-header">
+    <div class="header-title">
+        <h2>@Model.Title</h2>
+    </div>
+    <div class="header-desc">
+        <h3>@Model.Description</h3>
+    </div>
+</div>
+<div class="con-content">
+    @{ int i = 0;}
+    @foreach(RequirementModel req in Model.Requirements)
+    {
+        <div class="con-requirements">
+                <div class="requirement-info">
+                    <h4>@req.GetName()</h4>
+                </div>
+                <div class="requirement-check">
+                    <h4>@Model.Statuses[i]</h4>
+                </div>
+        </div>
+        i++;
+    }
+</div>
