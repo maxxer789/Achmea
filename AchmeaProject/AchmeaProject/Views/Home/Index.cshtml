@@ -27,8 +27,12 @@
                             <label>Give you're project a description</label>
                             <input type="text" name="ProjectDescription" class="form-control" id="PlaylistName">
                         </div>
+
+                        <partial name="_SearchViewPartial" />
+
                         <button type="submit" class="btn btn-primary">Create project</button>
                     </form>
+
                 </div>
                 <div class="modal-footer">
 
@@ -40,6 +44,17 @@
         </div>
     </div>
 </div>
+
+<form asp-controller="Project" asp-action="Search">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Search employee</label>
+        <input type="text" id="filter" name="SearchTerm" class="form-control">
+        <button type="button" class="btn btn-primary button button4">
+            Search
+        </button>
+    </div>
+    <span id="filter-count"></span>
+</form>
 
 @if (ViewBag.ProjectMade != null)
 {

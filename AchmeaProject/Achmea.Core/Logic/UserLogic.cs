@@ -25,7 +25,7 @@ namespace Achmea.Core.Logic
             return _IUser.GetUserByID(id);
         }
 
-        public int InsertAccount(UserModel user)
+        public int InsertUser(UserModel user)
         {
             return _IUser.InsertUser(user);
         }
@@ -35,9 +35,13 @@ namespace Achmea.Core.Logic
             return _IUser.Login(Email);
         }
 
-        public void UpdateAccount(UserModel user)
+        public void UpdateUser(UserModel user)
         {
             _IUser.UpdateUser(user);
+        }
+        public List<UserModel> GetAllUsers()
+        {
+            return _IUser.GetAllUsers();
         }
     }
 }

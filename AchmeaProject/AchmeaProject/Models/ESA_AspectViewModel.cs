@@ -13,6 +13,8 @@ namespace AchmeaProject.Models
         public string Title { get; }
         public string Description { get; }
 
+        //public bool Selected { get; set; }
+
         public ESA_AspectViewModel(int id, string title, string description)
         {
             ID = id;

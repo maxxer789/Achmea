@@ -8,7 +8,6 @@ using AchmeaProject.Models;
 using Achmea.Core;
 using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
-using Microsoft.CodeAnalysis;
 
 namespace AchmeaProject.Controllers
 {
@@ -23,18 +22,18 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            List<ProjectModel> list = Interface.GetProjects();
+            List<Project> list = Interface.GetProjects().ToList(); 
 
             List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
-            foreach (ProjectModel model in list)
+            foreach (Project model in list)
             {
                 ProjectViewModel viewModel = new ProjectViewModel()
                 {
-                    ProjectId = model.GetProjectId(),
-                    Title = model.GetTitle(),
-                    Status = model.GetStatus(),
-                    CreationDate = model.GetCreationDate().ToShortDateString()
+                    ProjectId = model.ProjectId,
+                    Title = model.Title,
+                    Status = model.Status,
+                    CreationDate = model.CreationDate.ToString()
                 };
                 if(viewModel.CreationDate == "1-1-0001")
                 {
@@ -47,16 +46,16 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details(int projectId)
         {
-            ProjectModel project = Interface.GetProject(projectId);
+            Project project = Interface.GetProject(projectId);
 
             ProjectDetailViewModel model = new ProjectDetailViewModel()
             {
-                ProjectId = project.GetProjectId(),
-                UserId = project.GetUser(),
-                Title = project.GetTitle(),
-                Description = project.GetDescription(),
-                Status = project.GetStatus(),
-                CreationDate = project.GetCreationDate().ToShortDateString()
+                ProjectId = project.ProjectId,
+                UserId = project.UserId,
+                Title = project.Title,
+                Description = project.Description,
+                Status = project.Status,
+                CreationDate = project.CreationDate.ToString()
             };
 
             return View(model);
