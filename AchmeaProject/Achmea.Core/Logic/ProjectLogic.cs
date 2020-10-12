@@ -19,7 +19,8 @@ namespace Achmea.Core.Logic
 
         }
 
-            public void MakeNewProject(ProjectModel projectModel)
+
+        public void MakeNewProject(ProjectModel projectModel)
         {
             try
             {
