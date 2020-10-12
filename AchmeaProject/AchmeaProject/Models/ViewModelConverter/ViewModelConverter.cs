@@ -1,4 +1,5 @@
-﻿using Achmea.Core.Model;
+﻿
+using Achmea.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,32 +39,52 @@ namespace AchmeaProject.Models.ViewModelConverter
             return vms;
         }
 
-        public static UserModel VmtoUser(UserViewModel VM)
+        public static User VmtoUser(UserViewModel VM)
         {
-            return new UserModel
+            return new User
             {
-                UserID = VM.UserID,
+                UserId = VM.UserID,
                 Email = VM.Email,
                 Password = VM.Password,
                 Firstname = VM.Firstname,
                 Lastname = VM.Lastname,
                 PhoneNumber = VM.PhoneNumber,
-                RoleID = VM.RoleID
+                RoleId = VM.RoleID
             };
         }
 
-        public static UserViewModel UserToVm(UserModel User)
+        public static UserViewModel UserToVm(User User)
         {
             return new UserViewModel
             {
-                UserID = User.UserID,
+                UserID = User.UserId,
                 Email = User.Email,
                 Password = User.Password,
                 Firstname = User.Firstname,
                 Lastname = User.Lastname,
                 PhoneNumber = User.PhoneNumber,
-                RoleID = User.RoleID
+                RoleID = User.RoleId
             };
+        }
+      
+        public static BivViewModel BivModelToBivViewModel(BivModel model)
+        {
+            BivViewModel vm = new BivViewModel(model.Id, model.Naam);
+
+            return vm;
+        }
+
+        public static List<BivViewModel> BivModelToBivViewModel(List<BivModel> models)
+        {
+            List<BivViewModel> vms = new List<BivViewModel>();
+
+            foreach (var model in models)
+            {
+                BivViewModel vm = new BivViewModel(model.Id, model.Naam);
+                vms.Add(vm);
+            }
+
+            return vms;
         }
     }
 }

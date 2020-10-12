@@ -1,5 +1,6 @@
 ﻿using Achmea.Core.Interface;
 using Achmea.Core.Model;
+using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,9 @@ namespace Achmea.Core.Logic
         ProjectDAL projectDAL;
 
         readonly IProject _IUser;
-
+        
+        private IEnumerable<Project> Projects;
+        
         public ProjectLogic(IProject IUser)
         {
             projectDAL = new ProjectDAL();
@@ -20,7 +23,7 @@ namespace Achmea.Core.Logic
         }
 
 
-        public void MakeNewProject(ProjectModel projectModel)
+        public void MakeNewProject(Project projectModel)
         {
             try
             {
@@ -32,6 +35,14 @@ namespace Achmea.Core.Logic
             }
 
         }
+        public List<Project> GetProjects()
+        {
+            return new List<Project>(Projects);
+        }
 
+        public Project GetProject(int projectId)
+        {
+            return Projects.FirstOrDefault(x => x.ProjectId == projectId);
+        }
     }
 }
