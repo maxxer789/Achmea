@@ -21,7 +21,7 @@ namespace AchmeaProject.Controllers
 
         public ESAController(IConfiguration config)
         {
-            Interface = new AspectAreaDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new AspectAreaDAL();
             Logic = new AspectAreaLogic(Interface);
         }
 
