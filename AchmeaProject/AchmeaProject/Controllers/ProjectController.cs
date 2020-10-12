@@ -7,6 +7,7 @@ using Achmea.Core;
 using Achmea.Core.Logic;
 using Achmea.Core.Model;
 using Achmea.Core.Interface;
+using AchmeaProject.Models;
 
 namespace AchmeaProject.Controllers
 {
@@ -45,7 +46,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
         {
-            ProjectModel projectModel = new ProjectModel(1, 1, ProjectTitle, ProjectDescription, "In Progress");
+            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try

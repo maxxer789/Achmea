@@ -1,4 +1,5 @@
-﻿using Achmea.Core.Model;
+﻿
+using Achmea.Core.Model;
 using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;

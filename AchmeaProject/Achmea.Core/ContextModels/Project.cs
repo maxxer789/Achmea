@@ -19,6 +19,25 @@ namespace AchmeaProject.Models
         public string Status { get; set; }
         public DateTime? CreationDate { get; set; }
 
+        public Project(int projectId, int userId, string title, string description, string status)
+        {
+            ProjectId = projectId;
+            UserId = userId;
+            Title = title;
+            Description = description;
+            Status = status;
+        }
+
+        public Project(int projectId, int userId, string title, string description, string status, DateTime creationDate)
+        {
+            ProjectId = projectId;
+            UserId = userId;
+            Title = title;
+            Description = description;
+            Status = status;
+            CreationDate = creationDate;
+        }
+
         public virtual User User { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual ICollection<ProjectEsaAspect> ProjectEsaAspect { get; set; }
