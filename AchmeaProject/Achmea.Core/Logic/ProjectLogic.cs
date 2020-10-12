@@ -12,7 +12,9 @@ namespace Achmea.Core.Logic
         ProjectDAL projectDAL;
 
         readonly IProject _IUser;
-
+        
+        private IEnumerable<Project> Projects;
+        
         public ProjectLogic(IProject IUser)
         {
             projectDAL = new ProjectDAL();
@@ -33,6 +35,14 @@ namespace Achmea.Core.Logic
             }
 
         }
+        public List<Project> GetProjects()
+        {
+            return new List<Project>(Projects);
+        }
 
+        public Project GetProject(int projectId)
+        {
+            return Projects.FirstOrDefault(x => x.ProjectId == projectId);
+        }
     }
 }
