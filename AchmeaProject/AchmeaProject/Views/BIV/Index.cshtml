@@ -1,4 +1,4 @@
-﻿@model List<AchmeaProject.Models.BivViewModel>;
+﻿@model ProjectCreateViewModel;
 @{
     <link rel="stylesheet" href="~/css/ESA-checklist.css" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -7,44 +7,64 @@
 }
 <div class="container" style="margin-bottom:50px">
 
+    @if (Model.Project != null)
+    {
+        <div>
+            <h1>@Model.Project.Title</h1>
+            <p>@Model.Project.CreationDate, @Model.Project.Status</p>
+        </div>
+    }
 
 
-    <form asp-controller="ESA" asp-action="Testing" method="post">
-        <!-- title -->
-        <h1>Biv Requirements</h1>
-        <p>@ViewBag.Error</p>
+<form asp-controller="Biv" asp-action="Select" method="post">
+    <!-- title -->
+    <h1>Biv Requirements</h1>
+    <p>@ViewBag.Error</p>
 
+    <!-- Project information to pass through -->
+    @Html.HiddenFor(model => Model.Project.ProjectId)
+    @Html.HiddenFor(model => Model.Project.SearchTerm)
+    @Html.HiddenFor(model => Model.Project.Title)
+    @Html.HiddenFor(model => Model.Project.CreationDate)
+    @Html.HiddenFor(model => Model.Project.Status)
 
+    @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+    {
+        <!-- AspectAreas information to pass through -->
 
-        @for (var i = 0; i < Model.Count; i++)
-        {
+        @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+        @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+        @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+        @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+    }
 
+    @for (var j = 0; j < @Model.Bivs.Count; j++)
+    {
+        <div class="form-row align-items-center">
+            <div class="col-5">
 
-            <!-- Selection form -->
-            <div class="form-row align-items-center">
-                <div class="col-5">
-
-                </div>
-                <div class="col-2">
-                    <p>@Model[i].Name</p>
-                </div>
-                <div class="col-2">
-                     @Html.CheckBoxFor(model => Model[i].isSelected)
-                </div>
             </div>
-                    
-           
-
-        }
-
-        <br />
-        <div class="row">
-            <div class="col-9"></div>
             <div class="col-3">
-                <button type="submit" id="submitButton" name="submitButton">submit</button>
+                <p>@Model.Bivs[j].Name</p>
+            </div>
+            <div class="col-3">
+                <div class="form-check mb-2">
+                    @Html.HiddenFor(model => Model.Bivs[j].Name)
+                    @Html.HiddenFor(model => Model.Bivs[j].Id)
+                    @Html.CheckBoxFor(model => Model.Bivs[j].isSelected)
+                </div>
             </div>
         </div>
-    </form>
+    }
+
+    <br />
+    <div class="row">
+        <div class="col-9"></div>
+        <div class="col-3">
+            <button type="submit" id="submitButton" name="submitButton">submit</button>
+        </div>
+    </div>
+</form>
 </div>
 
 
@@ -81,6 +101,7 @@
         }
     });
 </script>
-</div>
+
+
 
 
