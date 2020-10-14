@@ -61,21 +61,22 @@ namespace AchmeaProject.Controllers
             return null;
         }
 
-        public IActionResult GetRequirementsFromAreas(List<string> AreaIds)
+        public IActionResult GetRequirementsFromAreas(List<string> Ids)
         {
-            List<EsaArea> areas = new List<EsaArea>();
+            List<EsaAspect> areas = new List<EsaAspect>();
             List<SecurityRequirement> requirements = new List<SecurityRequirement>();
-            foreach(string id in AreaIds)
+            foreach(string id in Ids)
             {
+                EsaAspect asp = new EsaAspect();
+                asp.AspectId = Convert.ToInt32(id);
+                areas.Add(asp);
+
                 //get areas by Id
                 //Convert.ToInt32(id);
                 //areas.Add(AreaLogic.GetAreaById(id));
             }
             //get requirements from areas
             requirements = Logic.getRequiermentsFromAreas(areas);
-
-            //save requirements to project
-            //Logic.SaveReqruirementsToProject(requirements)
 
             return RedirectToAction("Index", "ESA");
         }

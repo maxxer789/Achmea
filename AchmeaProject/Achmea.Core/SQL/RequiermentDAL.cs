@@ -23,22 +23,66 @@ namespace Achmea.Core.SQL
 
         }
 
-        public IEnumerable<SecurityRequirement> getRequiermentsFromAreas(List<EsaArea> areas)
+        public SecurityRequirement GetRequirementById(int Id)
+        {
+            return SecurityRequirement.Where(requirement => requirement.RequirementId == Id).SingleOrDefault();
+        }
+
+        public IEnumerable<SecurityRequirement> GetRequiermentsFromAreas(List<EsaAspect> aspects)
         {
             List<SecurityRequirement> requierments = new List<SecurityRequirement>();
+            List<SecurityRequirement> disRequierments = new List<SecurityRequirement>();
+            //List<EsaAreaRequirement> requierments = new List<EsaAreaRequirement>();
+            //List<EsaAspectArea> requierments = new List<EsaAspectArea>();
+            List<EsaArea> areas = new List<EsaArea>();
             string sql = @"SELECT * FROM [Security_Requirement] AS SR WHERE SR.RequirementID IN
                             (SELECT RequirementID FROM[ESA-Aspect-Security_Requirement] WHERE AspectID IN
                                 (SELECT ESA_AreaID FROM[ESA_Aspect-Area] AS EAA WHERE EAA.ESA_AspectID = @ID))";
 
-            //DataSet result = ExecuteSQL(sql, parameters);
-            foreach (EsaArea aam in areas)
+            foreach (EsaAspect aspect in aspects)
             {
-                
+                var result = (from a in EsaArea
+                              join ea in EsaAspectArea on a.AreaId equals ea.EsaAreaId
+                              where ea.EsaAspectId == aspect.AspectId
+
+                              select new EsaArea 
+                              {
+                                  AreaId = a.AreaId,
+                                  Name = a.Name,
+                                  EsaAreaRequirement = a.EsaAreaRequirement,
+                                  EsaAspectArea = a.EsaAspectArea
+                              }).ToList();
+                areas.AddRange(result);
+                //areas.AddRange(EsaArea.Where(area => area.AreaId == EsaAspectArea.ToList().Find(eaa => eaa.EsaAspectId == aspect.AspectId).EsaAreaId).ToList());
             }
 
-            requierments = requierments.Distinct().ToList();
+            areas.Add(new EsaArea
+            {
+                AreaId = 13
+            });
 
-            return requierments;
+            foreach (EsaArea area in areas)
+            {
+                var result = (from r in SecurityRequirement
+                              join ear in EsaAreaRequirement on r.RequirementId equals ear.RequirementId
+                              where ear.EsaAreaId == area.AreaId
+
+                              select new SecurityRequirement
+                              {
+                                  RequirementId = r.RequirementId,
+                                  Name = r.Name,
+                                  Details = r.Details,
+                                  Description = r.Description,
+                                  Family = r.Family,
+                                  RequirementNumber = r.RequirementNumber,
+                                  MainGroup = r.MainGroup
+                              }).ToList();
+                requierments.AddRange(result);
+            }
+
+            disRequierments = requierments.GroupBy(r => r.RequirementId).Select(g => g.First()).OrderBy(s => s.RequirementId).ToList();
+
+            return disRequierments;
         }
 
         public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, int projectId)

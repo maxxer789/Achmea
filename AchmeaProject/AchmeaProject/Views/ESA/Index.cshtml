@@ -11,7 +11,7 @@
         <h1>@Model.project.Title</h1>
     </div>
 
-    <form method="post">
+    <form method="post" asp-controller="Requirement" asp-action="GetRequirementsFromAreas">
         <!-- title -->
         <h1>ESA aspect areas</h1>
         <p>@ViewBag.Error</p>

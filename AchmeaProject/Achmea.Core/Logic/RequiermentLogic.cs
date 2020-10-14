@@ -24,13 +24,10 @@ namespace Achmea.Core.Logic
             _IReq = IReq;
         }
 
-        public List<SecurityRequirement> getRequiermentsFromAreas(List<EsaArea> areas)
+        public List<SecurityRequirement> getRequiermentsFromAreas(List<EsaAspect> aspects)
         {
             List<SecurityRequirement> requirements = new List<SecurityRequirement>();
-            foreach(SecurityRequirement req in _IReq.getRequiermentsFromAreas(areas))
-            {
-                requirements.Add(req);
-            }
+            requirements = _IReq.GetRequiermentsFromAreas(aspects).ToList();
             return requirements;
         }
 
