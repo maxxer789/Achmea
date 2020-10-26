@@ -49,7 +49,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Firstname = VM.Firstname,
                 Lastname = VM.Lastname,
                 PhoneNumber = VM.PhoneNumber,
-                RoleId = VM.RoleID
+                RoleId = VM.RoleID.ToString()
             };
         }
 
@@ -63,7 +63,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Firstname = User.Firstname,
                 Lastname = User.Lastname,
                 PhoneNumber = User.PhoneNumber,
-                RoleID = User.RoleId
+                RoleID = Convert.ToInt32(User.RoleId)
             };
         }
       

@@ -11,7 +11,7 @@ namespace Achmea.Core.Interface
     {
         public void AddNewProject(string title, int ID);
 
-        public List<Project> GetProjects();
+        public IEnumerable<Project> GetProjects();
 
         public Project GetProject(int projectId);
     }

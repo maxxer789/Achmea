@@ -2,6 +2,7 @@
 using Achmea.Core.Interface;
 using AchmeaProject.Core;
 using AchmeaProject.Models;
+using Achmea.Core.SQL;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 namespace Achmea.Core
 {
 
-    public class ProjectDAL : DatabaseHandler, IProject
+    public class ProjectDAL : DbContext, IProject
     {
         List<Project> projectModels;
         Project newProject;
@@ -65,48 +66,14 @@ namespace Achmea.Core
             throw new NotImplementedException();
         }
 
-        public List<Project> GetProjects()
+        public IEnumerable<Project> GetProjects()
         {
-            string sql = "SELECT * FROM [Project]";
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            con.Open();
-            DataSet set = new DataSet();
-            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(set);
-
-            List<Project> list = new List<Project>();
-            if (set != null)
-            {
-                int i = 0;
-                foreach(DataRow row in set.Tables[0].Rows)
-                {
-                    Project model = DatasetParser.DataSetToProject(set, i);
-                    list.Add(model);
-                    i++;
-                }
-            }
-            con.Close();
-            return list;
+            return Project.ToList();
         }
 
         public Project GetProject(int projectId)
         {
-            string sql = "SELECT * FROM [Project] WHERE ProjectID = @projectId";
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@projectId", projectId);
-            con.Open();
-            DataSet set = new DataSet();
-            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(set);
-
-            Project project = new Project();
-            if(set != null)
-            {
-                project = DatasetParser.DataSetToProject(set, 0);
-            }
-            return project;
+            return Project.Where(project => project.ProjectId == projectId).SingleOrDefault();
         }
     }
 }
