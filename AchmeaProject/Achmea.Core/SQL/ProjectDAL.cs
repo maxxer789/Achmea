@@ -1,6 +1,7 @@
 ﻿using Achmea.Core;
 using Achmea.Core.Interface;
 using AchmeaProject.Core;
+using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -64,7 +65,7 @@ namespace Achmea.Core
             throw new NotImplementedException();
         }
 
-        public List<ProjectModel> GetProjects()
+        public List<Project> GetProjects()
         {
             string sql = "SELECT * FROM [Project]";
 
@@ -74,13 +75,13 @@ namespace Achmea.Core
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(set);
 
-            List<ProjectModel> list = new List<ProjectModel>();
+            List<Project> list = new List<Project>();
             if (set != null)
             {
                 int i = 0;
                 foreach(DataRow row in set.Tables[0].Rows)
                 {
-                    ProjectModel model = DatasetParser.DataSetToProject(set, i);
+                    Project model = DatasetParser.DataSetToProject(set, i);
                     list.Add(model);
                     i++;
                 }
@@ -89,7 +90,7 @@ namespace Achmea.Core
             return list;
         }
 
-        public ProjectModel GetProject(int projectId)
+        public Project GetProject(int projectId)
         {
             string sql = "SELECT * FROM [Project] WHERE ProjectID = @projectId";
 
@@ -100,7 +101,7 @@ namespace Achmea.Core
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(set);
 
-            ProjectModel project = new ProjectModel();
+            Project project = new Project();
             if(set != null)
             {
                 project = DatasetParser.DataSetToProject(set, 0);
