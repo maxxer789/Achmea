@@ -46,7 +46,6 @@ namespace AchmeaProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
             return RedirectToAction("Index");
         }
     }
