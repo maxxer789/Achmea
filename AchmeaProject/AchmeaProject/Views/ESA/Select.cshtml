@@ -1,4 +1,4 @@
-@model AspectSelectViewModel;
+@model ProjectCreateViewModel;
 @{
     <link rel="stylesheet" href="~/css/ESA-checklist.css" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -9,47 +9,43 @@
 
     @if (Model.Project != null)
     {
-        <div>
-            <h1>@Model.Project.Title</h1>
-            <p>@Model.Project.CreationDate, @Model.Project.Status</p>
-        </div>
+    <div>
+        <h1>@Model.Project.Title</h1>
+        <p>@Model.Project.CreationDate</p>
+        <p> @Model.Project.Description</p>
+    </div>
     }
 
 
-<form asp-controller="ESA" asp-action="Testing" method="post">
+<form asp-controller="Biv" asp-action="Select" method="post">
     <!-- title -->
     <h1>ESA aspect areas</h1>
     <p>@ViewBag.Error</p>
 
-    @Html.HiddenFor(model => Model.Project.ProjectId)
-    @Html.HiddenFor(model => Model.Project.SearchTerm)
     @Html.HiddenFor(model => Model.Project.Title)
+    @Html.HiddenFor(model => Model.Project.Description)
     @Html.HiddenFor(model => Model.Project.CreationDate)
-    @Html.HiddenFor(model => Model.Project.Status)
+    @Html.HiddenFor(model => @Model.Project.UserID)
+
 
     @for (var i = 0; i < @Model.AspectAreas.Count; i++)
-    {
-
-
-        <!-- Selection form -->
-        <div class="form-row align-items-center">
-            <div class="col-10">
-                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
-                <div class="content">
-                    <p>@Model.AspectAreas[i].Description</p>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="form-check mb-2">
-                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                    @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
-                </div>
-            </div>
-        </div>
-
-    }
+    {<!-- Selection form -->
+                        <div class="form-row align-items-center">
+                            <div class="col-10">
+                                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
+                                <div class="content">
+                                    <p>@Model.AspectAreas[i].Description</p>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-check mb-2">
+                                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                                    @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
+                                </div>
+                            </div>
+                        </div>}
 
     <br />
     <div class="row">
