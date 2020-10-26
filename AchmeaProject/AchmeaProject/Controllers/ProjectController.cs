@@ -69,11 +69,19 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ProjectCreateViewModel vm = new ProjectCreateViewModel();
-            vm.Project = new ProjectCreationDetailsViewModel()
+            if (HttpContext.Session.GetInt32("UserID") == null)
             {
-                UserID = HttpContext.Session.GetInt32("UserID").Value,
-                CreationDate = DateTime.Now.ToShortDateString()              
+                Response.WriteAsync("<script language='javascript'>window.alert('Please login to create a new project');window.location.href='/User/Login';</script>");
+                return RedirectToAction("Login", "User", null);
+            }
+
+            ProjectCreateViewModel vm = new ProjectCreateViewModel
+            {
+                Project = new ProjectCreationDetailsViewModel()
+                {
+                    UserID = HttpContext.Session.GetInt32("UserID").Value,
+                    CreationDate = DateTime.Now.ToShortDateString()
+                }
             };
 
             return View(vm);
