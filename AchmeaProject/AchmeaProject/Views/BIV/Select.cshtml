@@ -1,0 +1,104 @@
+﻿@model ProjectCreateViewModel;
+@{
+    <link rel="stylesheet" href="~/css/ESA-checklist.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+}
+<div class="container" style="margin-bottom:50px">
+
+    @if (Model.Project != null)
+    {
+    <div>
+        <h1>@Model.Project.Title</h1>
+        <p>@Model.Project.CreationDate</p>
+        <p> @Model.Project.Description</p>
+    </div>
+    }
+
+
+<form asp-controller="Biv" asp-action="Example" method="post">
+    <!-- title -->
+    <h1>Biv Requirements</h1>
+    <p>@ViewBag.Error</p>
+
+    <!-- Project information to pass through -->
+    @Html.HiddenFor(model => Model.Project.Title)
+    @Html.HiddenFor(model => Model.Project.CreationDate)
+    @Html.HiddenFor(model => Model.Project.Description)
+    @Html.HiddenFor(model => @Model.Project.UserID)
+
+    @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+    {<!-- AspectAreas information to pass through -->
+
+                        @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                                                        @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                                                                        @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}
+
+    @for (var j = 0; j < @Model.Bivs.Count; j++)
+    {
+<div class="form-row align-items-center">
+    <div class="col-5">
+
+    </div>
+    <div class="col-3">
+        <p>@Model.Bivs[j].Name</p>
+    </div>
+    <div class="col-3">
+        <div class="form-check mb-2">
+            @Html.HiddenFor(model => Model.Bivs[j].Name)
+            @Html.HiddenFor(model => Model.Bivs[j].Id)
+            @Html.CheckBoxFor(model => Model.Bivs[j].isSelected)
+        </div>
+    </div>
+</div>}
+
+    <br />
+    <div class="row">
+        <div class="col-9"></div>
+        <div class="col-3">
+            <button type="submit" id="submitButton" name="submitButton">submit</button>
+        </div>
+    </div>
+</form>
+</div>
+
+
+
+@*<script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>*@
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).on("click", "[type='checkbox']", function (e) {
+        if (this.checked) {
+            $(this).attr("value", "true");
+        } else {
+            $(this).attr("value", "false");
+        }
+    });
+</script>
+
+
+
+

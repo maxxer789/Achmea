@@ -19,15 +19,31 @@ namespace AchmeaProject.Controllers
 
         public ESAController(IConfiguration config)
         {
-            Interface = new AspectAreaDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new AspectAreaDAL();
             Logic = new AspectAreaLogic(Interface);
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public IActionResult Select(ProjectCreateViewModel vm)
         {
-            List<ESA_AspectViewModel> vms = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+            vm.AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
 
-            return View(vms);
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult CreateProject()
+        {
+            ProjectCreateViewModel vm = new ProjectCreateViewModel();
+            vm.Project = new ProjectCreationDetailsViewModel();
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult CreateProject(ProjectCreateViewModel vm)
+        {
+            return View(vm);
         }
     }
 }

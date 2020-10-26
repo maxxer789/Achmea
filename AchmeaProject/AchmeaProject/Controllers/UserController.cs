@@ -9,7 +9,6 @@ using Achmea.Core.Interface;
 using Achmea.Core.SQL;
 using Microsoft.Extensions.Configuration;
 using AchmeaProject.Models;
-using Achmea.Core.Model;
 using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
@@ -36,17 +35,25 @@ namespace AchmeaProject.Controllers
             {
                 try
                 {
-                    UserModel User = Logic.Login(VM.Email);
+                    User User = Logic.Login(VM.Email);
 
                     if (VM.Password == User.Password)
                     {
-                        HttpContext.Session.SetInt32("UserID", User.UserID);
+                        HttpContext.Session.SetInt32("UserID", User.UserId);
                         HttpContext.Session.SetString("Firstname", User.Firstname);
-                        HttpContext.Session.SetInt32("RoleID", User.RoleID);      
+                        HttpContext.Session.SetString("RoleID", User.RoleId);      
 
-                        if (User.RoleID == 2)
+                        if (User.RoleId == "Admin")
                         {
-                            return RedirectToAction("Privacy", "Home");
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        if (User.RoleId == "Security")
+                        {
+                            return RedirectToAction("Index", "Security");
+                        }
+                        if (User.RoleId == "Developer")
+                        {
+                            return RedirectToAction("Index", "Home");
                         }
 
                         return RedirectToAction("Index", "Home");

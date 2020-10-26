@@ -1,0 +1,19 @@
+﻿using Achmea.Core.Interface;
+using Achmea.Core.Model;
+using AchmeaProject.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+
+namespace Achmea.Core.SQL
+{
+    public class BivDAL : DbContext, IBiv
+    {
+        public List<Biv> GetBiv()
+        {
+            return Biv.ToList();
+        }
+    }
+}

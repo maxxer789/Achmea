@@ -1,6 +1,5 @@
 ﻿using Achmea.Core;
 using Achmea.Core.Interface;
-using Achmea.Core.Model;
 using AchmeaProject.Core;
 using System;
 using System.Collections.Generic;
@@ -15,11 +14,13 @@ namespace Achmea.Core
 
     public class ProjectDAL : DatabaseHandler, IProject
     {
-        ProjectModel projectModel;
+        List<Project> projectModels;
+        Project newProject;
 
         public ProjectDAL()
         {
-            projectModel = new ProjectModel();
+            projectModels = new List<Project>();
+            newProject = new Project();
         }
         
         public ProjectDAL(string ConnectionString)
@@ -27,17 +28,35 @@ namespace Achmea.Core
 
         }
 
-        public void AddNewProject(ProjectModel projectModel)
+        //public void AddNewProject(ProjectModel projectModel)
+        //{
+        //    SqlCommand cmd = new SqlCommand(@"INSERT INTO[dbo].[Project] (Title, userID, CreationDate, Description, Status) values (@Title, @userID, @Date, @Description, @Status)", con);
+        //    cmd.Parameters.AddWithValue("@Title", projectModel.GetTitle());
+        //    cmd.Parameters.AddWithValue("@userID", projectModel.GetUser());
+        //    cmd.Parameters.AddWithValue("@Date", projectModel.GetDate());
+        //    cmd.Parameters.AddWithValue("@Description", projectModel.GetDescription());
+        //    cmd.Parameters.AddWithValue("@Status", projectModel.GetStatus());
+        //    con.Open();
+        //    cmd.ExecuteNonQuery();
+        //    con.Close();
+        //}
+
+        public IEnumerable<Project> AddNewProject(Project newProject)
         {
-            SqlCommand cmd = new SqlCommand(@"INSERT INTO[dbo].[Project] (Title, userID, CreationDate, Description, Status) values (@Title, @userID, @Date, @Description, @Status)", con);
-            cmd.Parameters.AddWithValue("@Title", projectModel.GetTitle());
-            cmd.Parameters.AddWithValue("@userID", projectModel.GetUser());
-            cmd.Parameters.AddWithValue("@Date", projectModel.GetDate());
-            cmd.Parameters.AddWithValue("@Description", projectModel.GetDescription());
-            cmd.Parameters.AddWithValue("@Status", projectModel.GetStatus());
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
+
+            //add
+            Project project = new Project();
+            project.Title = newProject.Title;
+            project.UserId = newProject.UserId;
+            project.CreationDate = newProject.CreationDate;
+            project.Description = newProject.Description;
+            project.Status = newProject.Status;
+
+            Project.Add(project);
+            SaveChanges();
+
+            return Project.ToList();
+
         }
 
         public void AddNewProject(string title, int ID)

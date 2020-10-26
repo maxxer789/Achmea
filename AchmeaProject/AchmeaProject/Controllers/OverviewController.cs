@@ -8,27 +8,22 @@ using AchmeaProject.Models;
 using Achmea.Core;
 using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
-using Microsoft.CodeAnalysis;
-using Achmea.Core.Logic;
 
 namespace AchmeaProject.Controllers
 {
     public class OverviewController : Controller
     {
         private readonly IProject Interface;
-        ProjectLogic projectLogic;
-        RequirementLogic requirementLogic;
 
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
-            projectLogic = new ProjectLogic(Interface);
-            requirementLogic = new RequirementLogic();
         }
 
         public IActionResult Index()
         {
-            List<ProjectModel> list = projectLogic.GetProjects();
+            List<Project> list = Interface.GetProjects().ToList(); 
+
             List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
             foreach (ProjectModel model in list)
@@ -51,18 +46,16 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details(int projectId)
         {
-            ProjectModel project = projectLogic.GetProject(projectId);
+            Project project = Interface.GetProject(projectId);
 
             ProjectDetailViewModel model = new ProjectDetailViewModel()
             {
-                ProjectId = project.GetProjectId(),
-                UserId = project.GetUser(),
-                Title = project.GetTitle(),
-                Description = project.GetDescription(),
-                Status = project.GetStatus(),
-                CreationDate = project.GetCreationDate().ToShortDateString(),
-                Requirements = requirementLogic.GetRequirementsForProject(projectId),
-                Statuses = requirementLogic.GetStatuses(projectId)
+                ProjectId = project.ProjectId,
+                UserId = project.UserId,
+                Title = project.Title,
+                Description = project.Description,
+                Status = project.Status,
+                CreationDate = project.CreationDate.ToString()
             };
 
             return View(model);

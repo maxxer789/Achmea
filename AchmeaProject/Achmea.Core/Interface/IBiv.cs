@@ -1,13 +1,13 @@
 ﻿using Achmea.Core.Model;
+using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Achmea.Core.Interface
 {
-    public interface IRequirement
+    public interface IBiv
     {
-        public List<RequirementModel> GetRequirements();
-
+        List<Biv> GetBiv();
     }
 }

@@ -7,15 +7,11 @@ namespace AchmeaProject.Models
 {
     public class ESA_AspectViewModel
     {
-        public int ID { get; }
-        public string Title { get; }
-        public string Description { get; }
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
 
-        public ESA_AspectViewModel(int id, string title, string description)
-        {
-            ID = id;
-            Title = title;
-            Description = description;
-        }
+        public bool isSelected { get; set; }
+
     }
 }

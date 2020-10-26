@@ -1,5 +1,7 @@
-﻿using Achmea.Core.Interface;
+﻿
+using Achmea.Core.Interface;
 using Achmea.Core.Model;
+using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,24 +22,28 @@ namespace Achmea.Core.Logic
             _IUser.DeleteUser(id);
         }
 
-        public UserModel GetUserByID(int id)
+        public User GetUserByID(int id)
         {
             return _IUser.GetUserByID(id);
         }
 
-        public int InsertAccount(UserModel user)
+        public int InsertUser(User user)
         {
             return _IUser.InsertUser(user);
         }
 
-        public UserModel Login(string Email)
+        public User Login(string Email)
         {
-            return _IUser.Login(Email);
+            return _IUser.GetUserByEmail(Email);
         }
 
-        public void UpdateAccount(UserModel user)
+        public void UpdateUser(User user)
         {
             _IUser.UpdateUser(user);
+        }
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _IUser.GetAllUsers();
         }
     }
 }
