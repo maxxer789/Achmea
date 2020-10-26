@@ -1,13 +1,19 @@
-﻿using System;
+﻿using AchmeaProject.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace AchmeaProject.Models
+namespace Achmea.Core.ContextModels
 {
-    public partial class BivRequirement
+    public class BIVRequirement
     {
-        public int BivRequirementId { get; set; }
+        public int Id { get; set; }
         public int BivId { get; set; }
+        [ForeignKey("BivId")]
+        public Biv Biv { get; set; }
         public int RequirementId { get; set; }
+        [ForeignKey("RequirementId")]
+        public SecurityRequirement SecurityRequirement { get; set; }
     }
 }

@@ -18,7 +18,6 @@ namespace AchmeaProject.Models
         }
 
         public virtual DbSet<Biv> Biv { get; set; }
-        public virtual DbSet<BivRequirement> BivRequirement { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<EsaArea> EsaArea { get; set; }
         public virtual DbSet<EsaAreaRequirement> EsaAreaRequirement { get; set; }
