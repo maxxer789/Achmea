@@ -24,7 +24,7 @@ namespace AchmeaProject.Controllers
         }
         public IActionResult Index()
         {
-                        List<BivViewModel> vms = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+            List<BivViewModel> vms = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
 
             return View(vms);
         }
