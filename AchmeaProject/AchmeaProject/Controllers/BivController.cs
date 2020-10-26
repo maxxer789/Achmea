@@ -24,7 +24,7 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(ProjectCreateViewModel vm)
+        public IActionResult Select(ProjectCreateViewModel vm)
         {
             vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
 
@@ -32,7 +32,7 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Select(ProjectCreateViewModel vm)
+        public IActionResult Example(ProjectCreateViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,8 @@ namespace AchmeaProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            else return RedirectToAction("Index");
+
+            return RedirectToAction("Index");
         }
     }
 }

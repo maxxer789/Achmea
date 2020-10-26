@@ -9,7 +9,7 @@ namespace AchmeaProject.Models
 {
     public class ProjectCreateViewModel
     {
-        public ProjectViewModel Project { get; set; }
+        public ProjectCreationDetailsViewModel Project { get; set; }
         public List<ESA_AspectViewModel> AspectAreas { get; set; }
         public List<BivViewModel> Bivs { get; set; }
     }
