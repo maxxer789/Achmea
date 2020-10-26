@@ -22,11 +22,31 @@ namespace AchmeaProject.Controllers
             Interface = new BivDAL();
             Logic = new BivLogic(Interface);
         }
-        public IActionResult Index()
-        {
-            List<BivViewModel> vms = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
 
-            return View(vms);
+        [HttpPost]
+        public IActionResult Select(ProjectCreateViewModel vm)
+        {
+            vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Example(ProjectCreateViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                if (vm.Bivs.Count > 0)
+                {
+                    return View(vm);
+                }
+                else
+                {
+                    ViewBag.Error = TempData["Please select atleast one Aspect area"];
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
