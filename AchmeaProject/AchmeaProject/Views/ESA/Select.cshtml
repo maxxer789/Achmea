@@ -9,53 +9,56 @@
 
     @if (Model.Project != null)
     {
-    <div>
-        <h1>@Model.Project.Title</h1>
-        <p>@Model.Project.CreationDate</p>
-        <p> @Model.Project.Description</p>
+<div class="row">
+    <div class="col-6" style="text-align: right">
+        <h1>Projecttitle: @Model.Project.Title</h1>
     </div>
+    <div class="col-6" style="text-align: left">
+        <p>Description: @Model.Project.Description</p>
+    </div>
+</div>
     }
 
 
-<form asp-controller="Biv" asp-action="Select" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <!-- title -->
-    <h1>ESA aspect areas</h1>
-    <p>@ViewBag.Error</p>
+    <form asp-controller="Biv" asp-action="Select" method="post">
 
-    @Html.HiddenFor(model => Model.Project.Title)
-    @Html.HiddenFor(model => Model.Project.Description)
-    @Html.HiddenFor(model => Model.Project.CreationDate)
-    @Html.HiddenFor(model => @Model.Project.UserID)
+        <!-- title -->
+        <h1>ESA aspect areas</h1>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        @Html.HiddenFor(model => Model.Project.Title)
+        @Html.HiddenFor(model => Model.Project.Description)
+        @Html.HiddenFor(model => Model.Project.CreationDate)
+        @Html.HiddenFor(model => @Model.Project.UserID)
 
 
-    @for (var i = 0; i < @Model.AspectAreas.Count; i++)
-    {<!-- Selection form -->
-                        <div class="form-row align-items-center">
-                            <div class="col-10">
-                                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
-                                <div class="content">
-                                    <p>@Model.AspectAreas[i].Description</p>
+        @for (var i = 0; i < @Model.AspectAreas.Count; i++)
+        {<!-- Selection form -->
+                            <div class="form-row align-items-center">
+                                <div class="col-10">
+                                    <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
+                                    <div class="content">
+                                        <p>@Model.AspectAreas[i].Description</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-check mb-2">
-                                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                                    @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
+                                <div class="col-2">
+                                    <div class="form-check mb-2">
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                                        @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
+                                    </div>
                                 </div>
-                            </div>
-                        </div>}
+                            </div>}
 
-    <br />
-    <div class="row">
-        <div class="col-9"></div>
-        <div class="col-3">
-            <button type="submit" id="submitButton" name="submitButton">submit</button>
+        <br />
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <button type="submit" id="submitButton" name="submitButton">submit</button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 </div>
 
 
