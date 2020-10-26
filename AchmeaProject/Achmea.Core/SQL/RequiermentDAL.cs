@@ -32,12 +32,7 @@ namespace Achmea.Core.SQL
         {
             List<SecurityRequirement> requierments = new List<SecurityRequirement>();
             List<SecurityRequirement> disRequierments = new List<SecurityRequirement>();
-            //List<EsaAreaRequirement> requierments = new List<EsaAreaRequirement>();
-            //List<EsaAspectArea> requierments = new List<EsaAspectArea>();
             List<EsaArea> areas = new List<EsaArea>();
-            string sql = @"SELECT * FROM [Security_Requirement] AS SR WHERE SR.RequirementID IN
-                            (SELECT RequirementID FROM[ESA-Aspect-Security_Requirement] WHERE AspectID IN
-                                (SELECT ESA_AreaID FROM[ESA_Aspect-Area] AS EAA WHERE EAA.ESA_AspectID = @ID))";
 
             foreach (EsaAspect aspect in aspects)
             {
@@ -53,13 +48,10 @@ namespace Achmea.Core.SQL
                                   EsaAspectArea = a.EsaAspectArea
                               }).ToList();
                 areas.AddRange(result);
-                //areas.AddRange(EsaArea.Where(area => area.AreaId == EsaAspectArea.ToList().Find(eaa => eaa.EsaAspectId == aspect.AspectId).EsaAreaId).ToList());
             }
 
-            areas.Add(new EsaArea
-            {
-                AreaId = 13
-            });
+
+            areas.Add(EsaArea.ToList().Where(area => area.AreaId == 13).FirstOrDefault());
 
             foreach (EsaArea area in areas)
             {
@@ -84,20 +76,27 @@ namespace Achmea.Core.SQL
 
             return disRequierments;
         }
+        public IEnumerable<SecurityRequirement> getRequiermentsFromBiv(List<Biv> classifications)
+        {
+            List<SecurityRequirement> requierments = new List<SecurityRequirement>();
+            List<SecurityRequirement> disRequierments = new List<SecurityRequirement>();
 
-        public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, int projectId)
+            return null;
+        }
+
+        public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, Project project)
         {
             foreach(SecurityRequirement req in requirements)
             {
                 SecurityRequirementProject srm = new SecurityRequirementProject();
                 srm.SecurityRequirementId = req.RequirementId;
-                srm.ProjectId = projectId;
+                srm.ProjectId = project.ProjectId;
                 srm.Status = Status.ToDo.ToString();
 
                 SecurityRequirementProject.Add(srm);
                 SaveChanges();
             }
-            return SecurityRequirementProject.ToList().Where(sr => sr.ProjectId == projectId);
+            return SecurityRequirementProject.ToList().Where(sr => sr.ProjectId == project.ProjectId);
         }
     }
 }

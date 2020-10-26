@@ -35,29 +35,9 @@ namespace AchmeaProject.Controllers
             //BivLogic = new BivLogic(BivInterface);
         }
 
-        public IActionResult SaveReqruirementsToProject(int projectId)
+        public IActionResult SaveReqruirementsToProject(List<EsaAspect> aspects, List<Biv> bivs, Project project)
         {
-            List<Biv> Bivs = new List<Biv>();
-
-            List<EsaArea> Areas = new List<EsaArea>();
-
-            List<SecurityRequirement> BivRequirements = new List<SecurityRequirement>();
-            List<SecurityRequirement> AreaRequirements = new List<SecurityRequirement>();
-            List<SecurityRequirement> requirements = new List<SecurityRequirement>();
-
-            //get all requirements from project Bivs
-            //Bivs = BivLogic.GetBivFromProject(projectId);
-            //BivRequirements = BivLogic.GetRequirementsFromBiv(Bivs);
-
-            //get all requirements from project Areas
-            //Areas = AreaLogic.GetAllAreasFromProject(projectId);
-            //AreaRequirements = AreaLogic.GetRequirementsFromAreas(Areas);
-
-            //compare requirement lists and save the matching requirements
-            requirements = AreaRequirements.Intersect(BivRequirements).ToList();
-
-            //save requirements to project
-            Logic.SaveReqruirementsToProject(requirements, projectId);
+            Logic.SaveReqruirementsToProject(aspects, bivs, project);
             return null;
         }
 
@@ -76,7 +56,7 @@ namespace AchmeaProject.Controllers
                 //areas.Add(AreaLogic.GetAreaById(id));
             }
             //get requirements from areas
-            requirements = Logic.getRequiermentsFromAreas(areas);
+            requirements = Logic.getRequiermentsFromAreas(areas).ToList();
 
             return RedirectToAction("Index", "ESA");
         }
