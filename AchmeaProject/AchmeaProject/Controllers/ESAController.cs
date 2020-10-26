@@ -21,57 +21,31 @@ namespace AchmeaProject.Controllers
 
         public ESAController(IConfiguration config)
         {
-            Interface = new AspectAreaDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new AspectAreaDAL();
             Logic = new AspectAreaLogic(Interface);
         }
 
-        public IActionResult Index(/*ProjectViewModel project*/)
+        [HttpPost]
+        public IActionResult Select(ProjectCreateViewModel vm)
         {
-            ProjectViewModel project = new ProjectViewModel()
-            {
-                ProjectId = 1
-            };
-            AspectSelectViewModel vm = new AspectSelectViewModel()
-            {
-                project = project,
-                AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas())
-            };
+            vm.AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult CreateProject()
+        {
+            ProjectCreateViewModel vm = new ProjectCreateViewModel();
+            vm.Project = new ProjectCreationDetailsViewModel();
 
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Index(List<string> Ids)
+        public IActionResult CreateProject(ProjectCreateViewModel vm)
         {
-            if (ModelState.IsValid)
-            {
-                if (Ids.Count > 0)
-                {
-                    return RedirectToAction("GetRequirementsFromAreas", "Requirement", new { AreaIds = Ids , projectId = 1});
-                }
-                else
-                {
-                    ViewBag.Error = TempData["Please select atleast one Aspect area"];
-                    return RedirectToAction("Index");
-                }     
-            }
-
-            else return RedirectToAction("Index");
-        }
-
-        public IActionResult Test(List<string> Ids)
-        {
-            List<int> ids = new List<int>();
-            foreach (string id in Ids)
-            {
-                ids.Add(Convert.ToInt32(id));
-            }
-            
-            List<ESA_AspectViewModel> AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
-            List<ESA_AspectViewModel> Selected = new List<ESA_AspectViewModel>();
-            Selected = AspectAreas.Where(x => ids.Contains(x.ID)).ToList();
-
-            return View("Test", Selected);
+            return View(vm);
         }
     }
 }

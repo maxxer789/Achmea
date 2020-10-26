@@ -1,6 +1,5 @@
 ﻿using Achmea.Core;
 using Achmea.Core.Interface;
-using Achmea.Core.Model;
 using AchmeaProject.Core;
 using AchmeaProject.Models;
 using Dapper;
@@ -16,15 +15,15 @@ using System.Threading.Tasks;
 namespace Achmea.Core
 {
 
-    public class ProjectDAL : DbContext, IProject
+    public class ProjectDAL : AchmeaContext, IProject
     {
-        List<ProjectModel> projectModels;
-        ProjectModel projectModel;
+        List<Project> projectModels;
+        Project newProject;
 
         public ProjectDAL()
         {
-            projectModels = new List<ProjectModel>();
-            projectModel = new ProjectModel();
+            projectModels = new List<Project>();
+            newProject = new Project();
         }
         
         public ProjectDAL(string ConnectionString)
@@ -45,16 +44,16 @@ namespace Achmea.Core
         //    con.Close();
         //}
 
-        public IEnumerable<Project> AddNewProject(ProjectModel projectModel)
+        public IEnumerable<Project> AddNewProject(Project newProject)
         {
 
             //add
             Project project = new Project();
-            project.Title = projectModel.GetTitle();
-            project.UserId = projectModel.GetUser();
-            project.CreationDate = projectModel.GetDate();
-            project.Description = projectModel.GetDescription();
-            project.Status = projectModel.GetStatus();
+            project.Title = newProject.Title;
+            project.UserId = newProject.UserId;
+            project.CreationDate = newProject.CreationDate;
+            project.Description = newProject.Description;
+            project.Status = newProject.Status;
 
             Project.Add(project);
             SaveChanges();

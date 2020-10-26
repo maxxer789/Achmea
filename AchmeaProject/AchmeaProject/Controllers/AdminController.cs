@@ -44,17 +44,17 @@ namespace AchmeaProject.Controllers
             {
                 try
                 {
-                    UserModel user = logic.Login(VM.Email);
+                    User user = logic.Login(VM.Email);
                     ModelState.AddModelError(string.Empty, "Email already exists!");
                 }
                 catch
                 {
-                    UserModel user = ViewModelConverter.VmtoUser(VM);
+                    User user = ViewModelConverter.VmtoUser(VM);
                     logic.InsertUser(user);
 
                     HttpContext.Session.SetInt32("UserID", logic.InsertUser(user));
                     HttpContext.Session.SetString("Firstname", VM.Firstname);
-                    HttpContext.Session.SetString("RoleID", user.RoleID);
+                    HttpContext.Session.SetString("RoleID", user.RoleId);
 
                     return RedirectToAction("UserList", "Admin", VM);
                 }
@@ -65,7 +65,7 @@ namespace AchmeaProject.Controllers
         public IActionResult UserList()
         {
             List<UserViewModel> vm = new List<UserViewModel>();
-            foreach (UserModel U in logic.GetAllUsers())
+            foreach (User U in logic.GetAllUsers())
             {
                 UserViewModel Uvm = ViewModelConverter.UserToVm(U);
 
@@ -90,7 +90,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult Edit_User(UserViewModel vm)
         {
-            UserModel user = ViewModelConverter.VmtoUser(vm);
+            User user = ViewModelConverter.VmtoUser(vm);
 
             logic.UpdateUser(user);
 
@@ -99,7 +99,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details_User(int id)
         {
-            UserModel user = logic.GetUserByID(id);
+            User user = logic.GetUserByID(id);
             UserViewModel vm = ViewModelConverter.UserToVm(user);
 
             return View("Views/Accounts/Admin/UserDetails.cshtml", vm);

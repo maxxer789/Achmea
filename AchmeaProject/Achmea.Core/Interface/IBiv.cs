@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Achmea.Core.Interface
 {
-    public interface IAspectArea
+    public interface IBiv
     {
-        List<EsaAspect> GetAspectAreas();
+        List<Biv> GetBiv();
     }
 }
