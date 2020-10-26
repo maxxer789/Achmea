@@ -72,7 +72,8 @@ namespace AchmeaProject.Controllers
             ProjectCreateViewModel vm = new ProjectCreateViewModel();
             vm.Project = new ProjectCreationDetailsViewModel()
             {
-                UserID = HttpContext.Session.GetInt32("UserID").Value
+                UserID = HttpContext.Session.GetInt32("UserID").Value,
+                CreationDate = DateTime.Now.ToShortDateString()              
             };
 
             return View(vm);

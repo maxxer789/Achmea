@@ -18,8 +18,9 @@
 
 
 <form asp-controller="Biv" asp-action="Example" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <!-- title -->
-    <h1>Biv Requirements</h1>
+    <h1>Biv Classifications</h1>
     <p>@ViewBag.Error</p>
 
     <!-- Project information to pass through -->

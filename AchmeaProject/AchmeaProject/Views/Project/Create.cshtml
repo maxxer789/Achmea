@@ -6,6 +6,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Select" asp-controller="ESA">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="@Model.Project.Title" class="control-label"></label>
                 <input asp-for="@Model.Project.Title" class="form-control" />
