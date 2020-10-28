@@ -1,29 +1,35 @@
 ﻿@model ProjectCreateViewModel;
 @{
-    <link rel="stylesheet" href="~/css/ESA-checklist.css" />
+    <link rel="stylesheet" href="~/css/BIV-checklist.css" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 }
-<div class="container" style="margin-bottom:50px">
+<div class="container-fluid" style="margin-bottom:50px">
 
     @if (Model.Project != null)
     {
-    <div class="row">
-        <div class="col-6">
-            <h1>Projecttitle: @Model.Project.Title</h1>
+        <div class="row">
+            <div class="col-6">
+                <h1>Projecttitle: @Model.Project.Title</h1>
+            </div>
+            <div class="col-6">
+                <p>Description: @Model.Project.Description</p>
+            </div>
         </div>
-        <div class="col-6">
-            <p>Description: @Model.Project.Description</p>
-        </div>
-    </div>
     }
 
 
 <form asp-controller="Biv" asp-action="Example" method="post">
 
     <!-- title -->
-    <h1>Biv Classifications</h1>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <h1>Biv Classifications</h1>
+        </div>
+    </div>
+
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <!-- Project information to pass through -->
@@ -38,43 +44,88 @@
         @Html.HiddenFor(model => Model.AspectAreas[i].ID)
         @Html.HiddenFor(model => Model.AspectAreas[i].Title)
         @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-        @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}
+        @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+    }
 
-    @for (var j = 0; j < @Model.Bivs.Count; j++)
+<div class="row">
+    <div class="col-3">
+        <h3>B</h3>
+    </div>
+    @for (var j = 0; j < @Model.Bivs.Count(e => e.Name.Contains("b")); j++)
     {
-<div class="form-row align-items-center">
-    <div class="col-5">
-
-    </div>
-    <div class="col-3">
-        <p>@Model.Bivs[j].Name</p>
-    </div>
-    <div class="col-3">
-        <div class="form-check mb-2">
-            @Html.HiddenFor(model => Model.Bivs[j].Name)
-            @Html.HiddenFor(model => Model.Bivs[j].Id)
-            @Html.CheckBoxFor(model => Model.Bivs[j].isSelected)
-        </div>
-    </div>
-</div>}
-
-    <br />
-    <div class="row">
-        <div class="col-9"></div>
         <div class="col-3">
-            <button type="submit" id="submitButton" name="submitButton">submit</button>
+            <label class="checkboxlabel">@Model.Bivs[j].Name
+                @Html.HiddenFor(model => Model.Bivs[j].Name)
+                @Html.HiddenFor(model => Model.Bivs[j].Id)
+                @Html.CheckBoxFor(model => Model.Bivs[j].isSelected, new { @class = "bbb" })
+                <span class="checkmark"></span>
+            </label>
         </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-3">
+        <h3>I</h3>
     </div>
-</form>
+    @for (var k = 3; k < 6; k++)
+    {
+        <div class="col-3">
+            <label class="checkboxlabel">@Model.Bivs[k].Name
+                @Html.HiddenFor(model => Model.Bivs[k].Name)
+                @Html.HiddenFor(model => Model.Bivs[k].Id)
+                @Html.CheckBoxFor(model => Model.Bivs[k].isSelected, new { @class = "iii" })
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col-3">
+        <h3>V</h3>
+    </div>
+    @for (var m = 6; m < 9; m++)
+    {
+        <div class="col-3">
+            <label class="checkboxlabel">@Model.Bivs[m].Name
+                @Html.HiddenFor(model => Model.Bivs[m].Name)
+                @Html.HiddenFor(model => Model.Bivs[m].Id)
+                @Html.CheckBoxFor(model => Model.Bivs[m].isSelected, new { @class = "vvv" })
+
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    }
 </div>
 
 
+        <br />
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <button type="submit" id="submitButton" name="submitButton">submit</button>
+            </div>
+        </div>
+</form>
+</div>
 
-@*<script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>*@
+<script>
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[class='" + $box.attr("class") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+</script>
 
 <script>
     var coll = document.getElementsByClassName("collapsible");
