@@ -39,10 +39,13 @@ namespace Achmea.Core.Logic
         }
         public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<EsaAspect> aspects, List<Biv> bivs, Project project)
         {
-            List<SecurityRequirement> requirements = new List<SecurityRequirement>();
-            requirements.AddRange(getRequiermentsFromAreas(aspects));
-            requirements.AddRange(getRequiermentsFromBiv(bivs));
-            return _IReq.SaveReqruirementsToProject(requirements, project).ToList();
+            List<SecurityRequirement> bivRequirements = getRequiermentsFromBiv(bivs).ToList();
+            List<SecurityRequirement> aspectRequirements = getRequiermentsFromAreas(aspects).ToList();
+            List<SecurityRequirement> allRequirements = new List<SecurityRequirement>();
+
+            allRequirements = bivRequirements.Where(r => aspectRequirements.Any(r2 => r2.RequirementId == r.RequirementId)).ToList();
+
+            return _IReq.SaveReqruirementsToProject(allRequirements, project).ToList();
         }
     }
 }

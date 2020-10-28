@@ -1,10 +1,9 @@
-﻿using AchmeaProject.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Achmea.Core.ContextModels
+namespace AchmeaProject.Models
 {
     public class BIVRequirement
     {

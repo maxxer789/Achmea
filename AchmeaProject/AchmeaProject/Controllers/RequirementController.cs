@@ -28,7 +28,7 @@ namespace AchmeaProject.Controllers
         public RequirementController(IConfiguration config)
         {
             Interface = new RequiermentDAL(config.GetConnectionString("DefaultConnection"));
-            AreaInterface = new AspectAreaDAL(config.GetConnectionString("DefaultConnection"));
+            AreaInterface = new AspectAreaDAL();
             //BIVInterface = new BIVDal(config.GetConnectionString("DefaultConnection"));
             Logic = new RequiermentLogic(Interface);
             AreaLogic = new AspectAreaLogic(AreaInterface);
