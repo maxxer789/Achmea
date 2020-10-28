@@ -75,5 +75,21 @@ namespace Achmea.Core
         {
             return Project.Where(project => project.ProjectId == projectId).SingleOrDefault();
         }
+
+        public List<EsaAspect> GetEsaForProject(int projectId)
+        {
+            List<EsaAspect> projectEsaAspects = new List<EsaAspect>();
+            List<EsaAspect> esaAspects = new List<EsaAspect>(EsaAspect);
+
+            foreach(ProjectEsaAspect projectEsa in ProjectEsaAspect)
+            {
+                if (projectEsa.ProjectId == projectId)
+                {
+                    projectEsaAspects.Add(esaAspects.Where(aspect => aspect.AspectId == projectEsa.AspectId).SingleOrDefault());
+                }
+            }
+            projectEsaAspects = projectEsaAspects.OrderBy(esa => esa.AspectId).ToList();
+            return projectEsaAspects;
+        }
     }
 }

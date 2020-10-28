@@ -14,4 +14,17 @@
     </div>
 </div>
 <div class="con-content">
-</div> 
+        @{ int i = 0;}
+        @foreach (EsaAspect req in Model.EsaAspects)
+        {
+            <div class="con-requirements">
+                <div class="requirement-info">
+                    <h4>@req.Name</h4>
+                </div>
+                <div class="requirement-check">
+                    <h4>@Model.Status</h4>
+                </div>
+            </div>
+            i++;
+        }
+</div>

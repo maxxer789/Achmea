@@ -14,5 +14,7 @@ namespace Achmea.Core.Interface
         public IEnumerable<Project> GetProjects();
 
         public Project GetProject(int projectId);
+
+        public List<EsaAspect> GetEsaForProject(int projectId);
     }
 }
