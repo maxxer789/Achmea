@@ -26,6 +26,14 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult Select(ProjectCreateViewModel vm)
         {
+            if (vm.AspectAreas.Count(e => e.isSelected == true) == 0)
+            {
+                ModelState.AddModelError(string.Empty,"Please select atleast one applicable aspect area");
+
+                return View("Views/ESA/Select.cshtml", vm);
+            }
+
+
             vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
 
             return View(vm);
@@ -34,19 +42,14 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult Example(ProjectCreateViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (vm.Bivs.Count(e => e.isSelected == true) == 0)
             {
-                if (vm.Bivs.Count > 0)
-                {
-                    return View(vm);
-                }
-                else
-                {
-                    ViewBag.Error = TempData["Please select atleast one Aspect area"];
-                    return RedirectToAction("Index");
-                }
+                ModelState.AddModelError(string.Empty, "Please select atleast one applicable biv classification");
+
+                return View("Views/BIV/Select.cshtml", vm);
             }
-            return RedirectToAction("Index");
+
+            return View(vm);
         }
     }
 }
