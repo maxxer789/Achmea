@@ -12,7 +12,7 @@ namespace Achmea.Core.SQL
 {
     public class UserDAL : AchmeaContext, IUser
     {
-        public UserDAL(string Connectionstring)
+        public UserDAL()
         {
 
         }

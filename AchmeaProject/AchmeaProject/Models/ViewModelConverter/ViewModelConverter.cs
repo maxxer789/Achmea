@@ -93,5 +93,37 @@ namespace AchmeaProject.Models.ViewModelConverter
 
             return vms;
         }
+
+        public static ProjectViewModel ProjectToVm(Project Pmodel)
+        {
+            ProjectViewModel vm = new ProjectViewModel()
+            {
+                ProjectId = Pmodel.ProjectId,
+                Title = Pmodel.Title,
+                Description = Pmodel.Description,
+                Status = Pmodel.Status
+            };
+
+            return vm;
+        }
+
+        public static List<ProjectViewModel> VmToProject(List<Project> Pmodel)
+        {
+            List<ProjectViewModel> vms = new List<ProjectViewModel>();
+
+            foreach (var model in Pmodel)
+            {
+                ProjectViewModel vm = new ProjectViewModel()
+                {
+                    ProjectId = model.ProjectId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    Status = model.Status
+                };
+                vms.Add(vm);
+            }
+
+            return vms;
+        }
     }
 }

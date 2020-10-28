@@ -19,14 +19,14 @@ namespace AchmeaProject.Controllers
         private readonly IUser Interface;
         public UserController(IConfiguration config)
         {
-            Interface = new UserDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new UserDAL();
             Logic = new UserLogic(Interface);
         }
 
         [HttpGet]
         public IActionResult Login()
         {
-            return View("Views/Accounts/User/Login.cshtml");
+            return View("Views/Accounts/Developer/Login.cshtml");
         }
         [HttpPost]
         public IActionResult Login(LoginViewModel VM)
@@ -67,13 +67,13 @@ namespace AchmeaProject.Controllers
                 {
                     Console.WriteLine(e.Message);
                     ModelState.AddModelError(string.Empty, "The data is not correct");
-                    return View("Views/Accounts/User/Login.cshtml");
+                    return View("Views/Accounts/Developer/Login.cshtml");
                 }
 #pragma warning restore CA1031 // Do not catch general exception types
             }
             ModelState.AddModelError(string.Empty, "Fill in all Data");
 
-            return View("Views/Accounts/User/Login.cshtml", VM);
+            return View("Views/Accounts/Developer/Login.cshtml", VM);
         }
 
         public IActionResult Log_Out()
