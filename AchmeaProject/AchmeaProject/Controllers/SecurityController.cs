@@ -46,6 +46,7 @@ namespace AchmeaProject.Controllers
                     ProjectId = model.ProjectId,
                     Title = model.Title,
                     Status = model.Status,
+                    Description = model.Description,
                 };
                 vmList.Add(viewModel);
             }
