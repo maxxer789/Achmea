@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Achmea.Core
 {
 
-    public class ProjectDAL : DbContext, IProject
+    public class ProjectDAL : AchmeaContext, IProject
     {
         List<Project> projectModels;
         Project newProject;

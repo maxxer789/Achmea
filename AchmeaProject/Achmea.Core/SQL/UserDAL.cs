@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Achmea.Core.SQL
 {
-    public class UserDAL : DbContext, IUser
+    public class UserDAL : AchmeaContext, IUser
     {
         public UserDAL(string Connectionstring)
         {
