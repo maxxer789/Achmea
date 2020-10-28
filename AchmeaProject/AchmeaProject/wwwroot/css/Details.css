@@ -62,3 +62,19 @@ main {
     word-wrap: break-word;
     margin: 10px 10px 0 10px;
 }
+
+.con-biv {
+    background-color: indianred;
+}
+
+.biv-b {
+    background-color: lightseagreen;
+}
+
+.biv-i {
+    background-color: cornflowerblue;
+}
+
+.biv-v {
+    background-color: chartreuse;
+}

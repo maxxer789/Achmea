@@ -1,5 +1,5 @@
-﻿@using Achmea.Core; 
-@model ProjectDetailViewModel 
+﻿@using Achmea.Core;
+@model ProjectDetailViewModel
 @{
     ViewData["Title"] = "Details";
 }
@@ -14,17 +14,29 @@
     </div>
 </div>
 <div class="con-content">
-        @{ int i = 0;}
-        @foreach (EsaAspect req in Model.EsaAspects)
-        {
-            <div class="con-requirements">
-                <div class="requirement-info">
-                    <h4>@req.Name</h4>
-                </div>
-                <div class="requirement-check">
-                    <h4>@Model.Status</h4>
-                </div>
+    @{ int i = 0;}
+    @foreach (EsaAspect req in Model.EsaAspects)
+    {
+        <div class="con-requirements">
+            <div class="requirement-info">
+                <h4>@req.Name</h4>
             </div>
-            i++;
-        }
+            <div class="requirement-check">
+                <h4>@Model.Status</h4>
+            </div>
+        </div>
+        i++;
+    }
+</div>
+
+<div class="con-biv">
+    <div class="biv-b">
+        <h4>B3</h4>
+    </div>
+    <div class="biv-i">
+        <h4>I3</h4>
+    </div>
+    <div class="biv-v">
+        <h4>V3</h4>
+    </div>
 </div>
