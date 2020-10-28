@@ -19,6 +19,9 @@ namespace AchmeaProject.Controllers
         private readonly AspectAreaLogic AreaLogic;
         private readonly IAspectArea AreaInterface;
 
+        private readonly ProjectLogic ProjectLogic;
+        private readonly IProject IProject;
+
         //private readonly BIVLogic BivLogic;
         //private readonly IBIV BivInterface;
 
@@ -27,18 +30,26 @@ namespace AchmeaProject.Controllers
 
         public RequirementController(IConfiguration config)
         {
-            Interface = new RequiermentDAL(config.GetConnectionString("DefaultConnection"));
+            IProject = new ProjectDAL();
+            ProjectLogic = new ProjectLogic(IProject);
+
+            Interface = new RequiermentDAL();
             AreaInterface = new AspectAreaDAL();
-            //BIVInterface = new BIVDal(config.GetConnectionString("DefaultConnection"));
+
             Logic = new RequiermentLogic(Interface);
             AreaLogic = new AspectAreaLogic(AreaInterface);
+
+            //BIVInterface = new BIVDal(config.GetConnectionString("DefaultConnection"));
             //BivLogic = new BivLogic(BivInterface);
         }
 
-        public IActionResult SaveReqruirementsToProject(List<EsaAspect> aspects, List<Biv> bivs, Project project)
+        public IActionResult SaveReqruirementsToProject(ProjectCreateViewModel pvm)
         {
-            Logic.SaveReqruirementsToProject(aspects, bivs, project);
-            return null;
+            Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
+
+            Logic.SaveReqruirementsToProject(ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas), ViewModelConverter.BivViewModelToBivModel(pvm.Bivs), proj);
+
+            return RedirectToAction("index", "home");
         }
 
         public IActionResult GetRequirementsFromAreas(List<string> Ids)

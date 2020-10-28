@@ -18,7 +18,7 @@ namespace Achmea.Core.SQL
 {
     public class RequiermentDAL : AchmeaContext, IRequirement
     {
-        public RequiermentDAL(string Connectionstring)
+        public RequiermentDAL()
         {
 
         }
