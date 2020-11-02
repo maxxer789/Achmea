@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Achmea.Core.SQL
 {
-    public class AspectAreaDAL : DbContext, IAspectArea
+    public class AspectAreaDAL : AchmeaContext, IAspectArea
     {
         public AspectAreaDAL() : base()
         {

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Achmea.Core.SQL
 {
-    public class BivDAL : DbContext, IBiv
+    public class BivDAL : AchmeaContext, IBiv
     {
         public List<Biv> GetBiv()
         {
