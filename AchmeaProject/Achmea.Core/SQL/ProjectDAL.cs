@@ -44,7 +44,7 @@ namespace Achmea.Core
         //    con.Close();
         //}
 
-        public IEnumerable<Project> AddNewProject(Project newProject)
+        public Project AddNewProject(Project newProject)
         {
 
             //add
@@ -57,8 +57,9 @@ namespace Achmea.Core
 
             Project.Add(project);
             SaveChanges();
+            project.ProjectId = project.ProjectId;
 
-            return Project.ToList();
+            return project;
 
         }
 

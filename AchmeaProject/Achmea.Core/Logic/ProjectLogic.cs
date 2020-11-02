@@ -23,11 +23,11 @@ namespace Achmea.Core.Logic
         }
 
 
-        public void MakeNewProject(Project projectModel)
+        public Project MakeNewProject(Project projectModel)
         {
             try
             {
-                projectDAL.AddNewProject(projectModel);
+                return projectDAL.AddNewProject(projectModel);
             }
             catch (Exception ex)
             {
