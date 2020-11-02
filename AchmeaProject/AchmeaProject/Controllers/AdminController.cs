@@ -21,7 +21,7 @@ namespace AchmeaProject.Controllers
 
         public AdminController(IConfiguration config)
         {
-            Interface = new UserDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new UserDAL();
             logic = new UserLogic(Interface);
         }
 

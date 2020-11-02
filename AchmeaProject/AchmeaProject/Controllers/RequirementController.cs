@@ -26,7 +26,7 @@ namespace AchmeaProject.Controllers
         //private readonly IBIV BivInterface;
         //om te deleten
 
-        private readonly RequiermentLogic Logic;
+        private readonly RequirementLogic Logic;
         private readonly IRequirement Interface;
 
         public RequirementController(IConfiguration config)
@@ -34,10 +34,10 @@ namespace AchmeaProject.Controllers
             IProject = new ProjectDAL();
             ProjectLogic = new ProjectLogic(IProject);
 
-            Interface = new RequiermentDAL();
+            Interface = new RequirementDAL();
             AreaInterface = new AspectAreaDAL();
 
-            Logic = new RequiermentLogic(Interface);
+            Logic = new RequirementLogic(Interface);
             AreaLogic = new AspectAreaLogic(AreaInterface);
 
             //BIVInterface = new BIVDal(config.GetConnectionString("DefaultConnection"));
