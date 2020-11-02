@@ -15,5 +15,19 @@ namespace Achmea.Core.SQL
         {
             return Biv.ToList();
         }
+
+        public IEnumerable<Biv> SaveBivToProject(List<Biv> classifications, Project project)
+        {
+            foreach (Biv biv in classifications)
+            {
+                ProjectBiv pb = new ProjectBiv();
+                pb.BivId = biv.Id;
+                pb.ProjectId = project.ProjectId;
+
+                ProjectBiv.Add(pb);
+                SaveChanges();
+            }
+            return classifications;
+        }
     }
 }
