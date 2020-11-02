@@ -9,7 +9,6 @@ using Achmea.Core.Model;
 using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
-using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
@@ -44,13 +43,14 @@ namespace AchmeaProject.Controllers
 
         //}
 
-        public IActionResult CreateProject(ProjectCreateViewModel pvm)
+        public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
         {
+            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try
             {
-                projectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
+                projectLogic.MakeNewProject(projectModel);
                 ProjectMade = true;
             }
             catch
@@ -63,25 +63,16 @@ namespace AchmeaProject.Controllers
             //    ViewBag.ProjectMade = "Project was made succesfully";
             //}
 
-            return RedirectToAction("SaveReqruirementsToProject", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetInt32("UserID") == null)
+            ProjectCreateViewModel vm = new ProjectCreateViewModel();
+            vm.Project = new ProjectCreationDetailsViewModel()
             {
-                Response.WriteAsync("<script language='javascript'>window.alert('Please login to create a new project');window.location.href='/User/Login';</script>");
-                return RedirectToAction("Login", "User", null);
-            }
-
-            ProjectCreateViewModel vm = new ProjectCreateViewModel
-            {
-                Project = new ProjectCreationDetailsViewModel()
-                {
-                    UserID = HttpContext.Session.GetInt32("UserID").Value,
-                    CreationDate = DateTime.Now.ToShortDateString()
-                }
+                UserID = HttpContext.Session.GetInt32("UserID").Value
             };
 
             return View(vm);

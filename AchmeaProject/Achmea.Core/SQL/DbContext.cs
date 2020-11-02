@@ -1,18 +1,16 @@
 ﻿using System;
-using Achmea.Core.ContextModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace AchmeaProject.Models
 {
-    public partial class AchmeaContext : Microsoft.EntityFrameworkCore.DbContext
+    public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public AchmeaContext()
+        public DbContext()
         {
         }
 
-        public AchmeaContext(DbContextOptions<AchmeaContext> options)
+        public DbContext(DbContextOptions<DbContext> options)
             : base(options)
         {
         }
@@ -30,8 +28,6 @@ namespace AchmeaProject.Models
         public virtual DbSet<SecurityRequirement> SecurityRequirement { get; set; }
         public virtual DbSet<SecurityRequirementProject> SecurityRequirementProject { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<ProjectMembers> ProjectMembers { get; set; }
-        public virtual DbSet<BIVRequirement> BIVRequirement { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

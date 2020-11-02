@@ -2,32 +2,24 @@
 @{
 }
 
-<div class="container">
-            <div class="row">
-                <h1> @Model.Project.Title</h1>
-            </div>
-        <div class="row">
-            <p> desc: @Model.Project.Description, created on: @Model.Project.CreationDate by User: @Model.Project.UserID</p>
-        </div>
+<h1> @Model.Project.Title</h1>
+<p> @Model.Project.Description</p>
+<p> @Model.Project.CreationDate</p>
+<p> @Model.Project.UserID</p>
 
-    @for (int i = 0; i < Model.AspectAreas.Count; i++)
+
+@for (int i = 0; i < Model.AspectAreas.Count; i++)
+{
+    if (Model.AspectAreas[i].isSelected == true)
     {
-        if (Model.AspectAreas[i].isSelected == true)
-        {
-                        <div class="row">
-                            <p>@Model.AspectAreas[i].Title</p>
-                        </div>
-        }
+        <p>@Model.AspectAreas[i].Title</p>
     }
+}
 
-
-    @for (int j = 0; j < Model.Bivs.Count; j++)
+@for (int j = 0; j < Model.Bivs.Count; j++)
+{
+    if (Model.Bivs[j].isSelected == true)
     {
-        if (Model.Bivs[j].isSelected == true)
-        {
-                        <div class="row">
-                            <p>@Model.Bivs[j].Name</p>
-                        </div>
-                        }
+        <p>@Model.Bivs[j].Name</p>
     }
-</div>
+}
