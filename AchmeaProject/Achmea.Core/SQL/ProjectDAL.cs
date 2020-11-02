@@ -1,5 +1,6 @@
 ﻿using Achmea.Core;
 using Achmea.Core.Interface;
+using Achmea.Core.Logic;
 using AchmeaProject.Core;
 using AchmeaProject.Models;
 using Achmea.Core.SQL;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 namespace Achmea.Core
 {
 
-    public class ProjectDAL : DbContext, IProject
+    public class ProjectDAL : AchmeaContext, IProject
     {
         List<Project> projectModels;
         Project newProject;
@@ -43,7 +44,7 @@ namespace Achmea.Core
         //    con.Close();
         //}
 
-        public IEnumerable<Project> AddNewProject(Project newProject)
+        public Project AddNewProject(Project newProject)
         {
 
             //add
@@ -52,12 +53,14 @@ namespace Achmea.Core
             project.UserId = newProject.UserId;
             project.CreationDate = newProject.CreationDate;
             project.Description = newProject.Description;
-            project.Status = newProject.Status;
+            project.Status = ProjectStatus.InProgress.ToString();
 
             Project.Add(project);
             SaveChanges();
 
-            return Project.ToList();
+            project.ProjectId = project.ProjectId;
+
+            return project;
 
         }
 

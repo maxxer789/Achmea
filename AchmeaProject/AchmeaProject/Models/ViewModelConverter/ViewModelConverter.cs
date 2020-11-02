@@ -38,6 +38,23 @@ namespace AchmeaProject.Models.ViewModelConverter
 
             return vms;
         }
+        public static List<EsaAspect> AspectAreaViewModelToESA_AspectModel(List<ESA_AspectViewModel> models)
+        {
+            List<EsaAspect> aspects = new List<EsaAspect>();
+
+            foreach (var model in models)
+            {
+                EsaAspect vm = new EsaAspect()
+                {
+                    AspectId = model.ID,
+                    Description = model.Description,
+                    Name = model.Title
+                };
+                aspects.Add(vm);
+            }    
+
+            return aspects;
+        }
 
         public static User VmtoUser(UserViewModel VM)
         {
@@ -92,6 +109,33 @@ namespace AchmeaProject.Models.ViewModelConverter
             }
 
             return vms;
+        }
+        public static List<Biv> BivViewModelToBivModel(List<BivViewModel> bvms)
+        {
+            List<Biv> Bivs = new List<Biv>();
+
+            foreach (var bvm in bvms)
+            {
+                Biv biv = new Biv
+                {
+                    Id = bvm.Id,
+                    Name = bvm.Name,
+                };
+                Bivs.Add(biv);
+            }
+
+            return Bivs;
+        }
+
+        public static Project ProjectViewModelToProjectModel(ProjectCreationDetailsViewModel pvm)
+        {
+            return new Project
+            {
+                Title = pvm.Title,
+                Description = pvm.Description,
+                UserId = pvm.UserID,
+                CreationDate = Convert.ToDateTime(pvm.CreationDate),                
+            };
         }
     }
 }

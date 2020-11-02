@@ -9,6 +9,7 @@ using Achmea.Core.Model;
 using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
+using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
@@ -43,14 +44,13 @@ namespace AchmeaProject.Controllers
 
         //}
 
-        public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
+        public IActionResult CreateProject(ProjectCreateViewModel pvm)
         {
-            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try
             {
-                projectLogic.MakeNewProject(projectModel);
+                projectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
                 ProjectMade = true;
             }
             catch
@@ -63,16 +63,25 @@ namespace AchmeaProject.Controllers
             //    ViewBag.ProjectMade = "Project was made succesfully";
             //}
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("SaveReqruirementsToProject", "Home");
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            ProjectCreateViewModel vm = new ProjectCreateViewModel();
-            vm.Project = new ProjectCreationDetailsViewModel()
+            if (HttpContext.Session.GetInt32("UserID") == null)
             {
-                UserID = HttpContext.Session.GetInt32("UserID").Value
+                Response.WriteAsync("<script language='javascript'>window.alert('Please login to create a new project');window.location.href='/User/Login';</script>");
+                return RedirectToAction("Login", "User", null);
+            }
+
+            ProjectCreateViewModel vm = new ProjectCreateViewModel
+            {
+                Project = new ProjectCreationDetailsViewModel()
+                {
+                    UserID = HttpContext.Session.GetInt32("UserID").Value,
+                    CreationDate = DateTime.Now.ToShortDateString()
+                }
             };
 
             return View(vm);
