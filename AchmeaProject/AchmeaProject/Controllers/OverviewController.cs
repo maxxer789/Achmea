@@ -8,16 +8,19 @@ using AchmeaProject.Models;
 using Achmea.Core;
 using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
+using Achmea.Core.SQL;
 
 namespace AchmeaProject.Controllers
 {
     public class OverviewController : Controller
     {
         private readonly IProject Interface;
+        private readonly IRequirement Requirement;
 
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
+            Requirement = new RequiermentDAL();
         }
 
         public IActionResult Index()
@@ -56,7 +59,9 @@ namespace AchmeaProject.Controllers
                 Description = project.Description,
                 Status = project.Status,
                 CreationDate = project.CreationDate.ToString(),
-                EsaAspects = Interface.GetEsaForProject(projectId)
+                EsaAspects = Interface.GetEsaForProject(projectId),
+                RequirementProject = Interface.GetRequirementsForProject(projectId),
+                Requirements = Requirement.GetAllRequirements()
             };
 
             return View(model);

@@ -49,6 +49,11 @@ namespace Achmea.Core.Logic
             return projectDAL.GetEsaForProject(projectId);
         }
 
+        public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
+        {
+            return projectDAL.GetRequirementsForProject(projectId);
+        }
+
        // public Project GetProject(int projectId)
         //{
            // return Projects.FirstOrDefault(x => x.ProjectId == projectId);

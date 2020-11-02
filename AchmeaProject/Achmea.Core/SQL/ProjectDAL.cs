@@ -94,5 +94,19 @@ namespace Achmea.Core
             projectEsaAspects = projectEsaAspects.OrderBy(esa => esa.AspectId).ToList();
             return projectEsaAspects;
         }
+
+        public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
+        {
+            List<SecurityRequirementProject> requirements = new List<SecurityRequirementProject>();
+            foreach(SecurityRequirementProject reqproject in SecurityRequirementProject)
+            {
+                if(reqproject.ProjectId == projectId)
+                {
+                    requirements.Add(reqproject);
+                }
+            }
+            requirements = requirements.OrderBy(x => x.SecurityRequirementId).ToList();
+            return requirements;
+        }
     }
 }
