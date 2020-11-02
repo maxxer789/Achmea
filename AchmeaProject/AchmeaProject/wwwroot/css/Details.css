@@ -55,26 +55,26 @@ main {
 
 .requirement-check {
     background-color: cyan;
-    width: 16%;
+    width: 150px;
     float: right;
     padding: 10px 10px;
     text-align: center;
     word-wrap: break-word;
     margin: 10px 10px 0 10px;
+    grid-row: 1;
 }
 
 .con-biv {
     background-color: indianred;
+    display: grid;
+    justify-content: space-between;
 }
 
-.biv-b {
+.biv {
     background-color: lightseagreen;
-}
-
-.biv-i {
-    background-color: cornflowerblue;
-}
-
-.biv-v {
-    background-color: chartreuse;
+    grid-row: 1;
+    margin: 10px 10px 0 10px;
+    text-align: center;
+    width: 100px;
+    padding: 10px 10px;
 }
