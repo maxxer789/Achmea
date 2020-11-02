@@ -1,69 +1,86 @@
 @model ProjectCreateViewModel;
 @{
-    <link rel="stylesheet" href="~/css/ESA-checklist.css" />
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-}
+                <link rel="stylesheet" href="~/css/ESA-checklist.css" />
+                            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                                        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+                                                    <script src="~/lib/jquery/dist/jquery.min.js"></script> }
+
 <div class="container" style="margin-bottom:50px">
 
-    @if (Model.Project != null)
-    {
-    <div>
-        <h1>@Model.Project.Title</h1>
-        <p>@Model.Project.CreationDate</p>
-        <p> @Model.Project.Description</p>
-    </div>
-    }
+    @*@if (Model.Project != null)
+            {
+        <div class="row">
+            <div class="col-6" style="text-align: right">
+                <h3>Projecttitle: @Model.Project.Title</h3>
+            </div>
+            <div class="col-6" style="text-align: left">
+                <p>Description: @Model.Project.Description</p>
+            </div>
+        </div>}*@
 
 
-<form asp-controller="Biv" asp-action="Select" method="post">
-    <!-- title -->
-    <h1>ESA aspect areas</h1>
-    <p>@ViewBag.Error</p>
+    <form asp-controller="ESA" asp-action="Select" method="post">
 
-    @Html.HiddenFor(model => Model.Project.Title)
-    @Html.HiddenFor(model => Model.Project.Description)
-    @Html.HiddenFor(model => Model.Project.CreationDate)
-    @Html.HiddenFor(model => @Model.Project.UserID)
-
-
-    @for (var i = 0; i < @Model.AspectAreas.Count; i++)
-    {<!-- Selection form -->
-                        <div class="form-row align-items-center">
-                            <div class="col-10">
-                                <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
-                                <div class="content">
-                                    <p>@Model.AspectAreas[i].Description</p>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-check mb-2">
-                                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                                    @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
-                                </div>
-                            </div>
-                        </div>}
-
-    <br />
-    <div class="row">
-        <div class="col-9"></div>
-        <div class="col-3">
-            <button type="submit" id="submitButton" name="submitButton">submit</button>
+        <!-- title -->
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h2>ESA Aspectgebieden</h2>
+            </div>
         </div>
-    </div>
-</form>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        @Html.HiddenFor(model => Model.Project.Title)
+        @Html.HiddenFor(model => Model.Project.Description)
+        @Html.HiddenFor(model => Model.Project.CreationDate)
+        @Html.HiddenFor(model => @Model.Project.UserID)
+
+        @if (Model.Bivs.Count > 0)
+        {<!-- Biv information to pass through -->
+                            @for (int i = 0; i < @Model.Bivs.Count; i++)
+                            {
+            @Html.HiddenFor(model => Model.Bivs[i].Id)
+                                @Html.HiddenFor(model => Model.Bivs[i].Name)
+                                                    @Html.HiddenFor(model => Model.Bivs[i].isSelected)}}
+
+
+        @for (var i = 0; i < @Model.AspectAreas.Count; i++)
+        {<!-- Selection form -->
+                            <div class="form-row align-items-center">
+                                <div class="col-10">
+                                    <button type="button" class="collapsible">@Model.AspectAreas[i].Title</button>
+                                    <div class="content">
+                                        <p>@Model.AspectAreas[i].Description</p>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+
+                                    <label class="checkboxlabel">
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                                        @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                                        @Html.CheckBoxFor(model => Model.AspectAreas[i].isSelected)
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                </div>
+                            </div>}
+
+        <br />
+        <input type="hidden" name="submitclicked" value="">
+        <div class="row">
+            <div class="col-8"></div>
+            <div class="col-1">
+                <button class="btn btn-primary" type="submit" value="back" onclick="submitClick(this)" name="submitButton">Vorige</button>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-primary" type="submit" value="next" onclick="submitClick(this)" name="submitButton">Volgende</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 
-
-@*<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>*@
 
 <script>
     var coll = document.getElementsByClassName("collapsible");
@@ -90,4 +107,8 @@
             $(this).attr("value", "false");
         }
     });
+
+    function submitClick(button) {
+        button.form.submitclicked.value = button.value;
+    }
 </script>

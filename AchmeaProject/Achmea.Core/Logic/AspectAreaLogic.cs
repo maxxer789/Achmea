@@ -9,16 +9,21 @@ namespace Achmea.Core.Logic
 {
     public class AspectAreaLogic
     {
-            readonly IAspectArea _IAspectArea;
+        readonly IAspectArea _IAspectArea;
 
-            public AspectAreaLogic(IAspectArea IAspectArea)
-            {
-                _IAspectArea = IAspectArea;
-            }
+        public AspectAreaLogic(IAspectArea IAspectArea)
+        {
+            _IAspectArea = IAspectArea;
+        }
 
-            public List<EsaAspect> GetAspectAreas()
-            {
-                return _IAspectArea.GetAspectAreas();
-            }
+        public List<EsaAspect> GetAspectAreas()
+        {
+            return _IAspectArea.GetAspectAreas();
+        }
+
+        public IEnumerable<EsaAspect> SaveAspectToProject(List<EsaAspect> aspects, Project project)
+        {
+            return _IAspectArea.SaveAspectToProject(aspects, project);
         }
     }
+}

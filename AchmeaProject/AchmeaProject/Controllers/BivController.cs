@@ -7,6 +7,8 @@ using Achmea.Core.Logic;
 using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
+using AchmeaProject.Sessions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -17,36 +19,55 @@ namespace AchmeaProject.Controllers
         private readonly BivLogic Logic;
         private readonly IBiv Interface;
 
-        public BivController(IConfiguration config)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
+
+        public BivController(IConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             Interface = new BivDAL();
             Logic = new BivLogic(Interface);
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpPost]
-        public IActionResult Select(ProjectCreateViewModel vm)
+        [HttpGet]
+        public IActionResult Select()
         {
-            vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
+            {
+                RedirectToAction("Create", "Project");
+            }
+
+            ProjectCreateViewModel vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+
+            if (vm.Bivs.Count == 0)
+            {
+                vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+            }
 
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Example(ProjectCreateViewModel vm)
+        public IActionResult Select(ProjectCreateViewModel vm, string submitButton)
         {
-            if (ModelState.IsValid)
+            if (vm.Bivs.Count(e => e.isSelected == true) == 0 && submitButton == "next")
             {
-                if (vm.Bivs.Count > 0)
-                {
-                    return View(vm);
-                }
-                else
-                {
-                    ViewBag.Error = TempData["Please select atleast one Aspect area"];
-                    return RedirectToAction("Index");
-                }
+                ModelState.AddModelError(string.Empty, "Please select atleast one applicable aspect area");
+                return View(vm);
             }
-            return RedirectToAction("Index");
+
+            _session.Update("Project", vm);
+
+            if (submitButton == "next")
+            {
+                return RedirectToAction("ConfirmDetails", "Project");
+            }
+            if (submitButton == "back")
+            {
+                return RedirectToAction("Select", "ESA");
+            }
+
+            return View(vm);
         }
     }
 }

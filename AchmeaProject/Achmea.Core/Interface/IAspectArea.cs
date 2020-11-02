@@ -9,5 +9,6 @@ namespace Achmea.Core.Interface
     public interface IAspectArea
     {
         List<EsaAspect> GetAspectAreas();
+        IEnumerable<EsaAspect> SaveAspectToProject(List<EsaAspect> aspects, Project project);
     }
 }
