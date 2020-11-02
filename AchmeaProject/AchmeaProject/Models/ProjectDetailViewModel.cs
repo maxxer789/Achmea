@@ -13,5 +13,7 @@ namespace AchmeaProject.Models
         public string Description { get; set; }
         public string Status { get; set; }
         public string CreationDate { get; set; }
+        public List<EsaAspect> EsaAspects { get; set; }
+        //h
     }
 }

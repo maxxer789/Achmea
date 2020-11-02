@@ -15,6 +15,7 @@ namespace AchmeaProject.Controllers
     {
         private readonly IProject Interface;
 
+        //delete
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
