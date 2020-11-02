@@ -9,5 +9,6 @@ namespace Achmea.Core.Interface
     public interface IBiv
     {
         List<Biv> GetBiv();
+        IEnumerable<Biv> SaveBivToProject(List<Biv> classifications, Project project);
     }
 }

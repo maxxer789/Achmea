@@ -26,6 +26,7 @@ namespace AchmeaProject.Models
         public virtual DbSet<EsaAspectSecurityRequirement> EsaAspectSecurityRequirement { get; set; }
         public virtual DbSet<FileOfProof> FileOfProof { get; set; }
         public virtual DbSet<Project> Project { get; set; }
+        public virtual DbSet<ProjectBiv> ProjectBiv { get; set; }
         public virtual DbSet<ProjectEsaAspect> ProjectEsaAspect { get; set; }
         public virtual DbSet<SecurityRequirement> SecurityRequirement { get; set; }
         public virtual DbSet<SecurityRequirementProject> SecurityRequirementProject { get; set; }
