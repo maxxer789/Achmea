@@ -21,7 +21,6 @@ namespace AchmeaProject.Models
         public string MainGroup { get; set; }
 
         public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<BIVRequirement> BivRequirement { get; set; }
         public virtual ICollection<EsaAreaRequirement> EsaAreaRequirement { get; set; }
         public virtual ICollection<SecurityRequirementProject> SecurityRequirementProject { get; set; }
     }
