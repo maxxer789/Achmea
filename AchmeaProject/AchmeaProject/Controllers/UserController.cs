@@ -55,6 +55,8 @@ namespace AchmeaProject.Controllers
                         {
                             return RedirectToAction("Index", "Home");
                         }
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -75,7 +77,6 @@ namespace AchmeaProject.Controllers
 
             return View("Views/Accounts/Developer/Login.cshtml", VM);
         }
-
         public IActionResult Log_Out()
         {
             HttpContext.Session.Remove("Firstname");

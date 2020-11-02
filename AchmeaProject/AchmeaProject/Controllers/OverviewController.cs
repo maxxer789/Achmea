@@ -55,7 +55,8 @@ namespace AchmeaProject.Controllers
                 Title = project.Title,
                 Description = project.Description,
                 Status = project.Status,
-                CreationDate = project.CreationDate.ToString()
+                CreationDate = project.CreationDate.ToString(),
+                EsaAspects = Interface.GetEsaForProject(projectId)
             };
 
             return View(model);
