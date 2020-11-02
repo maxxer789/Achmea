@@ -16,10 +16,11 @@ namespace Achmea.Core.Logic
         Declined,
         Excluded
     }
-    public class RequiermentLogic
+
+    public class RequirementLogic
     {
         private IRequirement _IReq;
-        public RequiermentLogic(IRequirement IReq)
+        public RequirementLogic(IRequirement IReq)
         {
             _IReq = IReq;
         }

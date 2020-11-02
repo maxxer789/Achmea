@@ -1,0 +1,24 @@
+﻿@model List<ProjectViewModel>
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_SecurityLayout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Members</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ProjectViewModel P in Model)
+        {
+            <tr onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = P.ProjectId})'">
+                <td>@P.Title</td>
+                <td>@P.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

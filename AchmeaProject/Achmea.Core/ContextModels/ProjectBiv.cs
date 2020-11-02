@@ -5,14 +5,14 @@ using System.Text;
 
 namespace AchmeaProject.Models
 {
-    public class BIVRequirement
+    public class ProjectBiv
     {
         public int Id { get; set; }
+        public int ProjectId { get; set; }
+        [ForeignKey("ProjectId")]
+        public Project Project { get; set; }
         public int BivId { get; set; }
         [ForeignKey("BivId")]
         public Biv Biv { get; set; }
-        public int RequirementId { get; set; }
-        [ForeignKey("RequirementId")]
-        public SecurityRequirement SecurityRequirement { get; set; }
     }
 }

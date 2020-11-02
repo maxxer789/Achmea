@@ -4,8 +4,10 @@
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Select" asp-controller="ESA">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <h1>Project gegevens</h1>
+        <form asp-action="Create" asp-controller="Project">
             <div class="form-group">
                 <label asp-for="@Model.Project.Title" class="control-label"></label>
                 <input asp-for="@Model.Project.Title" class="form-control" />
@@ -22,9 +24,35 @@
             <div class="form-group" hidden="hidden">
                 <input asp-for="@Model.Project.UserID" class="form-control" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="form-group" style="float: right">
+                <button class="btn btn-primary" id="NextBtn" name="nextbtn" type="submit" value="Volgende">Volgende</button>
             </div>
+
+            @if (Model.Bivs.Count > 0)
+            {
+                <!-- Biv information to pass through -->
+                @for (int i = 0; i < @Model.Bivs.Count; i++)
+                {
+                    @Html.HiddenFor(model => Model.Bivs[i].Id)
+                    @Html.HiddenFor(model => Model.Bivs[i].Name)
+                    @Html.HiddenFor(model => Model.Bivs[i].isSelected)
+                }
+            }
+
+            @if (Model.AspectAreas.Count > 0)
+            {
+                <!-- AspectAreas information to pass through -->
+                @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+                {
+                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                    @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+                }
+            }
+
+            <input type="hidden" name="submitclicked" value="">
         </form>
     </div>
 </div>
+

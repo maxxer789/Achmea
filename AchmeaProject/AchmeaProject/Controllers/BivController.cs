@@ -7,6 +7,8 @@ using Achmea.Core.Logic;
 using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
+using AchmeaProject.Sessions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -17,36 +19,52 @@ namespace AchmeaProject.Controllers
         private readonly BivLogic Logic;
         private readonly IBiv Interface;
 
-        public BivController(IConfiguration config)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
+
+        public BivController(IConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             Interface = new BivDAL();
             Logic = new BivLogic(Interface);
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpPost]
-        public IActionResult Select(ProjectCreateViewModel vm)
+        [HttpGet]
+        public IActionResult Select()
         {
-            if (vm.AspectAreas.Count(e => e.isSelected == true) == 0)
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
             {
-                ModelState.AddModelError(string.Empty,"Please select atleast one applicable aspect area");
-
-                return View("Views/ESA/Select.cshtml", vm);
+                RedirectToAction("Create", "Project");
             }
 
+            ProjectCreateViewModel vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
 
-            vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+            if (vm.Bivs.Count == 0)
+            {
+                vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+            }
 
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Example(ProjectCreateViewModel vm)
+        public IActionResult Select(ProjectCreateViewModel vm, string submitButton)
         {
-            if (vm.Bivs.Count(e => e.isSelected == true) == 0)
+            if (vm.Bivs.Count(e => e.isSelected == true) == 0 && submitButton == "next")
             {
-                ModelState.AddModelError(string.Empty, "Please select atleast one applicable biv classification");
+                ModelState.AddModelError(string.Empty, "Please select atleast one applicable aspect area");
+                return View(vm);
+            }
 
-                return View("Views/BIV/Select.cshtml", vm);
+            _session.Update("Project", vm);
+
+            if (submitButton == "next")
+            {
+                return RedirectToAction("ConfirmDetails", "Project");
+            }
+            if (submitButton == "back")
+            {
+                return RedirectToAction("Select", "ESA");
             }
 
             return View(vm);
