@@ -24,6 +24,7 @@ namespace AchmeaProject.Controllers
 
         //private readonly BIVLogic BivLogic;
         //private readonly IBIV BivInterface;
+        //om te deleten
 
         private readonly RequiermentLogic Logic;
         private readonly IRequirement Interface;
