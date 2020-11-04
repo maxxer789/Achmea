@@ -2,19 +2,26 @@
 }
 
 main {
+    border-radius: 15px;
+    border: 1px solid;
+    border-bottom: 2px solid;
+    border-color: black;
     min-height: 100%;
-    background-color: yellow;
     display: grid;
+    background-color: #bab2b5;
 }
 
 .con-header {
-    background-color: purple;
     width: 100%;
     height: 200px;
 }
 
 .header-title {
-    background-color: green;
+    border-radius: 15px;
+    border: 1px solid;
+    border-bottom: 2px solid;
+    border-color: black;
+    background-color: #eee2dc;
     height: 100%;
     width: 35%;
     float: left;
@@ -24,57 +31,84 @@ main {
 }
 
 .header-desc {
-    background-color: red;
+    border-radius: 15px;
+    border: 1px solid;
+    border-bottom: 2px solid;
+    border-color: black;
+    background-color: #eee2dc;
     height: 100%;
     width: 65%;
     float: right;
-    padding: 70px 10px;
-    text-align: center;
+    padding: 15px 10px;
     word-wrap: break-word;
 }
 
 .con-content {
-    background-color: pink;
     width: 100%;
     height: 100%;
 }
 
 .con-requirement {
-    background-color: teal;
 }
 
 .requirement-info {
-    background-color: orange;
+    border-radius: 15px;
+    background-color: #edc7b7;
     width: 80%;
     float: left;
     padding: 10px 10px;
     text-align: center;
     word-wrap: break-word;
-    margin: 10px 10px 0 10px;
+    margin: 0 10px 0 10px;
+    border: 1px solid;
+    border-bottom: 2px solid;
+    cursor: pointer;
+    user-select: none;
+    float: left;
+    border-color: black;
 }
 
+
 .requirement-check {
-    background-color: cyan;
+    color: #eee2dc;
+    border-radius: 15px;
+    background-color: #123c69;
     width: 150px;
     float: right;
     padding: 10px 10px;
     text-align: center;
     word-wrap: break-word;
-    margin: 10px 10px 0 10px;
+    margin: 0 10px 0 10px;
     grid-row: 1;
+    border: 1px solid;
+    border-bottom: 2px solid;
+    border-color: black;
 }
 
-.con-biv {
-    background-color: indianred;
-    display: grid;
-    justify-content: space-between;
+.requirement-info:hover, .active {
+    background-color: #ac3b61;
 }
 
-.biv {
-    background-color: lightseagreen;
-    grid-row: 1;
-    margin: 10px 10px 0 10px;
-    text-align: center;
-    width: 100px;
+.requirement-info:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: black;
+    float: right;
+    margin-left: 5px;
+    padding-top: 0;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.collapsible {
+    border-radius: 15px;
+    margin: 0 10px 0 10px;
+    background-color: #eee2dc;
     padding: 10px 10px;
+    display: none;
+    width: 80%;
+    border: 1px solid;
+    border-bottom: 2px solid;
 }
