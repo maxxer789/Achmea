@@ -129,7 +129,18 @@ namespace Achmea.Core
 
         public List<EsaAspect> GetEsaForProject(int projectId)
         {
-            throw new NotImplementedException();
+            List<EsaAspect> projectEsaAspects = new List<EsaAspect>();
+            List<EsaAspect> esaAspects = new List<EsaAspect>(EsaAspect);
+
+            foreach (ProjectEsaAspect projectEsa in ProjectEsaAspect)
+            {
+                if (projectEsa.ProjectId == projectId)
+                {
+                    projectEsaAspects.Add(esaAspects.Where(aspect => aspect.AspectId == projectEsa.AspectId).SingleOrDefault());
+                }
+            }
+            projectEsaAspects = projectEsaAspects.OrderBy(esa => esa.AspectId).ToList();
+            return projectEsaAspects;
         }
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)

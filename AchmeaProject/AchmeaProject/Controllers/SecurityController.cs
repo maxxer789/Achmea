@@ -19,6 +19,7 @@ namespace AchmeaProject.Controllers
         private readonly UserLogic UserLogic;
         private readonly ProjectLogic ProjectLogic;
         private readonly IUser IUser;
+        private readonly IRequirement IRequirement;
 
         public SecurityController(IConfiguration config)
         {
@@ -26,6 +27,7 @@ namespace AchmeaProject.Controllers
             IUser = new UserDAL();
             UserLogic = new UserLogic(IUser);
             ProjectLogic = new ProjectLogic(IProject);
+            IRequirement = new RequirementDAL();
         }
 
         public IActionResult Index()
@@ -47,20 +49,30 @@ namespace AchmeaProject.Controllers
                     Title = model.Title,
                     Status = model.Status,
                 };
+                if (viewModel.CreationDate == "1-1-0001")
+                {
+                    viewModel.CreationDate = "Unset";
+                }
                 vmList.Add(viewModel);
             }
             return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int projectId)
         {
-            Project P = IProject.GetProject(id);
+            Project P = IProject.GetProject(projectId);
 
-            ProjectViewModel vm = new ProjectViewModel()
+            ProjectDetailViewModel vm = new ProjectDetailViewModel()
             {
                 ProjectId = P.ProjectId,
                 Title = P.Title,
-                Status = P.Status
+                Status = P.Status,
+                UserId = P.UserId,
+                Description = P.Description,
+                CreationDate = P.CreationDate.ToString(),
+                EsaAspects = IProject.GetEsaForProject(projectId),
+                RequirementProject = IProject.GetRequirementsForProject(projectId),
+                Requirements = IRequirement.GetAllRequirements()
             };
 
             return View("Views/Accounts/Security/Details.cshtml", vm);
