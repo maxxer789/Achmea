@@ -37,13 +37,29 @@ namespace AchmeaProject.Controllers
 
             DriveService service = AuthenticateServiceAccount(serviceAccountEmail, path);
 
-            CreateFolder(service, "Test folder");
-            UploadFile(service);
-
             DriveViewModel files = new DriveViewModel();
             files.list = ListAll(service);
 
             return View(files);
+        }
+
+        [HttpPost]
+        public IActionResult Index(string folderName, IFormFile file)
+        {
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+
+            string path = Path.Combine(webRootPath, "achmea-294609-fd9d6b48f0d3.p12");
+
+            string serviceAccountEmail = "achmea@achmea-294609.iam.gserviceaccount.com";
+
+            DriveService service = AuthenticateServiceAccount(serviceAccountEmail, path);
+
+            file.
+            CreateFolder(service, folderName);
+            UploadFile(service);
+
+            return RedirectToAction("Index");
         }
 
         public static DriveService AuthenticateServiceAccount(string serviveAccountEmail, string keyFilePath)
@@ -113,25 +129,16 @@ namespace AchmeaProject.Controllers
                 if (service == null)
                     throw new ArgumentNullException("service");
 
+                FilesResource.ListRequest listRequest = service.Files.List();
+                listRequest.Q = "name = 'Achmea'";
+                string folderId = listRequest.Execute().Files[0].Id;
+
                 // Building the initial request.
                 var request = service.Files.List();
-                request.Q = "name = 'Achmea'";
+                request.Q = $"'{folderId}' in parents";
 
-
-                var pageStreamer = new Google.Apis.Requests.PageStreamer<File, FilesResource.ListRequest, FileList, string>(
-                                                   (req, token) => request.PageToken = token,
-                                                   response => response.NextPageToken,
-                                                   response => response.Files);
-
-                var allFiles = new FileList();
-                allFiles.Files = new List<File>();
-
-                foreach (var result in pageStreamer.Fetch(request))
-                {
-                    allFiles.Files.Add(result);
-                }
-
-                return allFiles;
+                FileList allfiles = request.Execute();
+                return allfiles;
             }
             catch (Exception Ex)
             {
@@ -139,7 +146,7 @@ namespace AchmeaProject.Controllers
             }
         }
 
-        public static File UploadFile(DriveService service)
+        public static File UploadFile(DriveService service, IFormFile file)
         {
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.Q = "name = 'Achmea'";

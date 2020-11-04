@@ -8,5 +8,35 @@
 
 @for (int i = 0; i < Model.list.Files.Count; i++)
 {
-<h2>@Model.list.Files[i].Name</h2>
+    <h2>@Model.list.Files[i].Name</h2>
 }
+
+@*<form asp-action="Index" asp-controller="Evidence" enctype="multipart/form-data">
+    <input type="text" name="folderName" />
+    <label for="myfile">Select a file:</label>
+    <input type="file" id="file" name="file">
+    <button type="submit"></button>
+</form>*@
+
+<script type="text/javascript">
+    function OnSubmitHandler(myForm) {
+        var fileUpload = document.getElementById('<% = FileUpload1.ClientID %>');
+
+
+        myForm.action = myForm.action + "?FilePath=" + fileUpload.value;
+
+
+        return true;
+
+
+    }
+</script>
+
+
+<form asp-action="Index" asp-controller="Evidence" enctype="multipart/form-data" 
+      id="Form1" method="post" runat="server" onsubmit="return OnSubmitHandler(this);">
+    ...
+    <label for="myfile">Select a file:</label>
+    <input type="file" id="file" name="file">
+    <button type="submit"></button>
+</form>
