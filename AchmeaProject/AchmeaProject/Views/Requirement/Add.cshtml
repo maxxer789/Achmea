@@ -5,7 +5,7 @@
     <div class="container" style="margin-bottom:50px">
         <form asp-action="Create" asp-controller="Requirement">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div>
+            <div style="display: grid;">
                 <ul class="float-left m-2">
                     @foreach (EsaArea area in ViewBag.Areas)
                     {
