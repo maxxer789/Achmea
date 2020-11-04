@@ -23,6 +23,11 @@ namespace Achmea.Core.SQL
 
         }
 
+        public List<SecurityRequirement> GetAllRequirements()
+        {
+            return SecurityRequirement.OrderBy(x=>x.RequirementId).ToList();
+        }
+
         public SecurityRequirement GetRequirementById(int Id)
         {
             return SecurityRequirement.Where(requirement => requirement.RequirementId == Id).SingleOrDefault();

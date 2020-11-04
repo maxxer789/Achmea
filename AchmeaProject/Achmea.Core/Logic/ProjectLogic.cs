@@ -7,6 +7,11 @@ using System.Text;
 
 namespace Achmea.Core.Logic
 {
+    public enum ProjectStatus
+    {
+        InProgress,
+        Completed
+    }
     public class ProjectLogic
     {
         ProjectDAL projectDAL;
@@ -34,14 +39,23 @@ namespace Achmea.Core.Logic
             {
                 throw new Exception(ex.ToString());
             }
-
         }
         public List<Project> GetProjects()
         {
             return new List<Project>(Projects);
         }
 
-        // public Project GetProject(int projectId)
+        public List<EsaAspect> GetEsaForProject(int projectId)
+        {
+            return projectDAL.GetEsaForProject(projectId);
+        }
+
+        public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
+        {
+            return projectDAL.GetRequirementsForProject(projectId);
+        }
+
+       // public Project GetProject(int projectId)
         //{
         // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
         //}

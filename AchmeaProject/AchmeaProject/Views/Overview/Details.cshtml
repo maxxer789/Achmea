@@ -15,31 +15,16 @@
 </div>
 <div class="con-content">
     @{ int i = 0;}
-    @foreach (EsaAspect req in Model.EsaAspects)
+    @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
         <div class="con-requirements">
             <div class="requirement-info">
-                <h4>@req.Name</h4>
+                <h4>@Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name</h4>
             </div>
             <div class="requirement-check">
-                <h4>@Model.Status</h4>
+                <h4>@req.Status</h4>
             </div>
         </div>
         i++;
     }
-</div>
-
-<div class="con-biv">
-    <div class="biv">
-        <h4>B3</h4>
-    </div>
-    <div class="biv">
-        <h4>I3</h4>
-    </div>
-    <div class="biv">
-        <h4>V3</h4>
-    </div>
-    <div class="requirement-check">
-        <h4>In Progress</h4>
-    </div>
 </div>

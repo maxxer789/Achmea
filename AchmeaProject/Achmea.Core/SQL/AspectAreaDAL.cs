@@ -19,29 +19,20 @@ namespace Achmea.Core.SQL
         public List<EsaAspect> GetAspectAreas()
         {
             return EsaAspect.ToList();
-            //string sql = "SELECT * FROM [ESA_Aspect]";
+        }
 
-            //List<KeyValuePair<object, object>> parameters = new List<KeyValuePair<object, object>>
-            //{
+        public IEnumerable<EsaAspect> SaveAspectToProject(List<EsaAspect> aspects, Project project)
+        {
+            foreach (EsaAspect aspect in aspects)
+            {
+                ProjectEsaAspect pa = new ProjectEsaAspect();
+                pa.AspectId = aspect.AspectId;
+                pa.ProjectId = project.ProjectId;
 
-            //};
-
-            //DataSet result = ExecuteSQL(sql, parameters);
-
-
-            //List<AspectAreaModel> aspects = new List<AspectAreaModel>();
-
-            //if (result != null)
-            //{
-            //        foreach (DataRow dr in result.Tables[0].Rows)
-            //        {
-            //            int index = result.Tables[0].Rows.IndexOf(dr);
-            //            AspectAreaModel aspectarea = DatasetParser.DatasetToAspectArea(result, index);
-            //            aspects.Add(aspectarea);
-            //        }
-            //}
-
-            //return aspects;
+                ProjectEsaAspect.Add(pa);
+                SaveChanges();
+            }
+            return aspects;
         }
     }
 }

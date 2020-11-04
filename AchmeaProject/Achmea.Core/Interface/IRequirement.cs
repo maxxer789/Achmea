@@ -7,6 +7,7 @@ namespace Achmea.Core.Interface
 {
    public interface IRequirement
     {
+        List<SecurityRequirement> GetAllRequirements();
         SecurityRequirement GetRequirementById(int Id);
         IEnumerable<SecurityRequirement> GetRequiermentsFromAreas(List<EsaAspect> aspects);
         IEnumerable<SecurityRequirement> getRequiermentsFromBiv(List<Biv> classifications);
