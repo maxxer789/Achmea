@@ -62,7 +62,7 @@ namespace AchmeaProject.Controllers
         {
             List<EsaAspect> areas = new List<EsaAspect>();
             List<SecurityRequirement> requirements = new List<SecurityRequirement>();
-            foreach(string id in Ids)
+            foreach (string id in Ids)
             {
                 EsaAspect asp = new EsaAspect();
                 asp.AspectId = Convert.ToInt32(id);
@@ -114,16 +114,11 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Create(RequirementCreateViewModel rcvm)
         {
-            if(!(rcvm.BivIds == null || rcvm.AreaIds == null || rcvm.Description == null || rcvm.Details == null || rcvm.Family == null || rcvm.MainGroup == null || rcvm.Name == null || rcvm.RequirementNumber == null))
+            if (!(rcvm.BivIds == null || rcvm.AreaIds == null || rcvm.Description == null  || rcvm.Family == null || rcvm.MainGroup == null || rcvm.Name == null || rcvm.RequirementNumber == null))
             {
                 List<int> bivIds = new List<int>();
                 List<int> areaIds = new List<int>();
-                bool hasB = false;
-                bool hasI = false; 
-                bool hasV = false;
-                int lowestB = 3;
-                int lowestI = 6;
-                int lowestV = 9;
+                int[] bivsa = { 0, 0, 0 };
 
                 List<Biv> bivs = BivLogic.GetBiv();
 
@@ -138,34 +133,29 @@ namespace AchmeaProject.Controllers
 
                 bivs = bivs.Where(b => bivIds.Any(id => Convert.ToInt32(id) == b.Id)).ToList();
 
-                foreach(Biv b in bivs)
+                foreach (Biv b in bivs)
                 {
                     if (b.Name.First().ToString() == "b")
                     {
-                        hasB = true;
-                        if (b.Id < lowestB) lowestB = b.Id;
+                        if (b.Id < bivsa[0] || bivsa[0] == 0) bivsa[0] = b.Id;
                     }
-                    if (b.Name.First().ToString() == "i") 
-                    { 
-                        hasI = true;
-                        if (b.Id < lowestI) lowestI = b.Id;
+                    if (b.Name.First().ToString() == "i")
+                    {
+                        if (b.Id < bivsa[1] || bivsa[1] == 0) bivsa[1] = b.Id;
                     }
                     if (b.Name.First().ToString() == "v")
                     {
-                        hasV = true;
-                        if (b.Id < lowestV) lowestV = b.Id;
+                        if (b.Id < bivsa[2] || bivsa[2] == 0) bivsa[2] = b.Id;
                     }
                 }
                 bivIds.Clear();
-                bivIds.Add(lowestB);
-                bivIds.Add(lowestI);
-                bivIds.Add(lowestV);
+                foreach(int i in bivsa)
+                {
+                    if (i != 0) bivIds.Add(i);
+                }
                 SecurityRequirement req = ViewModelConverter.securityRequirementViewModelToModel(rcvm);
 
-                if(hasB && hasI && hasV)
-                {
-                    Logic.CreateRequirement(req, bivIds, areaIds);
-                }
+                Logic.CreateRequirement(req, bivIds, areaIds);
             }
 
             return RedirectToAction("Add");

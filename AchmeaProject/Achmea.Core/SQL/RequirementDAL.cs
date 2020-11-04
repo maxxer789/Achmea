@@ -135,6 +135,7 @@ namespace Achmea.Core.SQL
 
             SaveChanges();
             req.RequirementId = req.RequirementId;
+
             foreach (int Id in bivIds)
             {
                 BIVRequirement br = new BIVRequirement();
@@ -143,6 +144,8 @@ namespace Achmea.Core.SQL
 
                 BIVRequirement.Add(br);
             }
+            SaveChanges();
+
             foreach(int Id in areaIds)
             {
                 EsaAreaRequirement areaReq = new EsaAreaRequirement();
