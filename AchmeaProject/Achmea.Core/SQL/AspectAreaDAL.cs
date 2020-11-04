@@ -21,6 +21,11 @@ namespace Achmea.Core.SQL
             return EsaAspect.ToList();
         }
 
+        public List<EsaArea> GetAreas()
+        {
+            return EsaArea.ToList();
+        }
+
         public IEnumerable<EsaAspect> SaveAspectToProject(List<EsaAspect> aspects, Project project)
         {
             foreach (EsaAspect aspect in aspects)

@@ -1,0 +1,46 @@
+﻿@using AchmeaProject.Models
+@model RequirementCreateViewModel
+
+
+    <div class="container" style="margin-bottom:50px">
+        <form asp-action="Create" asp-controller="Requirement">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div>
+                <ul class="float-left m-2">
+                    @foreach (EsaArea area in ViewBag.Areas)
+                    {
+                        <li>
+                            <input name="AreaIds" type="checkbox" value="@area.AreaId" /> @area.Name<br />
+                        </li>
+                    }
+                </ul>
+                <ul class="m-1">
+                    @foreach (Biv biv in ViewBag.Bivs)
+                    {
+                        <li>
+                            <input name="BivIds" type="checkbox" value="@biv.Id" />@biv.Name<br />
+                        </li>
+                    }
+                </ul>
+                <div class="col-12">
+                    <div class="col-12">
+                        Name: @Html.TextBoxFor(m => m.Name)<br />
+                        Family: @Html.DropDownListFor(m => m.Family, new SelectList(ViewBag.Families, "Name"))<br />
+                        Main Group: @Html.DropDownListFor(m => m.MainGroup, new SelectList(ViewBag.Groups, "Group"))
+                    </div>
+                    <div class="col-4">
+                        Description: @Html.TextBoxFor(m => m.Description)
+                    </div>
+                    <div class="col-4">
+                        Details: @Html.TextBoxFor(m => m.Details)
+                    </div>
+                    <div class="col-4">
+                        RequirementNumber: @Html.TextBoxFor(m => m.RequirementNumber)
+                    </div>
+                </div>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-primary" type="submit" value="next" name="submitButton">Volgende</button>
+            </div>
+        </form>
+    </div>

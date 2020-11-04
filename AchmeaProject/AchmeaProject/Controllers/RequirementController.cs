@@ -97,5 +97,78 @@ namespace AchmeaProject.Controllers
 
             return null;
         }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            string[] families = { "AC", "AT", "AU", "CA", "CM", "CP", "DT", "IA", "LR", "MA", "NW", "PE", "PS", "SA", "SC", "SI" };
+            string[] Groups = {  "5. Informatiebeveiligingsbeleid", "6. Organiseren van informatiebeveiliging", "7. Veilig personeel", "8. Beheer van bedrijfsmiddelen",
+                            "9. Toegangsbeveiliging", "10. Cryptografie", "11. Fysieke beveiliging en beveiliging van de omgeving", "12. Beveiliging bedrijfsvoering",
+                            "13. Communicatiebeveiliging", "14. Acquisitie, ontwikkeling en onderhoud van informatiesystemen", "15. Leveranciersrelaties", "18. Naleving"};
+            ViewBag.Bivs = BivLogic.GetBiv();
+            ViewBag.Areas = AreaLogic.GetAreas();
+            ViewBag.Families = families;
+            ViewBag.Groups = Groups;
+            return View();
+        }
+
+        public IActionResult Create(RequirementCreateViewModel rcvm)
+        {
+            if(!(rcvm.BivIds == null || rcvm.AreaIds == null || rcvm.Description == null || rcvm.Details == null || rcvm.Family == null || rcvm.MainGroup == null || rcvm.Name == null || rcvm.RequirementNumber == null))
+            {
+                List<int> bivIds = new List<int>();
+                List<int> areaIds = new List<int>();
+                bool hasB = false;
+                bool hasI = false; 
+                bool hasV = false;
+                int lowestB = 3;
+                int lowestI = 6;
+                int lowestV = 9;
+
+                List<Biv> bivs = BivLogic.GetBiv();
+
+                foreach (string id in rcvm.AreaIds)
+                {
+                    areaIds.Add(Convert.ToInt32(id));
+                }
+                foreach (string id in rcvm.BivIds)
+                {
+                    bivIds.Add(Convert.ToInt32(id));
+                }
+
+                bivs = bivs.Where(b => bivIds.Any(id => Convert.ToInt32(id) == b.Id)).ToList();
+
+                foreach(Biv b in bivs)
+                {
+                    if (b.Name.First().ToString() == "b")
+                    {
+                        hasB = true;
+                        if (b.Id < lowestB) lowestB = b.Id;
+                    }
+                    if (b.Name.First().ToString() == "i") 
+                    { 
+                        hasI = true;
+                        if (b.Id < lowestI) lowestI = b.Id;
+                    }
+                    if (b.Name.First().ToString() == "v")
+                    {
+                        hasV = true;
+                        if (b.Id < lowestV) lowestV = b.Id;
+                    }
+                }
+                bivIds.Clear();
+                bivIds.Add(lowestB);
+                bivIds.Add(lowestI);
+                bivIds.Add(lowestV);
+                SecurityRequirement req = ViewModelConverter.securityRequirementViewModelToModel(rcvm);
+
+                if(hasB && hasI && hasV)
+                {
+                    Logic.CreateRequirement(req, bivIds, areaIds);
+                }
+            }
+
+            return RedirectToAction("Add");
+        }
     }
 }
