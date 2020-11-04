@@ -21,7 +21,7 @@ namespace AchmeaProject.Controllers
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
-            Requirement = new RequiermentDAL();
+            Requirement = new RequirementDAL();
         }
 
         public IActionResult Index()
