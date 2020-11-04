@@ -134,7 +134,16 @@ namespace Achmea.Core
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
         {
-            throw new NotImplementedException();
+            List<SecurityRequirementProject> requirements = new List<SecurityRequirementProject>();
+            foreach (SecurityRequirementProject reqproject in SecurityRequirementProject)
+            {
+                if (reqproject.ProjectId == projectId)
+                {
+                    requirements.Add(reqproject);
+                }
+            }
+            requirements = requirements.OrderBy(x => x.SecurityRequirementId).ToList();
+            return requirements;
         }
 
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)
