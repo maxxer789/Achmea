@@ -16,9 +16,9 @@ using System.Threading.Tasks;
 
 namespace Achmea.Core.SQL
 {
-    public class RequiermentDAL : AchmeaContext, IRequirement
+    public class RequirementDAL : AchmeaContext, IRequirement
     {
-        public RequiermentDAL()
+        public RequirementDAL()
         {
 
         }
@@ -45,7 +45,7 @@ namespace Achmea.Core.SQL
                               join ea in EsaAspectArea on a.AreaId equals ea.EsaAreaId
                               where ea.EsaAspectId == aspect.AspectId
 
-                              select new EsaArea 
+                              select new EsaArea
                               {
                                   AreaId = a.AreaId,
                                   Name = a.Name,
@@ -115,7 +115,7 @@ namespace Achmea.Core.SQL
 
         public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, Project project)
         {
-            foreach(SecurityRequirement req in requirements)
+            foreach (SecurityRequirement req in requirements)
             {
                 SecurityRequirementProject srm = new SecurityRequirementProject();
                 srm.SecurityRequirementId = req.RequirementId;

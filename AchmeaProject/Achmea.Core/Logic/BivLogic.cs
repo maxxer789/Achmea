@@ -20,6 +20,11 @@ namespace Achmea.Core.Logic
         {
             return _IBiv.GetBiv();
         }
+
+        public IEnumerable<Biv> SaveBivToProject(List<Biv> classifications, Project project)
+        {
+            return _IBiv.SaveBivToProject(classifications, project);
+        }
     }
 }
 

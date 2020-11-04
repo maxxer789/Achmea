@@ -1,0 +1,103 @@
+﻿@model ProjectCreateViewModel
+@{ }
+
+
+
+<form asp-action="ConfirmDetails" asp-controller="Project">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <h2>Overzicht geselecteerde opties</h2>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <h3>Naam van project</h3>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <h3>Beschrijving van het project</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <p> @Model.Project.Title</p>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <p> @Model.Project.Description</p>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                <div class=" row d-flex justify-content-center">
+                    <h3>Geselecteerde aspectgebieden</h3>
+                </div>
+                <br />
+                @for (int i = 0; i < Model.AspectAreas.Count; i++)
+                {
+                    if (Model.AspectAreas[i].isSelected == true)
+                    {
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <p>@Model.AspectAreas[i].Title</p>
+        </div>
+    </div>}
+}
+            </div>
+            <div class="col-6">
+                <div class=" row d-flex justify-content-center">
+                    <h3>Geselecteerde BIV classificates</h3>
+                </div>
+                <br />
+                @for (int j = 0; j < Model.Bivs.Count; j++)
+                {
+                    if (Model.Bivs[j].isSelected == true)
+                    {
+    <div class="row d-flex justify-content-center">
+        <p>@Model.Bivs[j].Name</p>
+    </div>}
+}
+            </div>
+        </div>
+        <br />
+    </div>
+
+    <!-- Project information to pass through -->
+    @if (Model.Project != null)
+    {
+@Html.HiddenFor(model => Model.Project.Title)
+                @Html.HiddenFor(model => Model.Project.CreationDate)
+                                @Html.HiddenFor(model => Model.Project.Description)
+                                                @Html.HiddenFor(model => @Model.Project.UserID)}
+
+    @if (Model.Bivs.Count > 0)
+    {<!-- Biv information to pass through -->
+                        @for (int i = 0; i < @Model.Bivs.Count; i++)
+                        {
+        @Html.HiddenFor(model => Model.Bivs[i].Id)
+                            @Html.HiddenFor(model => Model.Bivs[i].Name)
+                                                @Html.HiddenFor(model => Model.Bivs[i].isSelected)}}
+
+    @if (Model.AspectAreas.Count > 0)
+    {<!-- AspectAreas information to pass through -->
+                        @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+                        {
+        @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                            @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                                                @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                                                                    @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}}
+
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col-2">
+            <a class="btn btn-primary" asp-action="Select" asp-controller="Biv">Terug</a>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-primary" type="submit">Bevestig</button>
+        </div>
+    </div>
+</form>

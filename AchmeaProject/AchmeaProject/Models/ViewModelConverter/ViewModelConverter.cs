@@ -34,7 +34,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                     Description = model.Description
                 };
                 vms.Add(vm);
-            }    
+            }
 
             return vms;
         }
@@ -51,7 +51,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                     Name = model.Title
                 };
                 aspects.Add(vm);
-            }    
+            }
 
             return aspects;
         }
@@ -66,7 +66,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Firstname = VM.Firstname,
                 Lastname = VM.Lastname,
                 PhoneNumber = VM.PhoneNumber,
-                RoleId = VM.RoleID.ToString()
+                RoleId = VM.RoleID
             };
         }
 
@@ -80,7 +80,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Firstname = User.Firstname,
                 Lastname = User.Lastname,
                 PhoneNumber = User.PhoneNumber,
-                RoleID = Convert.ToInt32(User.RoleId)
+                RoleID = User.RoleId
             };
         }
       
@@ -110,6 +110,7 @@ namespace AchmeaProject.Models.ViewModelConverter
 
             return vms;
         }
+
         public static List<Biv> BivViewModelToBivModel(List<BivViewModel> bvms)
         {
             List<Biv> Bivs = new List<Biv>();
@@ -127,6 +128,38 @@ namespace AchmeaProject.Models.ViewModelConverter
             return Bivs;
         }
 
+        public static ProjectViewModel ProjectToVm(Project Pmodel)
+        {
+            ProjectViewModel vm = new ProjectViewModel()
+            {
+                ProjectId = Pmodel.ProjectId,
+                Title = Pmodel.Title,
+                Description = Pmodel.Description,
+                Status = Pmodel.Status
+            };
+
+            return vm;
+        }
+
+        public static List<ProjectViewModel> VmToProject(List<Project> Pmodel)
+        {
+            List<ProjectViewModel> vms = new List<ProjectViewModel>();
+
+            foreach (var model in Pmodel)
+            {
+                ProjectViewModel vm = new ProjectViewModel()
+                {
+                    ProjectId = model.ProjectId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    Status = model.Status
+                };
+                vms.Add(vm);
+            }
+
+            return vms;
+        }
+
         public static Project ProjectViewModelToProjectModel(ProjectCreationDetailsViewModel pvm)
         {
             return new Project
@@ -134,7 +167,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Title = pvm.Title,
                 Description = pvm.Description,
                 UserId = pvm.UserID,
-                CreationDate = Convert.ToDateTime(pvm.CreationDate),                
+                CreationDate = Convert.ToDateTime(pvm.CreationDate),
             };
         }
     }
