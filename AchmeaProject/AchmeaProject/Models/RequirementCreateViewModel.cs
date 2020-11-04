@@ -13,7 +13,7 @@ namespace AchmeaProject.Models
         public string Family { get; set; }
         public string RequirementNumber { get; set; }
         public string MainGroup { get; set; }
-        List<int> AreaIds { get; set; }
-        List<int> BivIds { get; set; }
+        public List<string> AreaIds { get; set; }
+        public List<string> BivIds { get; set; }
     }
 }

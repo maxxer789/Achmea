@@ -11,5 +11,6 @@ namespace Achmea.Core.Interface
         IEnumerable<SecurityRequirement> GetRequiermentsFromAreas(List<EsaAspect> aspects);
         IEnumerable<SecurityRequirement> getRequiermentsFromBiv(List<Biv> classifications);
         IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, Project project);
+        SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds);
     }
 }
