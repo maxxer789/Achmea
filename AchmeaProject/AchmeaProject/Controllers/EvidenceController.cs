@@ -55,9 +55,8 @@ namespace AchmeaProject.Controllers
 
             DriveService service = AuthenticateServiceAccount(serviceAccountEmail, path);
 
-            file.
             CreateFolder(service, folderName);
-            UploadFile(service);
+            UploadFile(service, file);
 
             return RedirectToAction("Index");
         }
