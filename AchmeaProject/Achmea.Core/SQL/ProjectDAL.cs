@@ -18,12 +18,14 @@ namespace Achmea.Core
     public class ProjectDAL : AchmeaContext, IProject
     {
         List<Project> projectModels;
+        SecurityRequirementProject srpModel;
         Project newProject;
 
         public ProjectDAL()
         {
             projectModels = new List<Project>();
             newProject = new Project();
+            srpModel = new SecurityRequirementProject();
         }
         
         public ProjectDAL(string ConnectionString)

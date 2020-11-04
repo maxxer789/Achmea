@@ -44,25 +44,21 @@ namespace AchmeaProject.Controllers
                 ProjectViewModel viewModel = new ProjectViewModel()
                 {
                     ProjectId = model.ProjectId,
-                    Title = model.Title,
                     Status = model.Status,
-                    Description = model.Description,
                 };
                 vmList.Add(viewModel);
             }
             return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
         }
 
-        public IActionResult Details(int projectId)
+        public IActionResult Details(int id)
         {
-            Project P = IProject.GetProject(projectId);
+            Project SRP = IProject.GetProject(id);
 
-            ProjectDetailViewModel vm = new ProjectDetailViewModel()
+            ProjectViewModel vm = new ProjectViewModel()
             {
-                ProjectId = P.ProjectId,
-                Title = P.Title,
-                Description = P.Description,
-                Status = P.Status
+                ProjectId = SRP.ProjectId,
+                Status = SRP.Status
             };
 
             return View("Views/Accounts/Security/Details.cshtml", vm);

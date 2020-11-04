@@ -1,8 +1,7 @@
-﻿@using Achmea.Core.Model
-@model ProjectDetailViewModel
+﻿@model ProjectViewModel
 
 @{
-    ViewData["Title"] = "Detail"; 
+    ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
 }
 
@@ -10,4 +9,5 @@
     <li>@Model.ProjectId</li>
     <li>@Model.Title</li>
     <li>@Model.Status</li>
+    <li>@Model.Description</li>
 </ul>
