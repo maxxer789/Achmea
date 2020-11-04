@@ -44,6 +44,7 @@ namespace AchmeaProject.Controllers
                 ProjectViewModel viewModel = new ProjectViewModel()
                 {
                     ProjectId = model.ProjectId,
+                    Title = model.Title,
                     Status = model.Status,
                 };
                 vmList.Add(viewModel);
@@ -53,12 +54,13 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details(int id)
         {
-            Project SRP = IProject.GetProject(id);
+            Project P = IProject.GetProject(id);
 
             ProjectViewModel vm = new ProjectViewModel()
             {
-                ProjectId = SRP.ProjectId,
-                Status = SRP.Status
+                ProjectId = P.ProjectId,
+                Title = P.Title,
+                Status = P.Status
             };
 
             return View("Views/Accounts/Security/Details.cshtml", vm);
