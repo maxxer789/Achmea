@@ -1,0 +1,12 @@
+@model DriveViewModel;
+@{
+    <link rel="stylesheet" href="~/css/ESA-checklist.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+}
+
+@for (int i = 0; i < Model.list.Files.Count; i++)
+{
+<h2>@Model.list.Files[i].Name</h2>
+}
