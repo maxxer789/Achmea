@@ -128,5 +128,33 @@ namespace Achmea.Core.SQL
             }
             return SecurityRequirementProject.ToList().Where(sr => sr.ProjectId == project.ProjectId);
         }
+
+        public SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds)
+        {
+            SecurityRequirement.Add(req);
+
+            SaveChanges();
+            req.RequirementId = req.RequirementId;
+            foreach (int Id in bivIds)
+            {
+                BIVRequirement br = new BIVRequirement();
+                br.BivId = Id;
+                br.RequirementId = req.RequirementId;
+
+                BIVRequirement.Add(br);
+            }
+            foreach(int Id in areaIds)
+            {
+                EsaAreaRequirement areaReq = new EsaAreaRequirement();
+                areaReq.EsaAreaId = Id;
+                areaReq.RequirementId = req.RequirementId;
+
+                EsaAreaRequirement.Add(areaReq);
+            }
+
+            SaveChanges();
+
+            return req;
+        }
     }
 }

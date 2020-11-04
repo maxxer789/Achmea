@@ -21,6 +21,11 @@ namespace Achmea.Core.Logic
             return _IAspectArea.GetAspectAreas();
         }
 
+        public List<EsaArea> GetAreas()
+        {
+            return _IAspectArea.GetAreas();
+        }
+
         public IEnumerable<EsaAspect> SaveAspectToProject(List<EsaAspect> aspects, Project project)
         {
             return _IAspectArea.SaveAspectToProject(aspects, project);
