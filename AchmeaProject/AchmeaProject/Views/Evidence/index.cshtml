@@ -3,7 +3,8 @@
                 <link rel="stylesheet" href="~/css/ESA-checklist.css" />
                             <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
                                         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-                                                    <script src="~/lib/jquery/dist/jquery.min.js"></script> }
+                                                    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+}
 
 @if (Model.List.Files != null)
 {
@@ -12,8 +13,12 @@
 <h2>@Model.List.Files[i].Name</h2>}
 }
 
+@if (Model.File != null)
+{
 
-<h2>@Model.File.Name</h2>
+<a asp-action="Process" asp-controller="Evidence"><h2>@Model.File.Name</h2></a>
+}
+
 
 <form asp-action="Index" asp-controller="Evidence" enctype="multipart/form-data">
     <div class="file-field input-field">

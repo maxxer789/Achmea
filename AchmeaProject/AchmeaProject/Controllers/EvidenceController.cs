@@ -39,15 +39,32 @@ namespace AchmeaProject.Controllers
                 File = GoogleDriveConnection.GetFileById(service, "1NTg-K35pRhzkI2rudMRnBAL18GgsSiVL")
             };
 
+
+
             return View(files);
         }
 
         [HttpPost]
         public IActionResult Index(IFormFile file)
         {
-            GoogleDriveConnection.UploadFile(service, file);
+            if (file != null)
+            {
+                GoogleDriveConnection.UploadFile(service, file);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                EvidenceFileViewModel files = new EvidenceFileViewModel();
+
+                return View(files);
+            }
+        }
+
+        public System.Diagnostics.Process Process()
+        {
+            File file = GoogleDriveConnection.GetFileById(service, "1NTg-K35pRhzkI2rudMRnBAL18GgsSiVL");
+            return System.Diagnostics.Process.Start(file.Name);
         }
     }
 }

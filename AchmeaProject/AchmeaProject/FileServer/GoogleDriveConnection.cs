@@ -118,7 +118,7 @@ namespace Achmea.Core.Logic
             }
             catch (Exception Ex)
             {
-                throw new Exception("Request Files.List failed.", Ex);
+                throw new Exception(Ex.Message);
             }
         }
 
@@ -151,7 +151,7 @@ namespace Achmea.Core.Logic
                 Parents = new List<string> { folderId }
             };
 
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            MemoryStream stream = new MemoryStream();
             uploadFile.CopyTo(stream);
 
             try
@@ -169,7 +169,7 @@ namespace Achmea.Core.Logic
         private static string GetMimeType(string fileName)
         {
             string mimeType = "application/unknown";
-            string ext = System.IO.Path.GetExtension(fileName).ToLower();
+            string ext = Path.GetExtension(fileName).ToLower();
             Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
             if (regKey != null && regKey.GetValue("Content Type") != null)
                 mimeType = regKey.GetValue("Content Type").ToString();
