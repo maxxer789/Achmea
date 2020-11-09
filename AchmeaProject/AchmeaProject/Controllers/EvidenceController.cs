@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Achmea.Core.Logic;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Configuration;
 using File = Google.Apis.Drive.v3.Data.File;
 
 namespace AchmeaProject.Controllers
@@ -24,23 +26,18 @@ namespace AchmeaProject.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly DriveService service;
 
-        public EvidenceController(IWebHostEnvironment webHost)
+        public EvidenceController(IWebHostEnvironment webHost, IConfiguration configuration)
         {
             _webHostEnvironment = webHost;
             string webRootPath = _webHostEnvironment.WebRootPath;
             string contentRootPath = _webHostEnvironment.ContentRootPath;
-            service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath);
+            string serviceAccountEmail = configuration.GetSection("ServiceAccountGoogleDrive:ServiceAccountEmail").Value;
+            service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath, serviceAccountEmail);
         }
 
         public IActionResult Index()
         {
-            EvidenceFileViewModel files = new EvidenceFileViewModel
-            {
-                File = GoogleDriveConnection.GetFileById(service, "1NTg-K35pRhzkI2rudMRnBAL18GgsSiVL")
-            };
-
-
-
+            EvidenceFileViewModel files = new EvidenceFileViewModel();
             return View(files);
         }
 
@@ -49,9 +46,9 @@ namespace AchmeaProject.Controllers
         {
             if (file != null)
             {
-                GoogleDriveConnection.UploadFile(service, file);
+                string id = GoogleDriveConnection.UploadFile(service, file);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("SelectById", "Evidence", new { id });
             }
             else
             {
@@ -61,10 +58,14 @@ namespace AchmeaProject.Controllers
             }
         }
 
-        public System.Diagnostics.Process Process()
+        public IActionResult SelectById(string id)
         {
-            File file = GoogleDriveConnection.GetFileById(service, "1NTg-K35pRhzkI2rudMRnBAL18GgsSiVL");
-            return System.Diagnostics.Process.Start(file.Name);
+            EvidenceFileViewModel files = new EvidenceFileViewModel
+            {
+                File = GoogleDriveConnection.GetFileById(service, id)
+            };
+
+            return View(files);
         }
     }
 }

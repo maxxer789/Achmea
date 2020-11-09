@@ -14,18 +14,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using File = Google.Apis.Drive.v3.Data.File;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Achmea.Core.Logic
 {
     public static class GoogleDriveConnection
     {
 
-        public static DriveService GetDriveService(string webRootPath, string contentRootPath)
+        public static DriveService GetDriveService(string webRootPath, string contentRootPath, string serviceAccountEmail)
         {
 
             string path = Path.Combine(webRootPath, "achmea-294609-fd9d6b48f0d3.p12");
 
-            string serviceAccountEmail = "achmea@achmea-294609.iam.gserviceaccount.com";
             DriveService service = AuthenticateServiceAccount(serviceAccountEmail, path);
             return service;
         }
@@ -127,6 +127,7 @@ namespace Achmea.Core.Logic
             try
             {
                 var request = service.Files.Get(id);
+                request.Fields = "name, id, webContentLink, webViewLink";
                 var File = request.Execute();
                 return File;
             }
@@ -175,7 +176,5 @@ namespace Achmea.Core.Logic
                 mimeType = regKey.GetValue("Content Type").ToString();
             return mimeType;
         }
-
-
     }
 }
