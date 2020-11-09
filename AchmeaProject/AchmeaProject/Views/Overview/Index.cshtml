@@ -3,23 +3,24 @@
     ViewData["Title"] = "Home Page";
 }
 
+<link rel="stylesheet" href="~/css/Overview.css" />
 <h1>Overview</h1>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Creation Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (ProjectViewModel project in Model)
-        {
-            <tr onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
-                <td>@project.Title</td>
-                <td>@project.Status</td>
-                <td>@project.CreationDate</td>
+    <table>
+        <thead>
+            <tr class="table-header">
+                <th>Title</th>
+                <th>Status</th>
+                <th>Creation Date</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (ProjectViewModel project in Model)
+            {
+                <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
+                    <td>@project.Title</td>
+                    <td>@project.Status</td>
+                    <td>@project.CreationDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
