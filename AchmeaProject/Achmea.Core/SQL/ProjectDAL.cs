@@ -53,7 +53,7 @@ namespace Achmea.Core
             project.UserId = newProject.UserId;
             project.CreationDate = newProject.CreationDate;
             project.Description = newProject.Description;
-            project.Status = ProjectStatus.InProgress.ToString();
+            project.Status = newProject.Status;
 
             Project.Add(project);
             SaveChanges();
