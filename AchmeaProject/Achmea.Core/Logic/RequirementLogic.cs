@@ -25,6 +25,11 @@ namespace Achmea.Core.Logic
             _IReq = IReq;
         }
 
+        public List<SecurityRequirement> GetAllRequirements()
+        {
+            return _IReq.GetAllRequirements();
+        }
+
         public IEnumerable<SecurityRequirement> getRequiermentsFromAreas(List<EsaAspect> aspects)
         {
             List<SecurityRequirement> requirements = new List<SecurityRequirement>();
@@ -47,6 +52,16 @@ namespace Achmea.Core.Logic
             allRequirements = bivRequirements.Where(r => aspectRequirements.Any(r2 => r2.RequirementId == r.RequirementId)).ToList();
 
             return _IReq.SaveReqruirementsToProject(allRequirements, project).ToList();
+        }
+
+        public SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason)
+        {
+            return _IReq.ExcludeRequirement(requirementId, projectId, reason);
+        }
+
+        public SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds)
+        {
+            return _IReq.CreateRequirement(req, bivIds, areaIds);
         }
     }
 }

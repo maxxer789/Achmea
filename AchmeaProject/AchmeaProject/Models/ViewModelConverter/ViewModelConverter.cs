@@ -170,5 +170,40 @@ namespace AchmeaProject.Models.ViewModelConverter
                 CreationDate = Convert.ToDateTime(pvm.CreationDate),
             };
         }
+        public static Project ProjectViewModelToProjectModel(ProjectViewModel pvm)
+        {
+            return new Project
+            {
+                ProjectId = pvm.ProjectId,
+                Title = pvm.Title,
+                Description = pvm.Description,
+                CreationDate = Convert.ToDateTime(pvm.CreationDate),
+            };
+        }
+        public static SecurityRequirement securityRequirementViewModelToModel(RequirementCreateViewModel rcvm)
+        {
+            return new SecurityRequirement
+            {
+                Name = rcvm.Name,
+                Description = rcvm.Description,
+                Details = rcvm.Details,
+                Family = rcvm.Family,
+                MainGroup = rcvm.MainGroup,
+                RequirementNumber = rcvm.RequirementNumber
+            };
+        }
+        public static SecurityRequirement securityRequirementViewModelToModel(RequirementViewModel req)
+        {
+            return new SecurityRequirement
+            {
+                RequirementId = req.Id,
+                Name = req.Name,
+                Description = req.Description,
+                Details = req.Details,
+                Family = req.Family,
+                MainGroup = req.MainGroup,
+                RequirementNumber = req.RequirementNumber
+            };
+        }
     }
 }
