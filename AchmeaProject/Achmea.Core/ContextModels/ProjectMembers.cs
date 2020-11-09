@@ -9,7 +9,7 @@ namespace Achmea.Core.ContextModels
     public class ProjectMembers
     {
         public int Id { get; set; }
-        public string User { get; set; }
+        public int userId { get; set; }
         public int ProjectId { get; set; }
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }

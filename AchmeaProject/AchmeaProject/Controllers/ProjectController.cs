@@ -42,14 +42,15 @@ namespace AchmeaProject.Controllers
         //    return result;
 
         //}
-
-        public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
+        [HttpPost]
+        public ActionResult CreateProject(string[] Members, string ProjectTitle, string ProjectDescription)
         {
             Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try
             {
+                var hey = Members;
                 projectLogic.MakeNewProject(projectModel);
                 ProjectMade = true;
             }
@@ -58,10 +59,10 @@ namespace AchmeaProject.Controllers
                 ProjectMade = false;
             }
 
-            //if(ProjectMade == true)
-            //{
-            //    ViewBag.ProjectMade = "Project was made succesfully";
-            //}
+            if (ProjectMade == true)
+            {
+                ViewBag.ProjectMade = "Project was made succesfully";
+            }
 
             return RedirectToAction("Index", "Home");
         }

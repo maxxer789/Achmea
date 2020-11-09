@@ -19,7 +19,7 @@ namespace AchmeaProject.Controllers
         private readonly IUser Interface;
         public UserController(IConfiguration config)
         {
-            Interface = new UserDAL(config.GetConnectionString("DefaultConnection"));
+            Interface = new UserDAL();
             Logic = new UserLogic(Interface);
         }
 
