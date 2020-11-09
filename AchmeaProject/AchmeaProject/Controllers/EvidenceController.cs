@@ -26,7 +26,7 @@ namespace AchmeaProject.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Index()
+        public DriveService GetDriveService()
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
             string contentRootPath = _webHostEnvironment.ContentRootPath;
@@ -34,11 +34,15 @@ namespace AchmeaProject.Controllers
             string path = Path.Combine(webRootPath, "achmea-294609-fd9d6b48f0d3.p12");
 
             string serviceAccountEmail = "achmea@achmea-294609.iam.gserviceaccount.com";
-
             DriveService service = AuthenticateServiceAccount(serviceAccountEmail, path);
-
+            return service;
+        }
+        public IActionResult Index()
+        {
             DriveViewModel files = new DriveViewModel();
-            files.list = ListAll(service);
+            files.list = ListAll(GetDriveService());
+
+            //FileList fileList = GetFileById(GetDriveService());
 
             return View(files);
         }
@@ -46,16 +50,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult Index(string folderName, IFormFile file)
         {
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string contentRootPath = _webHostEnvironment.ContentRootPath;
-
-            string path = Path.Combine(webRootPath, "achmea-294609-fd9d6b48f0d3.p12");
-
-            string serviceAccountEmail = "achmea@achmea-294609.iam.gserviceaccount.com";
-
-            DriveService service = AuthenticateServiceAccount(serviceAccountEmail, path);
-
-            CreateFolder(service, folderName);
+            DriveService service = GetDriveService();
             UploadFile(service, file);
 
             return RedirectToAction("Index");
@@ -145,36 +140,59 @@ namespace AchmeaProject.Controllers
             }
         }
 
-        public static File UploadFile(DriveService service, IFormFile file)
+        public static FileList GetFileById(DriveService service)
         {
+            try
+            {
+                // Initial validation.
+                if (service == null)
+                    throw new ArgumentNullException("service");
+
+                FilesResource.ListRequest listRequest = service.Files.List();
+                listRequest.Q = "name = 'Achmea'";
+                string folderId = listRequest.Execute().Files[0].Id;
+
+                // Building the initial request.
+                var request = service.Files.List();
+                request.Q = $"'{folderId}' in parents and Id = '1bR_OBxgdc7EyhE2sHx-V0n9XPiBnygFN'";
+
+                FileList allfiles = request.Execute();
+                return allfiles;
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception("Request Files.List failed.", Ex);
+            }
+        }
+
+        public static string UploadFile(DriveService service, IFormFile uploadFile)
+        {
+            //Get Id of parent folder Achmea for visibility purposes
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.Q = "name = 'Achmea'";
             string folderId = listRequest.Execute().Files[0].Id;
 
-            string uploadFile = "C:\\Users\\nkrui\\Downloads\\DBO Achmea.jpg";
-            File Body = new File();
-
-            if (System.IO.File.Exists(uploadFile))
+            //Set File name and filetype + define parent folder
+            File Body = new File
             {
-                Body.Name = Path.GetFileName(uploadFile);
-                Body.MimeType = GetMimeType(uploadFile);
-                Body.Parents = new List<string> { folderId };
-            }
+                Name = Path.GetFileName(uploadFile.FileName),
+                MimeType = GetMimeType(uploadFile.FileName),
+                Parents = new List<string> { folderId }
+            };
 
-            byte[] byteArray = System.IO.File.ReadAllBytes(uploadFile);
-            MemoryStream stream = new MemoryStream(byteArray);
+            MemoryStream stream = new MemoryStream();
+            uploadFile.CopyTo(stream);
 
             try
             {
-                FilesResource.CreateMediaUpload request = service.Files.Create(Body, stream, GetMimeType(uploadFile));
+                FilesResource.CreateMediaUpload request = service.Files.Create(Body, stream, GetMimeType(uploadFile.FileName));
                 request.Upload();
-                return request.ResponseBody;
+                return request.ResponseBody.Id;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 return null;
             }
-
         }
 
         private static string GetMimeType(string fileName)
@@ -188,3 +206,5 @@ namespace AchmeaProject.Controllers
         }
     }
 }
+
+//"1uegokY1MYAJhQkgkOvyfB8s8DI0c5Iis"
