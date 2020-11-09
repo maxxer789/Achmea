@@ -16,12 +16,14 @@ namespace AchmeaProject.Controllers
     {
         private readonly IProject Interface;
         private readonly IRequirement Requirement;
+        private readonly IUser UserLogic;
 
         //delete
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
             Requirement = new RequiermentDAL();
+            UserLogic = new UserDAL(config.GetConnectionString("DefaultConnection"));
         }
 
         public IActionResult Index()
@@ -62,7 +64,8 @@ namespace AchmeaProject.Controllers
                 CreationDate = project.CreationDate?.ToString("d"),
                 EsaAspects = Interface.GetEsaForProject(projectId),
                 RequirementProject = Interface.GetRequirementsForProject(projectId),
-                Requirements = Requirement.GetAllRequirements()
+                Requirements = Requirement.GetAllRequirements(),
+                User = UserLogic.GetUserByID(project.UserId)
             };
 
             return View(model);
