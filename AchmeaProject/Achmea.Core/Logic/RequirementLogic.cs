@@ -54,6 +54,11 @@ namespace Achmea.Core.Logic
             return _IReq.SaveReqruirementsToProject(allRequirements, project).ToList();
         }
 
+        public SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason)
+        {
+            return _IReq.ExcludeRequirement(requirementId, projectId, reason);
+        }
+
         public SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds)
         {
             return _IReq.CreateRequirement(req, bivIds, areaIds);

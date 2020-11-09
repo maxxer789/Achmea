@@ -117,16 +117,32 @@ namespace Achmea.Core.SQL
         {
             foreach (SecurityRequirement req in requirements)
             {
-                SecurityRequirementProject srm = new SecurityRequirementProject();
-                srm.SecurityRequirementId = req.RequirementId;
-                srm.ProjectId = project.ProjectId;
-                srm.Excluded = false;
-                srm.Status = Status.ToDo.ToString();
+                SecurityRequirementProject srp = new SecurityRequirementProject();
+                srp.SecurityRequirementId = req.RequirementId;
+                srp.ProjectId = project.ProjectId;
+                srp.Excluded = false;
+                srp.Status = Status.ToDo.ToString();
 
-                SecurityRequirementProject.Add(srm);
+                SecurityRequirementProject.Add(srp);
                 SaveChanges();
             }
             return SecurityRequirementProject.ToList().Where(sr => sr.ProjectId == project.ProjectId);
+        }
+
+        public SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason)
+        {
+            SecurityRequirementProject srp = new SecurityRequirementProject();
+            srp.SecurityRequirementId = requirementId;
+            srp.ProjectId = projectId;
+
+            srp = SecurityRequirementProject.ToList().Find(s => s.ProjectId == projectId && s.SecurityRequirementId == requirementId && s.Status == Status.ToDo.ToString());
+            srp.Excluded = true;
+            srp.Reason = reason;
+            srp.Status = Status.Excluded.ToString();
+            SecurityRequirementProject.Update(srp);
+            SaveChanges();
+
+            return srp.SecurityRequirement;
         }
 
         public SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds)
