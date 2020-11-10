@@ -1,0 +1,33 @@
+﻿body {
+}
+
+main {
+    display: grid;
+}
+
+h1 {
+    padding: 10px;
+    text-align: center;
+}
+
+.table-item {
+    word-wrap: break-word;
+    border: 1px solid;
+    cursor: pointer;
+    user-select: none;
+    border-color: darkgray;
+}
+
+.table-item:hover {
+    background-color: lightgray;
+}
+
+.table-header {
+    word-wrap: break-word;
+    border: 1px solid;
+    border-color: darkgray;
+}
+
+td, th {
+    padding: 10px;
+}

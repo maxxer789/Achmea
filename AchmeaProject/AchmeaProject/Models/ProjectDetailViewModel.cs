@@ -16,5 +16,6 @@ namespace AchmeaProject.Models
         public List<EsaAspect> EsaAspects { get; set; }
         public List<SecurityRequirementProject> RequirementProject { get; set; }
         public List<SecurityRequirement> Requirements { get; set; }
+        public User User { get; set; }
     }
 }
