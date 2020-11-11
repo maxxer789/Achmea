@@ -4,14 +4,16 @@ using AchmeaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Achmea.Core.Migrations
 {
     [DbContext(typeof(AchmeaContext))]
-    partial class AchmeaContextModelSnapshot : ModelSnapshot
+    [Migration("20201111095200_CommentsAndFiles")]
+    partial class CommentsAndFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,9 +91,15 @@ namespace Achmea.Core.Migrations
                         .HasColumnType("nvarchar(MAX)")
                         .HasMaxLength(50);
 
+                    b.Property<int?>("FileOfProofId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("PostDateTime")
                         .HasColumnName("Post_DateTime")
                         .HasColumnType("date");
+
+                    b.Property<int?>("SecurityRequirementId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SecurityRequirementProjectId")
                         .HasColumnType("int");
@@ -102,7 +110,9 @@ namespace Achmea.Core.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("SecurityRequirementProjectId");
+                    b.HasIndex("FileOfProofId");
+
+                    b.HasIndex("SecurityRequirementId");
 
                     b.HasIndex("UserId");
 
@@ -443,11 +453,13 @@ namespace Achmea.Core.Migrations
 
             modelBuilder.Entity("AchmeaProject.Models.Comment", b =>
                 {
+                    b.HasOne("AchmeaProject.Models.FileOfProof", "FileOfProof")
+                        .WithMany()
+                        .HasForeignKey("FileOfProofId");
+
                     b.HasOne("AchmeaProject.Models.SecurityRequirementProject", "SecurityRequirementProject")
                         .WithMany("Comments")
-                        .HasForeignKey("SecurityRequirementProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SecurityRequirementId");
 
                     b.HasOne("AchmeaProject.Models.User", "User")
                         .WithMany("Comment")
