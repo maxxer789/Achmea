@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using Achmea.Core.ContextModels;
 
 namespace Achmea.Core
 {
@@ -31,20 +32,8 @@ namespace Achmea.Core
 
         }
 
-        //public void AddNewProject(ProjectModel projectModel)
-        //{
-        //    SqlCommand cmd = new SqlCommand(@"INSERT INTO[dbo].[Project] (Title, userID, CreationDate, Description, Status) values (@Title, @userID, @Date, @Description, @Status)", con);
-        //    cmd.Parameters.AddWithValue("@Title", projectModel.GetTitle());
-        //    cmd.Parameters.AddWithValue("@userID", projectModel.GetUser());
-        //    cmd.Parameters.AddWithValue("@Date", projectModel.GetDate());
-        //    cmd.Parameters.AddWithValue("@Description", projectModel.GetDescription());
-        //    cmd.Parameters.AddWithValue("@Status", projectModel.GetStatus());
-        //    con.Open();
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-        //}
 
-        public Project AddNewProject(Project newProject)
+        public Project AddNewProject(Project newProject, int[] MemberIds)
         {
 
             //add
@@ -58,7 +47,14 @@ namespace Achmea.Core
             Project.Add(project);
             SaveChanges();
 
-            project.ProjectId = project.ProjectId;
+            foreach(int memberId in MemberIds)
+            {
+                ProjectMember projectMember = new ProjectMember();
+                projectMember.userId = memberId;
+                projectMember.ProjectId = project.ProjectId;
+                ProjectMembers.Add(projectMember);
+            }
+            SaveChanges();
 
             return project;
 

@@ -43,7 +43,7 @@ namespace AchmeaProject.Controllers
 
         //}
         [HttpPost]
-        public ActionResult CreateProject(string[] Members, string ProjectTitle, string ProjectDescription)
+        public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
         {
             Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
@@ -51,7 +51,7 @@ namespace AchmeaProject.Controllers
             try
             {
                 var hey = Members;
-                projectLogic.MakeNewProject(projectModel);
+                projectLogic.MakeNewProject(projectModel, Members);
                 ProjectMade = true;
             }
             catch

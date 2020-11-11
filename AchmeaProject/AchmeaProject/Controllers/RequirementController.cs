@@ -43,20 +43,20 @@ namespace AchmeaProject.Controllers
             BivLogic = new BivLogic(BivInterface);
         }
 
-        public IActionResult SaveReqruirementsToProject(ProjectCreateViewModel pvm)
-        {
-            Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
+        //public IActionResult SaveReqruirementsToProject(ProjectCreateViewModel pvm)
+        //{
+        //    Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
 
-            List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
-            List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
+        //    List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
+        //    List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
 
-            BivLogic.SaveBivToProject(classifications, proj);
-            //AreaLogic.SaveAspectToProject(aspects, proj)
+        //    BivLogic.SaveBivToProject(classifications, proj);
+        //    AreaLogic.SaveAspectToProject(aspects, proj)
 
-            Logic.SaveReqruirementsToProject(aspects, classifications, proj);
+        //    Logic.SaveReqruirementsToProject(aspects, classifications, proj);
 
-            return RedirectToAction("index", "home");
-        }
+        //    return RedirectToAction("index", "home");
+        //}
 
         public IActionResult GetRequirementsFromAreas(List<string> Ids)
         {

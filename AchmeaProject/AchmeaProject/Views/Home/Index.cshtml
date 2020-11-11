@@ -110,10 +110,13 @@
 
 
     function AddToProject() {
+        var added = false;
         var Value = document.querySelector('#something').value;
 
-        members.push(Value);
         newMember = Value;
+
+        console.log(newMember);
+        console.log(members);
 
         let body = document.querySelector('#body');
 
@@ -125,9 +128,17 @@
             return li;
         });
 
-        console.log(langs);
-        body.append(...nodes);
-        console.log(members);
+        for (var member in members) {
+            if (member == newMember) {
+                added = true;
+                alert("this Person has already been added to the project");
+            }
+        }
+        if (added == false) {
+            members.push(Value);
+            body.append(...nodes);
+        } 
+        added = false;
     }
 
     function Create() {
@@ -147,8 +158,8 @@
         });
     }
 
-    $("input[id=something]").focusout(function () {
-        alert($(this).val());
-    });
+    //$("input[id=something]").focusout(function () {
+    //    alert($(this).val());
+    //});
 </script>
 

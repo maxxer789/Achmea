@@ -31,7 +31,7 @@ namespace AchmeaProject.Models
         public virtual DbSet<SecurityRequirement> SecurityRequirement { get; set; }
         public virtual DbSet<SecurityRequirementProject> SecurityRequirementProject { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<ProjectMembers> ProjectMembers { get; set; }
+        public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
         public virtual DbSet<BIVRequirement> BIVRequirement { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
