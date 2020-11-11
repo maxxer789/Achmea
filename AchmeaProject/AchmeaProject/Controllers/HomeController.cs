@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AchmeaProject.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {//test
@@ -20,7 +21,12 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            return View();
+
+            if (HttpContext.Session.GetString("RoleID") != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "User");
         }
 
         public IActionResult Privacy()
