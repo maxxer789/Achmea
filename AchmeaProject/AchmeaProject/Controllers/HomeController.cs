@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AchmeaProject.Models;
+using Achmea.Core.Logic;
+using Achmea.Core.Interface;
+using Achmea.Core.SQL;
 
 namespace AchmeaProject.Controllers
 {//test
     public class HomeController : Controller
     {
+        private readonly UserLogic userLogic;
+        UserDAL userDAL;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
+            userDAL = new UserDAL();
+            userLogic = new UserLogic(userDAL);
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            ViewBag.Users = userLogic.GetAllUsers();
             return View();
         }
 
