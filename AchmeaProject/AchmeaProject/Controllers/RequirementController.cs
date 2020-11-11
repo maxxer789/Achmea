@@ -11,11 +11,16 @@ using Microsoft.Extensions.Configuration;
 using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
+using Microsoft.AspNetCore.Http;
+using AchmeaProject.Sessions;
 
 namespace AchmeaProject.Controllers
 {
     public class RequirementController : Controller
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
+
         private readonly AspectAreaLogic AreaLogic;
         private readonly IAspectArea AreaInterface;
 
@@ -28,7 +33,7 @@ namespace AchmeaProject.Controllers
         private readonly RequirementLogic Logic;
         private readonly IRequirement Interface;
 
-        public RequirementController(IConfiguration config)
+        public RequirementController(IHttpContextAccessor httpContextAccessor)
         {
             IProject = new ProjectDAL();
             ProjectLogic = new ProjectLogic(IProject);
@@ -41,22 +46,26 @@ namespace AchmeaProject.Controllers
 
             BivInterface = new BivDAL();
             BivLogic = new BivLogic(BivInterface);
+
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        //public IActionResult SaveReqruirementsToProject(ProjectCreateViewModel pvm)
-        //{
-        //    Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
+        public IActionResult SaveReqruirementsToProject()
+        {
+            ProjectCreateViewModel pvm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
 
-        //    List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
-        //    List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
+            Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
 
-        //    BivLogic.SaveBivToProject(classifications, proj);
-        //    AreaLogic.SaveAspectToProject(aspects, proj)
+            List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
+            List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
 
-        //    Logic.SaveReqruirementsToProject(aspects, classifications, proj);
+            BivLogic.SaveBivToProject(classifications, proj);
+            AreaLogic.SaveAspectToProject(aspects, proj);
 
-        //    return RedirectToAction("index", "home");
-        //}
+            Logic.SaveReqruirementsToProject(aspects, classifications, proj);
+
+            return RedirectToAction("index", "home");
+        }
 
         public IActionResult GetRequirementsFromAreas(List<string> Ids)
         {
@@ -67,12 +76,7 @@ namespace AchmeaProject.Controllers
                 EsaAspect asp = new EsaAspect();
                 asp.AspectId = Convert.ToInt32(id);
                 areas.Add(asp);
-
-                //get areas by Id
-                //Convert.ToInt32(id);
-                //areas.Add(AreaLogic.GetAreaById(id));
             }
-            //get requirements from areas
             requirements = Logic.getRequiermentsFromAreas(areas).ToList();
 
             return RedirectToAction("Index", "ESA");
@@ -85,17 +89,22 @@ namespace AchmeaProject.Controllers
             foreach (string id in BivIds)
             {
                 //get Biv by id
-                //Convert.ToInt32(id);
-                //areas.Add(BivLogic.GetBivById(id));
+                Convert.ToInt32(id);
+                //Bivs.Add(BivLogic.GetBivById(id));
             }
 
             //get requirements from Biv
             //BivLogic.GetRequirementsFromBiv(Bivs)
 
-            //save requirements to project
-            //Logic.SaveReqruirementsToProject(requirements)
+            return RedirectToAction("Index" ,"Home");
+        }
 
-            return null;
+        [HttpPost]
+        public IActionResult ExcludeRequirement([FromBody] ExcludeRequirementViewModel ervm)
+        {
+            Logic.ExcludeRequirement(ervm.RequirementId, ervm.ProjectId, ervm.Reason);
+
+            return RedirectToAction("Details", "Overview", ervm.ProjectId);
         }
 
         [HttpGet]

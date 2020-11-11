@@ -2,40 +2,25 @@
 }
 
 main {
-    border-radius: 15px;
-    border: 1px solid;
-    border-bottom: 2px solid;
-    border-color: black;
     min-height: 100%;
     display: grid;
-    background-color: #bab2b5;
 }
 
 .con-header {
     width: 100%;
     height: 200px;
+    border-bottom: 1px solid darkgray;
 }
 
 .header-title {
-    border-radius: 15px;
-    border: 1px solid;
-    border-bottom: 2px solid;
-    border-color: black;
-    background-color: #eee2dc;
     height: 100%;
     width: 35%;
     float: left;
     padding: 70px 10px;
-    text-align: center;
     word-wrap: break-word;
 }
 
 .header-desc {
-    border-radius: 15px;
-    border: 1px solid;
-    border-bottom: 2px solid;
-    border-color: black;
-    background-color: #eee2dc;
     height: 100%;
     width: 65%;
     float: right;
@@ -52,27 +37,19 @@ main {
 }
 
 .requirement-info {
-    border-radius: 15px;
-    background-color: #edc7b7;
     width: 80%;
     float: left;
     padding: 10px 10px;
-    text-align: center;
     word-wrap: break-word;
     margin: 0 10px 0 10px;
-    border: 1px solid;
-    border-bottom: 2px solid;
     cursor: pointer;
     user-select: none;
     float: left;
-    border-color: black;
+    border-bottom: 1px solid lightgray;
 }
 
 
 .requirement-check {
-    color: #eee2dc;
-    border-radius: 15px;
-    background-color: #123c69;
     width: 150px;
     float: right;
     padding: 10px 10px;
@@ -80,13 +57,11 @@ main {
     word-wrap: break-word;
     margin: 0 10px 0 10px;
     grid-row: 1;
-    border: 1px solid;
-    border-bottom: 2px solid;
-    border-color: black;
+    border-bottom: 1px solid lightgray;
 }
 
 .requirement-info:hover, .active {
-    background-color: #ac3b61;
+    background-color: lightgray;
 }
 
 .requirement-info:after {
@@ -103,12 +78,8 @@ main {
 }
 
 .collapsible {
-    border-radius: 15px;
     margin: 0 10px 0 10px;
-    background-color: #eee2dc;
     padding: 10px 10px;
     display: none;
     width: 80%;
-    border: 1px solid;
-    border-bottom: 2px solid;
 }
