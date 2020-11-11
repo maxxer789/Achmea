@@ -9,7 +9,6 @@ using Achmea.Core.Model;
 using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
-using AchmeaProject.Sessions;
 
 namespace AchmeaProject.Controllers
 {
@@ -18,14 +17,11 @@ namespace AchmeaProject.Controllers
         ProjectDAL projectDAL;
         ProjectLogic projectLogic;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor)
+        public ProjectController()
         {
             projectDAL = new ProjectDAL();
             projectLogic = new ProjectLogic(projectDAL);
-            _httpContextAccessor = httpContextAccessor;
         }
 
         //[HttpGet("{search}")]
@@ -46,15 +42,16 @@ namespace AchmeaProject.Controllers
         //    return result;
 
         //}
-
-        public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
+        [HttpPost]
+        public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
         {
             Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try
             {
-                projectLogic.MakeNewProject(projectModel);
+                var hey = Members;
+                projectLogic.MakeNewProject(projectModel, Members);
                 ProjectMade = true;
             }
             catch
@@ -62,10 +59,10 @@ namespace AchmeaProject.Controllers
                 ProjectMade = false;
             }
 
-            //if(ProjectMade == true)
-            //{
-            //    ViewBag.ProjectMade = "Project was made succesfully";
-            //}
+            if (ProjectMade == true)
+            {
+                ViewBag.ProjectMade = "Project was made succesfully";
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -73,28 +70,11 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetInt32("UserID") == null)
+            ProjectCreateViewModel vm = new ProjectCreateViewModel();
+            vm.Project = new ProjectCreationDetailsViewModel()
             {
-                Response.WriteAsync("<script language='javascript'>window.alert('Please login to create a new project');window.location.href='/User/Login';</script>");
-                return RedirectToAction("Login", "User", null);
-            }
-
-            ProjectCreateViewModel vm;
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
-            {
-                vm = new ProjectCreateViewModel
-                {
-                    Project = new ProjectCreationDetailsViewModel()
-                    {
-                        UserID = HttpContext.Session.GetInt32("UserID").Value,
-                        CreationDate = DateTime.Now.ToShortDateString()
-                    }
-                };
-            }
-            else
-            {
-                vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
-            }
+                UserID = HttpContext.Session.GetInt32("UserID").Value
+            };
 
             return View(vm);
         }
@@ -102,48 +82,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult Create(ProjectCreateViewModel vm)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
-
-            _session.SetObjectAsJson("Project", vm);
-
-            return RedirectToAction("Select", "ESA");
-        }
-
-        [HttpGet]
-        public IActionResult ConfirmDetails()
-        {
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
-            {
-                return RedirectToAction("Create", "Project");
-            }
-
-            ProjectCreateViewModel vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
-
             return View(vm);
-        }
-
-        [HttpPost]
-        public IActionResult ConfirmDetails(ProjectCreateViewModel vm)
-        {
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
-            {
-                return RedirectToAction("Create", "Project");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                if (vm.Bivs.Where(e => e.isSelected == true).ToList().Count == 0 || vm.AspectAreas.Where(e => e.isSelected == true).ToList().Count == 0)
-                {
-                    ModelState.AddModelError(string.Empty, "Please select atleast one aspect area and one BIV classification");
-                }
-
-                return View(vm);
-            }
-
-            return RedirectToAction("SaveReqruirementsToProject", "Requirement");
         }
     }
 }

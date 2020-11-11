@@ -4,14 +4,16 @@ using AchmeaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Achmea.Core.Migrations
 {
     [DbContext(typeof(AchmeaContext))]
-    partial class AchmeaContextModelSnapshot : ModelSnapshot
+    [Migration("20201109095959_cangeMember")]
+    partial class cangeMember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,14 +88,23 @@ namespace Achmea.Core.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(MAX)")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<int>("FileOfProofId")
+                        .HasColumnName("FileOfProofID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("PostDateTime")
                         .HasColumnName("Post_DateTime")
                         .HasColumnType("date");
 
-                    b.Property<int>("SecurityRequirementProjectId")
+                    b.Property<int>("ProjectId")
+                        .HasColumnName("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequirementId")
+                        .HasColumnName("RequirementID")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -102,7 +113,11 @@ namespace Achmea.Core.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("SecurityRequirementProjectId");
+                    b.HasIndex("FileOfProofId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("RequirementId");
 
                     b.HasIndex("UserId");
 
@@ -349,9 +364,6 @@ namespace Achmea.Core.Migrations
                     b.Property<bool?>("Excluded")
                         .HasColumnType("bit");
 
-                    b.Property<int>("FileOfProofId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProjectId")
                         .HasColumnName("ProjectID")
                         .HasColumnType("int");
@@ -367,8 +379,6 @@ namespace Achmea.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SecurityRequirementProjectId");
-
-                    b.HasIndex("FileOfProofId");
 
                     b.HasIndex("ProjectId");
 
@@ -443,10 +453,22 @@ namespace Achmea.Core.Migrations
 
             modelBuilder.Entity("AchmeaProject.Models.Comment", b =>
                 {
-                    b.HasOne("AchmeaProject.Models.SecurityRequirementProject", "SecurityRequirementProject")
-                        .WithMany("Comments")
-                        .HasForeignKey("SecurityRequirementProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("AchmeaProject.Models.FileOfProof", "FileOfProof")
+                        .WithMany("Comment")
+                        .HasForeignKey("FileOfProofId")
+                        .HasConstraintName("FK_Comment_FileOfProof")
+                        .IsRequired();
+
+                    b.HasOne("AchmeaProject.Models.Project", "Project")
+                        .WithMany("Comment")
+                        .HasForeignKey("ProjectId")
+                        .HasConstraintName("FK_Comment_Project")
+                        .IsRequired();
+
+                    b.HasOne("AchmeaProject.Models.SecurityRequirement", "Requirement")
+                        .WithMany("Comment")
+                        .HasForeignKey("RequirementId")
+                        .HasConstraintName("FK_Comment_Security_Requirements")
                         .IsRequired();
 
                     b.HasOne("AchmeaProject.Models.User", "User")
@@ -512,12 +534,6 @@ namespace Achmea.Core.Migrations
 
             modelBuilder.Entity("AchmeaProject.Models.SecurityRequirementProject", b =>
                 {
-                    b.HasOne("AchmeaProject.Models.FileOfProof", "FileOfProof")
-                        .WithMany()
-                        .HasForeignKey("FileOfProofId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AchmeaProject.Models.Project", "Project")
                         .WithMany("SecurityRequirementProject")
                         .HasForeignKey("ProjectId")

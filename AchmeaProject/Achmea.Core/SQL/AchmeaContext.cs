@@ -31,7 +31,7 @@ namespace AchmeaProject.Models
         public virtual DbSet<SecurityRequirement> SecurityRequirement { get; set; }
         public virtual DbSet<SecurityRequirementProject> SecurityRequirementProject { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<ProjectMembers> ProjectMembers { get; set; }
+        public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
         public virtual DbSet<BIVRequirement> BIVRequirement { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -63,35 +63,12 @@ namespace AchmeaProject.Models
 
                 entity.Property(e => e.Content).HasMaxLength(50);
 
-                entity.Property(e => e.FileOfProofId).HasColumnName("FileOfProofID");
 
                 entity.Property(e => e.PostDateTime)
                     .HasColumnName("Post_DateTime")
                     .HasColumnType("date");
 
-                entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
-
-                entity.Property(e => e.RequirementId).HasColumnName("RequirementID");
-
                 entity.Property(e => e.UserId).HasColumnName("UserID");
-
-                entity.HasOne(d => d.FileOfProof)
-                    .WithMany(p => p.Comment)
-                    .HasForeignKey(d => d.FileOfProofId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Comment_FileOfProof");
-
-                entity.HasOne(d => d.Project)
-                    .WithMany(p => p.Comment)
-                    .HasForeignKey(d => d.ProjectId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Comment_Project");
-
-                entity.HasOne(d => d.Requirement)
-                    .WithMany(p => p.Comment)
-                    .HasForeignKey(d => d.RequirementId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Comment_Security_Requirements");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Comment)

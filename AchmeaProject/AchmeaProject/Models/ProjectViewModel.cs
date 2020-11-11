@@ -21,10 +21,6 @@ namespace AchmeaProject.Models
         public string CreationDate { get; set; }
         [Required]
         public string Description { get; set; }
-
-        public ProjectViewModel()
-        {
-
-        }
+        public string[] Members { get; set; }
     }
 }
