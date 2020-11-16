@@ -34,19 +34,27 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult Select()
         {
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
+            if (HttpContext.Session.GetString("RoleID") == "Developer")
             {
-                RedirectToAction("Create", "Project");
-            }
+                if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
+                {
+                    RedirectToAction("Create", "Project");
+                }
 
-            ProjectCreateViewModel vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+                ProjectCreateViewModel vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
 
-            if (vm.AspectAreas.Count == 0)
+                if (vm.AspectAreas.Count == 0)
+                {
+                    vm.AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+                }
+
+                return View(vm);
+
+            }else if(HttpContext.Session.GetString("RoleID") != null)
             {
-                vm.AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+                return RedirectToAction("Index", "Home");
             }
-
-            return View(vm);
+            return RedirectToAction("Login", "User");
         }
 
         [HttpPost]

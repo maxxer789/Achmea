@@ -9,6 +9,7 @@ using AchmeaProject.Models;
 using Achmea.Core.Logic;
 using Achmea.Core.Interface;
 using Achmea.Core.SQL;
+using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {//test
@@ -27,13 +28,21 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Users = userLogic.GetAllUsers();
-            return View();
+            if (HttpContext.Session.GetString("RoleID") != null)
+            {
+                ViewBag.Users = userLogic.GetAllUsers();
+                return View();
+            }
+            return RedirectToAction("Login", "User");
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            if (HttpContext.Session.GetString("RoleID") != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "User");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

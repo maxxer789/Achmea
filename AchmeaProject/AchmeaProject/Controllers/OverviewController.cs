@@ -9,6 +9,7 @@ using Achmea.Core;
 using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
 using Achmea.Core.SQL;
+using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {
@@ -28,47 +29,55 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            List<Project> list = Interface.GetProjects().ToList(); 
-
-            List<ProjectViewModel> listModel = new List<ProjectViewModel>();
-
-            foreach (Project model in list)
+            if (HttpContext.Session.GetString("RoleID") != null)
             {
-                ProjectViewModel viewModel = new ProjectViewModel()
+                List<Project> list = Interface.GetProjects().ToList();
+
+                List<ProjectViewModel> listModel = new List<ProjectViewModel>();
+
+                foreach (Project model in list)
                 {
-                    ProjectId = model.ProjectId,
-                    Title = model.Title,
-                    Status = model.Status,
-                    CreationDate = model.CreationDate?.ToString("d")
-                };
-                if(viewModel.CreationDate == "1-1-0001")
-                {
-                    viewModel.CreationDate = "Unset";
+                    ProjectViewModel viewModel = new ProjectViewModel()
+                    {
+                        ProjectId = model.ProjectId,
+                        Title = model.Title,
+                        Status = model.Status,
+                        CreationDate = model.CreationDate?.ToString("d")
+                    };
+                    if (viewModel.CreationDate == "1-1-0001")
+                    {
+                        viewModel.CreationDate = "Unset";
+                    }
+                    listModel.Add(viewModel);
                 }
-                listModel.Add(viewModel);
+                return View(listModel);
             }
-            return View(listModel);
+            return RedirectToAction("Login", "User");
         }
 
         public IActionResult Details(int projectId)
         {
-            Project project = Interface.GetProject(projectId);
-
-            ProjectDetailViewModel model = new ProjectDetailViewModel()
+            if (HttpContext.Session.GetString("RoleID") != null)
             {
-                ProjectId = project.ProjectId,
-                UserId = project.UserId,
-                Title = project.Title,
-                Description = project.Description,
-                Status = project.Status,
-                CreationDate = project.CreationDate?.ToString("d"),
-                EsaAspects = Interface.GetEsaForProject(projectId),
-                RequirementProject = Interface.GetRequirementsForProject(projectId),
-                Requirements = Requirement.GetAllRequirements(),
-                User = UserLogic.GetUserByID(project.UserId)
-            };
+                Project project = Interface.GetProject(projectId);
 
-            return View(model);
+                ProjectDetailViewModel model = new ProjectDetailViewModel()
+                {
+                    ProjectId = project.ProjectId,
+                    UserId = project.UserId,
+                    Title = project.Title,
+                    Description = project.Description,
+                    Status = project.Status,
+                    CreationDate = project.CreationDate?.ToString("d"),
+                    EsaAspects = Interface.GetEsaForProject(projectId),
+                    RequirementProject = Interface.GetRequirementsForProject(projectId),
+                    Requirements = Requirement.GetAllRequirements(),
+                    User = UserLogic.GetUserByID(project.UserId)
+                };
+
+                return View(model);
+            }
+            return RedirectToAction("Login", "User");
         }
     }
 }
