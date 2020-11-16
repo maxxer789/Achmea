@@ -28,13 +28,21 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            return View("Views/Accounts/Admin/Index.cshtml");
+            if(HttpContext.Session.GetString("RoleID") == "Admin")
+            {
+                return View("Views/Accounts/Admin/Index.cshtml");
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            return View("Views/Accounts/Admin/Register.cshtml");
+            if (HttpContext.Session.GetString("RoleID") == "Admin")
+            {
+                return View("Views/Accounts/Admin/Register.cshtml");
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -64,14 +72,18 @@ namespace AchmeaProject.Controllers
 
         public IActionResult UserList()
         {
-            List<UserViewModel> vm = new List<UserViewModel>();
-            foreach (User U in logic.GetAllUsers())
+            if (HttpContext.Session.GetString("RoleID") == "Admin")
             {
-                UserViewModel Uvm = ViewModelConverter.UserToVm(U);
+                List<UserViewModel> vm = new List<UserViewModel>();
+                foreach (User U in logic.GetAllUsers())
+                {
+                    UserViewModel Uvm = ViewModelConverter.UserToVm(U);
 
-                vm.Add(Uvm);
+                    vm.Add(Uvm);
+                }
+                return View("Views/Accounts/Admin/UserList.cshtml", vm);
             }
-            return View("Views/Accounts/Admin/UserList.cshtml", vm);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Delete_User(int id)
@@ -84,8 +96,12 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult Edit_User(int id)
         {
-            UserViewModel vm = ViewModelConverter.UserToVm(logic.GetUserByID(id));
-            return View("Views/Accounts/Admin/UserEdit.cshtml", vm);
+            if (HttpContext.Session.GetString("RoleID") == "Admin")
+            {
+                UserViewModel vm = ViewModelConverter.UserToVm(logic.GetUserByID(id));
+                return View("Views/Accounts/Admin/UserEdit.cshtml", vm);
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public IActionResult Edit_User(UserViewModel vm)
@@ -99,10 +115,14 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details_User(int id)
         {
-            User user = logic.GetUserByID(id);
-            UserViewModel vm = ViewModelConverter.UserToVm(user);
+            if (HttpContext.Session.GetString("RoleID") == "Admin")
+            {
+                User user = logic.GetUserByID(id);
+                UserViewModel vm = ViewModelConverter.UserToVm(user);
 
-            return View("Views/Accounts/Admin/UserDetails.cshtml", vm);
+                return View("Views/Accounts/Admin/UserDetails.cshtml", vm);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

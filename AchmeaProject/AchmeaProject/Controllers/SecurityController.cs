@@ -8,6 +8,7 @@ using Achmea.Core.Logic;
 using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -37,45 +38,45 @@ namespace AchmeaProject.Controllers
 
         public IActionResult ProjectList()
         {
-            List<Project> list = IProject.GetProjects().ToList();
-
-            List<ProjectViewModel> vmList = new List<ProjectViewModel>();
-
-            foreach (Project model in list)
+            if (HttpContext.Session.GetString("RoleId") == "Developer")
             {
-                ProjectViewModel viewModel = new ProjectViewModel()
+                List<Project> list = IProject.GetProjects().ToList();
+
+                List<ProjectViewModel> vmList = new List<ProjectViewModel>();
+
+                foreach (Project model in list)
                 {
-                    ProjectId = model.ProjectId,
-                    Title = model.Title,
-                    Status = model.Status,
-                };
-                if (viewModel.CreationDate == "1-1-0001")
-                {
-                    viewModel.CreationDate = "Unset";
+                    ProjectViewModel viewModel = new ProjectViewModel()
+                    {
+                        ProjectId = model.ProjectId,
+                        Title = model.Title,
+                        Status = model.Status,
+                        Description = model.Description,
+                    };
+                    vmList.Add(viewModel);
                 }
-                vmList.Add(viewModel);
+                return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
             }
-            return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Details(int projectId)
         {
-            Project P = IProject.GetProject(projectId);
-
-            ProjectDetailViewModel vm = new ProjectDetailViewModel()
+            if (HttpContext.Session.GetString("RoleId") == "Developer")
             {
-                ProjectId = P.ProjectId,
-                Title = P.Title,
-                Status = P.Status,
-                UserId = P.UserId,
-                Description = P.Description,
-                CreationDate = P.CreationDate.ToString(),
-                EsaAspects = IProject.GetEsaForProject(projectId),
-                RequirementProject = IProject.GetRequirementsForProject(projectId),
-                Requirements = IRequirement.GetAllRequirements()
-            };
+                Project P = IProject.GetProject(projectId);
 
-            return View("Views/Accounts/Security/Details.cshtml", vm);
+                ProjectDetailViewModel vm = new ProjectDetailViewModel()
+                {
+                    ProjectId = P.ProjectId,
+                    Title = P.Title,
+                    Description = P.Description,
+                    Status = P.Status
+                };
+
+                return View("Views/Accounts/Security/Details.cshtml", vm);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
