@@ -115,6 +115,7 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult ConfirmDetails()
         {
+            //Change
             if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
             {
                 return RedirectToAction("Create", "Project");
