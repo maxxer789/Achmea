@@ -80,10 +80,18 @@ namespace AchmeaProject.Controllers
         public IActionResult Create()
         {
             ProjectCreateViewModel vm = new ProjectCreateViewModel();
-            vm.Project = new ProjectCreationDetailsViewModel()
+
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") != null)
             {
-                UserID = HttpContext.Session.GetInt32("UserID").Value
-            };
+                vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+            }
+            else
+            {
+                vm.Project = new ProjectCreationDetailsViewModel()
+                {
+                    UserID = HttpContext.Session.GetInt32("UserID").Value
+                };
+            }
 
             ViewBag.Users = userLogic.GetAllUsers();
 
@@ -91,7 +99,7 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ProjectCreateViewModel vm, int[] Members)
+        public IActionResult Create(ProjectCreateViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -100,7 +108,7 @@ namespace AchmeaProject.Controllers
 
             _session.SetObjectAsJson("Project", vm);
 
-            return RedirectToAction("Select", "ESA");
+            return Json(Url.Action("Select", "ESA"));
         }
 
         [HttpGet]

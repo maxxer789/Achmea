@@ -4,7 +4,7 @@
 
 @{ ViewData["Title"] = "Home Page"; }
 
-@{ var users = ViewBag.Users as IEnumerable<AchmeaProject.Models.User>; }
+@{ var users = ViewBag.Users as List<AchmeaProject.Models.User>; }
 
 @{ var Employees = "Added employees"; }
 
@@ -31,7 +31,6 @@
                 <input asp-for="@Model.Project.UserID" class="form-control" />
             </div>
             <div class="form-group" style="float: right">
-                <button class="btn btn-primary" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
             </div>
 
             @if (Model.Bivs.Count > 0)
@@ -57,7 +56,6 @@
                 }
             }
 
-            <input type="hidden" name="submitclicked" value="">
         </form>
 
         <label for="something">
@@ -66,7 +64,8 @@
             <datalist id="somethingelse">
                 @foreach (var user in users)
                 {
-    <option value="@user.UserId">@user.Firstname @user.Lastname </option>}
+                    <option value="@user.UserId">@user.Firstname @user.Lastname </option>
+}
             </datalist>
             <button onclick="AddToProject()" type="button" class="btn btn-primary button button4">Add</button>
             <span id="spanResult"></span>
@@ -84,8 +83,19 @@
                 </tr>
             </thead>
             <tbody id="body">
+                @if (Model.Members.Length > 0)
+                {
+                    for (int i = 0; i < Model.Members.Length; i++)
+                    {
+                        <tr>
+                            <td onload="Add(@Model.Members[i])">@Model.Members[i]</td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
+
+        <button class="btn btn-primary" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
     </div>
 </div>
 
@@ -93,23 +103,14 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-    $("#open").click(function () {
-        $("#loginModal").modal('show');
-    });
-
-    $("#btnHideModal").click(function () {
-        $("#loginModal").modal('hide');
-    });</script>
-
-<script type="text/javascript">
     var members = [];
     var newMember;
 
-    for (var i in members) {
-        console.log(i);
+    console.log(members);
+
+    function Add(int) {
+        members.push(int);
     }
-
-
 
     function AddToProject() {
         var added = false;
@@ -130,12 +131,13 @@
             return li;
         });
 
-        for (var member in members) {
+        members.forEach(member => {
             if (member == newMember) {
                 added = true;
                 alert("this Person has already been added to the project");
             }
-        }
+        });
+
         if (added == false) {
             members.push(Value);
             body.append(...nodes);
@@ -147,20 +149,21 @@
 
         event.preventDefault();
 
-        var requestData = $("#myform").serialize();
+        var formdata = $("#myform").serializeArray();
+        members.forEach(member => formdata.push({ name: "Members", value: member}))
+
+        console.log(formdata);
 
         $.ajax({
             type: "POST",
             url: "/Project/Create",
             dataType: "json",
             traditional: true,
-            data: {
-                requestData,
-                "Members": members
+            data: $.param(formdata),
+            success: function (data) {
+                window.location.href = data;
             }
         });
     });
 
-    //$("input[id=something]").focusout(function () {
-    //    alert($(this).val());
-    //});</script>
+</script>

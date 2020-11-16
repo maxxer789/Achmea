@@ -11,7 +11,6 @@ namespace AchmeaProject.Models
 {
     public class ProjectCreationDetailsViewModel
     {
-        HttpContext Context;
         [Required]
         public string Title { get; set; }
         public string CreationDate { get; set; }
