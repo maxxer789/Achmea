@@ -64,14 +64,20 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == "Security")
             {
-                Project P = IProject.GetProject(projectId);
+                Project project = IProject.GetProject(projectId);
 
                 ProjectDetailViewModel vm = new ProjectDetailViewModel()
                 {
-                    ProjectId = P.ProjectId,
-                    Title = P.Title,
-                    Description = P.Description,
-                    Status = P.Status
+                    ProjectId = project.ProjectId,
+                    UserId = project.UserId,
+                    Title = project.Title,
+                    Description = project.Description,
+                    Status = project.Status,
+                    CreationDate = project.CreationDate?.ToString("d"),
+                    EsaAspects = ProjectLogic.GetEsaForProject(projectId),
+                    RequirementProject = ProjectLogic.GetRequirementsForProject(projectId),
+                    Requirements = IRequirement.GetAllRequirements(),
+                    User = UserLogic.GetUserByID(project.UserId)
                 };
 
                 return View("Views/Accounts/Security/Details.cshtml", vm);

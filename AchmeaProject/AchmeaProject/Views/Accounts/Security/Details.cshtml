@@ -5,20 +5,16 @@
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/Security/Details.css" />
+<link rel="stylesheet" href="~/css/Details.css" />
 <div class="con-header">
     <div class="header-title">
         <h2>@Model.Title</h2>
     </div>
-</div>
-<div class="con-content">
-    <div class="con-employee">
+    <div class="header-desc">
         @*<h3>@Model.Employee</h3>*@
         <h3>Employees:</h3>
-    </div>
-    <div class="con-desc">
         <h4>Description:</h4>
-        <h4>@Model.Description</h4>
+        <p>@Model.Description</p>
     </div>
 </div>
 <br />
@@ -34,12 +30,11 @@
             </div>
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+                <br/><br />
+                <div class="download"><button>Download File</button></div>
             </div>
         </div>
     }
-    <div class="con-file">
-        <h5>Download File</h5>
-    </div>
 </div>
 
 
