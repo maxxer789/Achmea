@@ -82,7 +82,50 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult Create(ProjectCreateViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            _session.SetObjectAsJson("Project", vm);
+
+            return RedirectToAction("Select", "ESA");
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmDetails()
+        {
+            //Change
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
+            {
+                return RedirectToAction("Create", "Project");
+            }
+
+            ProjectCreateViewModel vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmDetails(ProjectCreateViewModel vm)
+        {
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
+            {
+                return RedirectToAction("Create", "Project");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                if (vm.Bivs.Where(e => e.isSelected == true).ToList().Count == 0 || vm.AspectAreas.Where(e => e.isSelected == true).ToList().Count == 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Please select atleast one aspect area and one BIV classification");
+                }
+
+                return View(vm);
+            }
+
+            return RedirectToAction("SaveReqruirementsToProject", "Requirement");
+            //change
         }
     }
 }

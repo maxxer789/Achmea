@@ -82,7 +82,7 @@ namespace AchmeaProject.Controllers
             HttpContext.Session.Remove("RoleID");
             HttpContext.Session.Remove("UserID");
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
     }
 }
