@@ -9,18 +9,18 @@
 <table>
     <thead>
         <tr class="table-header">
-            <th>ProjectId</th>
             <th>Title</th>
             <th>Status</th>
+            <th>Creation Date</th>
         </tr>
     </thead>
     <tbody>
         @foreach (ProjectViewModel P in Model)
         {
             <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = P.ProjectId})'">
-                <td>@P.ProjectId</td>
                 <th>@P.Title</th>
                 <td>@P.Status</td>
+                <td>@P.CreationDate</td>
             </tr>
         }
     </tbody>

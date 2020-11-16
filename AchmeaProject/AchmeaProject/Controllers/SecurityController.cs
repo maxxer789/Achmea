@@ -52,6 +52,7 @@ namespace AchmeaProject.Controllers
                         Title = model.Title,
                         Status = model.Status,
                         Description = model.Description,
+                        CreationDate = model.CreationDate?.ToString("d")
                     };
                     vmList.Add(viewModel);
                 }
