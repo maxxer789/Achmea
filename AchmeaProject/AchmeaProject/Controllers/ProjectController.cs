@@ -10,6 +10,7 @@ using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
+using Achmea.Core.SQL;
 
 namespace AchmeaProject.Controllers
 {
@@ -18,6 +19,8 @@ namespace AchmeaProject.Controllers
         ProjectDAL projectDAL;
         ProjectLogic projectLogic;
 
+        private readonly UserLogic userLogic;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
@@ -25,6 +28,8 @@ namespace AchmeaProject.Controllers
         {
             projectDAL = new ProjectDAL();
             projectLogic = new ProjectLogic(projectDAL);
+
+            userLogic = new UserLogic(new UserDAL());
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -80,11 +85,13 @@ namespace AchmeaProject.Controllers
                 UserID = HttpContext.Session.GetInt32("UserID").Value
             };
 
+            ViewBag.Users = userLogic.GetAllUsers();
+
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Create(ProjectCreateViewModel vm)
+        public IActionResult Create(ProjectCreateViewModel vm, int[] Members)
         {
             if (!ModelState.IsValid)
             {
