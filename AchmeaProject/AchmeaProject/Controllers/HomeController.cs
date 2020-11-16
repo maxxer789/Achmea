@@ -21,7 +21,6 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-
             if (HttpContext.Session.GetString("RoleID") != null)
             {
                 return View();
@@ -31,7 +30,11 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            if (HttpContext.Session.GetString("RoleID") != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "User");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
