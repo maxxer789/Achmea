@@ -8,7 +8,7 @@ namespace AchmeaProject.Models
     {
         public int SecurityRequirementProjectId { get; set; }
         public int ProjectId { get; set; }
-        public int FileOfProofId { get; set; }
+        public int? FileOfProofId { get; set; }
         [ForeignKey("FileOfProofId")]
         public FileOfProof FileOfProof { get; set; }
         public int SecurityRequirementId { get; set; }
