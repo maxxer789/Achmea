@@ -38,7 +38,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult ProjectList()
         {
-            if (HttpContext.Session.GetString("RoleId") == "Developer")
+            if (HttpContext.Session.GetString("RoleID") == "Security")
             {
                 List<Project> list = IProject.GetProjects().ToList();
 
@@ -62,7 +62,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details(int projectId)
         {
-            if (HttpContext.Session.GetString("RoleId") == "Developer")
+            if (HttpContext.Session.GetString("RoleID") == "Security")
             {
                 Project P = IProject.GetProject(projectId);
 
