@@ -64,7 +64,7 @@
                             </tbody>
                         </table>
 
-                        <button type="submit" onclick="Create()" class="btn btn-primary">Create project</button>
+                        <button type="submit" id="submit" class="btn btn-primary">Create project</button>
                     </form>
 
                 </div>
@@ -141,8 +141,9 @@
         added = false;
     }
 
-    function Create() {
+    $('#submit').click(function (event) {
 
+        event.preventDefault();
         var requestData = {
             Members: members,
             ProjectTitle: document.getElementById("Title").value,
@@ -156,7 +157,9 @@
             traditional: true,
             data: requestData,
         });
-    }
+
+        $("#loginModal").modal('hide');
+    });
 
     //$("input[id=something]").focusout(function () {
     //    alert($(this).val());
