@@ -128,6 +128,7 @@
             return li;
         });
 
+
         for (var member in members) {
             if (member == newMember) {
                 added = true;
@@ -155,10 +156,8 @@
             url: "/Project/CreateProject",
             dataType: "json",
             traditional: true,
-            data: requestData,
+            data: requestData
         });
-
-        $("#loginModal").modal('hide');
     });
 
     //$("input[id=something]").focusout(function () {
