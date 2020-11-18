@@ -50,7 +50,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
         {
-            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
+            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription);
             bool ProjectMade;
 
             try

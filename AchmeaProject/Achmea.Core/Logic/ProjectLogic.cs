@@ -58,7 +58,7 @@ namespace Achmea.Core.Logic
         //}
         public void UpdateProjectStatus(Project project)
         {
-            projectDAL.UpdateProjectStatus(project);
+            _IProject.UpdateProjectStatus(project);
         }
     }
 }

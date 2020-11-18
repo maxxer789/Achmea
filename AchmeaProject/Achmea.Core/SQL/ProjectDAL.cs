@@ -44,7 +44,6 @@ namespace Achmea.Core
             project.UserId = newProject.UserId;
             project.CreationDate = newProject.CreationDate;
             project.Description = newProject.Description;
-            project.Status = newProject.Status;
 
             Project.Add(project);
             SaveChanges();
@@ -158,7 +157,7 @@ namespace Achmea.Core
         {
             Project project = new Project() { ProjectId = givenPoject.ProjectId };
 
-            project.Status = givenPoject.Status;
+          //  project.Status = givenPoject.Status;
 
             Project.Attach(project);
             Project.Update(project);

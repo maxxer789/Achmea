@@ -135,7 +135,6 @@ namespace AchmeaProject.Models.ViewModelConverter
                 ProjectId = Pmodel.ProjectId,
                 Title = Pmodel.Title,
                 Description = Pmodel.Description,
-                Status = Pmodel.Status
             };
 
             return vm;
@@ -152,7 +151,6 @@ namespace AchmeaProject.Models.ViewModelConverter
                     ProjectId = model.ProjectId,
                     Title = model.Title,
                     Description = model.Description,
-                    Status = model.Status
                 };
                 vms.Add(vm);
             }
@@ -178,7 +176,6 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Title = pvm.Title,
                 Description = pvm.Description,
                 CreationDate = Convert.ToDateTime(pvm.CreationDate),
-                Status = pvm.Status
             };
         }
         public static SecurityRequirement securityRequirementViewModelToModel(RequirementCreateViewModel rcvm)

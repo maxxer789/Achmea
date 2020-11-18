@@ -50,7 +50,6 @@ namespace AchmeaProject.Controllers
                     {
                         ProjectId = model.ProjectId,
                         Title = model.Title,
-                        Status = model.Status,
                         Description = model.Description,
                         CreationDate = model.CreationDate?.ToString("d")
                     };
@@ -73,7 +72,6 @@ namespace AchmeaProject.Controllers
                     UserId = project.UserId,
                     Title = project.Title,
                     Description = project.Description,
-                    Status = project.Status,
                     CreationDate = project.CreationDate?.ToString("d"),
                     EsaAspects = ProjectLogic.GetEsaForProject(projectId),
                     RequirementProject = ProjectLogic.GetRequirementsForProject(projectId),
