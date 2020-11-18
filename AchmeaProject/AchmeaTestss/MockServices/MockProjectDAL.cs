@@ -8,6 +8,13 @@ namespace AchmeaTestss.MockServices
 {
     public class MockProjectDAL: IProject
     {
+        private List<Project> Projects;
+
+        public MockProjectDAL()
+        {
+            Projects
+        }
+
         public Project AddNewProject(Project project, int[] MemberIDs)
         {
             return project;
