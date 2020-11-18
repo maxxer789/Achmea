@@ -16,7 +16,6 @@ namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
-        ProjectDAL projectDAL;
         ProjectLogic projectLogic;
 
         private readonly UserLogic userLogic;
@@ -24,12 +23,12 @@ namespace AchmeaProject.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor)
+        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject)
         {
-            projectDAL = new ProjectDAL();
-            projectLogic = new ProjectLogic(projectDAL);
+            projectLogic = new ProjectLogic(iProject);
 
-            userLogic = new UserLogic(new UserDAL());
+             userLogic = new UserLogic(new UserDAL());
+
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -70,7 +69,7 @@ namespace AchmeaProject.Controllers
 
             if (ProjectMade == true)
             {
-                ViewBag.ProjectMade = "Project was made succesfully";
+                ViewBag.ProjectMade = "Project was made succesfully"; 
             }
 
             return RedirectToAction("Index", "Home");
