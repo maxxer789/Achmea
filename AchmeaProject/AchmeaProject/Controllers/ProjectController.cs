@@ -10,25 +10,22 @@ using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
-using Achmea.Core.SQL;
+using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
+        ProjectDAL projectDAL;
         ProjectLogic projectLogic;
-
-        private readonly UserLogic userLogic;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject)
+        public ProjectController(IHttpContextAccessor httpContextAccessor)
         {
-            projectLogic = new ProjectLogic(iProject);
-
-             userLogic = new UserLogic(new UserDAL());
-
+            projectDAL = new ProjectDAL();
+            projectLogic = new ProjectLogic(projectDAL);
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -69,7 +66,7 @@ namespace AchmeaProject.Controllers
 
             if (ProjectMade == true)
             {
-                ViewBag.ProjectMade = "Project was made succesfully"; 
+                ViewBag.ProjectMade = "Project was made succesfully";
             }
 
             return RedirectToAction("Index", "Home");
@@ -79,20 +76,10 @@ namespace AchmeaProject.Controllers
         public IActionResult Create()
         {
             ProjectCreateViewModel vm = new ProjectCreateViewModel();
-
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") != null)
+            vm.Project = new ProjectCreationDetailsViewModel()
             {
-                vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
-            }
-            else
-            {
-                vm.Project = new ProjectCreationDetailsViewModel()
-                {
-                    UserID = HttpContext.Session.GetInt32("UserID").Value
-                };
-            }
-
-            ViewBag.Users = userLogic.GetAllUsers();
+                UserID = HttpContext.Session.GetInt32("UserID").Value
+            };
 
             return View(vm);
         }
@@ -102,13 +89,12 @@ namespace AchmeaProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Users = userLogic.GetAllUsers();
-                return PartialView(vm);
+                return View(vm);
             }
 
             _session.SetObjectAsJson("Project", vm);
 
-            return Json(Url.Action("Select", "ESA"));
+            return RedirectToAction("Select", "ESA");
         }
 
         [HttpGet]

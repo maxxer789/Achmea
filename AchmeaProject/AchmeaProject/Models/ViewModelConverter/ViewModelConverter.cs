@@ -178,6 +178,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 Title = pvm.Title,
                 Description = pvm.Description,
                 CreationDate = Convert.ToDateTime(pvm.CreationDate),
+                Status = pvm.Status
             };
         }
         public static SecurityRequirement securityRequirementViewModelToModel(RequirementCreateViewModel rcvm)

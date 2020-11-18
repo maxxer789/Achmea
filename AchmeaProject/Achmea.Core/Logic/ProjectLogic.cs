@@ -52,9 +52,13 @@ namespace Achmea.Core.Logic
             return _IProject.GetRequirementsForProject(projectId);
         }
 
-       // public Project GetProject(int projectId)
+        // public Project GetProject(int projectId)
         //{
         // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
         //}
+        public void UpdateProjectStatus(Project project)
+        {
+            projectDAL.UpdateProjectStatus(project);
+        }
     }
 }

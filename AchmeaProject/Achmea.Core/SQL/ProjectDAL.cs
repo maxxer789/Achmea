@@ -154,6 +154,17 @@ namespace Achmea.Core
             return requirements;
         }
 
+        public void UpdateProjectStatus(Project givenPoject)
+        {
+            Project project = new Project() { ProjectId = givenPoject.ProjectId };
+
+            project.Status = givenPoject.Status;
+
+            Project.Attach(project);
+            Project.Update(project);
+            SaveChanges();
+        }
+
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)
         //{
         //    //IQueryable<ProjectModel> query = (IQueryable<ProjectModel>)GetProjects();
