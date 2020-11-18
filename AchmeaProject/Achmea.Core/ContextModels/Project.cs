@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AchmeaProject.Models
 {
@@ -15,26 +16,24 @@ namespace AchmeaProject.Models
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Status { get; set; }
         public DateTime? CreationDate { get; set; }
 
-        public Project(int projectId, int userId, string title, string description, string status)
+
+        public Project(int projectId, int userId, string title, string description)
         {
             ProjectId = projectId;
             UserId = userId;
             Title = title;
             Description = description;
-            Status = status;
             CreationDate = DateTime.Now;
         }
 
-        public Project(int projectId, int userId, string title, string description, string status, DateTime creationDate)
+        public Project(int projectId, int userId, string title, string description, DateTime creationDate)
         {
             ProjectId = projectId;
             UserId = userId;
             Title = title;
             Description = description;
-            Status = status;
             CreationDate = creationDate;
         }
 
