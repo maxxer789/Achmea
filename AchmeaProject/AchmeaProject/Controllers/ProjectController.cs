@@ -61,7 +61,7 @@ namespace AchmeaProject.Controllers
 
             if (ProjectMade == true)
             {
-                ViewBag.ProjectMade = "Project was made succesfully";
+                ViewBag.ProjectMade = "Project was made succesfully"; 
             }
 
             return RedirectToAction("Index", "Home");
