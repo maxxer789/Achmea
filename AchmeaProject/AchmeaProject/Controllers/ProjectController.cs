@@ -9,6 +9,7 @@ using Achmea.Core.Model;
 using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
+using AchmeaProject.Sessions;
 
 namespace AchmeaProject.Controllers
 {
@@ -17,11 +18,14 @@ namespace AchmeaProject.Controllers
         ProjectDAL projectDAL;
         ProjectLogic projectLogic;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController()
+        public ProjectController(IHttpContextAccessor httpContextAccessor)
         {
             projectDAL = new ProjectDAL();
             projectLogic = new ProjectLogic(projectDAL);
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //[HttpGet("{search}")]
