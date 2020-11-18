@@ -15,16 +15,14 @@ namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
-        ProjectDAL projectDAL;
         ProjectLogic projectLogic;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor)
+        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject)
         {
-            projectDAL = new ProjectDAL();
-            projectLogic = new ProjectLogic(projectDAL);
+            projectLogic = new ProjectLogic(iProject);
             _httpContextAccessor = httpContextAccessor;
         }
 
