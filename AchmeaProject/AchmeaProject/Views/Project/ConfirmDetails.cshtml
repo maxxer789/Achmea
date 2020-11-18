@@ -33,6 +33,23 @@
         <div class="row d-flex justify-content-center">
             <div class="col-6">
                 <div class=" row d-flex justify-content-center">
+                    <h3>Toegevoegde Personen</h3>
+                </div>
+                <br />
+                @for (int i = 0; i < Model.Members.Length; i++)
+                {
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <p>@Model.Members[i]</p>
+        </div>
+    </div>}
+        </div>
+            </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                <div class=" row d-flex justify-content-center">
                     <h3>Geselecteerde aspectgebieden</h3>
                 </div>
                 <br />
@@ -73,6 +90,14 @@
                 @Html.HiddenFor(model => Model.Project.CreationDate)
                                 @Html.HiddenFor(model => Model.Project.Description)
                                                 @Html.HiddenFor(model => @Model.Project.UserID)}
+
+    @if (Model.Members.Length > 0)
+    {
+        @for (int i = 0; i < Model.Members.Length; i++)
+        {
+            @Html.HiddenFor(model => Model.Members[i])
+        }
+    }
 
     @if (Model.Bivs.Count > 0)
     {<!-- Biv information to pass through -->

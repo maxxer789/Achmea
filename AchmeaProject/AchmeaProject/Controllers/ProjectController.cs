@@ -10,6 +10,7 @@ using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
+using Achmea.Core.SQL;
 
 namespace AchmeaProject.Controllers
 {
@@ -17,12 +18,17 @@ namespace AchmeaProject.Controllers
     {
         ProjectLogic projectLogic;
 
+        private readonly UserLogic userLogic;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject)
         {
             projectLogic = new ProjectLogic(iProject);
+
+             userLogic = new UserLogic(new UserDAL());
+
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -73,10 +79,20 @@ namespace AchmeaProject.Controllers
         public IActionResult Create()
         {
             ProjectCreateViewModel vm = new ProjectCreateViewModel();
-            vm.Project = new ProjectCreationDetailsViewModel()
+
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") != null)
             {
-                UserID = HttpContext.Session.GetInt32("UserID").Value
-            };
+                vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+            }
+            else
+            {
+                vm.Project = new ProjectCreationDetailsViewModel()
+                {
+                    UserID = HttpContext.Session.GetInt32("UserID").Value
+                };
+            }
+
+            ViewBag.Users = userLogic.GetAllUsers();
 
             return View(vm);
         }
@@ -86,12 +102,13 @@ namespace AchmeaProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(vm);
+                ViewBag.Users = userLogic.GetAllUsers();
+                return PartialView(vm);
             }
 
             _session.SetObjectAsJson("Project", vm);
 
-            return RedirectToAction("Select", "ESA");
+            return Json(Url.Action("Select", "ESA"));
         }
 
         [HttpGet]
