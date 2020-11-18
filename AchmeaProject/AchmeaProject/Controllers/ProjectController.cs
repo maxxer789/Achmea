@@ -10,21 +10,25 @@ using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
+using Achmea.Core.SQL;
 
 namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
-        ProjectDAL projectDAL;
         ProjectLogic projectLogic;
+
+        private readonly UserLogic userLogic;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor)
+        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject)
         {
-            projectDAL = new ProjectDAL();
-            projectLogic = new ProjectLogic(projectDAL);
+            projectLogic = new ProjectLogic(iProject);
+
+             userLogic = new UserLogic(new UserDAL());
+
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -46,15 +50,16 @@ namespace AchmeaProject.Controllers
         //    return result;
 
         //}
-
-        public IActionResult CreateProject(string ProjectTitle, string ProjectDescription)
+        [HttpPost]
+        public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
         {
             Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
             bool ProjectMade;
 
             try
             {
-                projectLogic.MakeNewProject(projectModel);
+                var hey = Members;
+                projectLogic.MakeNewProject(projectModel, Members);
                 ProjectMade = true;
             }
             catch
@@ -62,10 +67,10 @@ namespace AchmeaProject.Controllers
                 ProjectMade = false;
             }
 
-            //if(ProjectMade == true)
-            //{
-            //    ViewBag.ProjectMade = "Project was made succesfully";
-            //}
+            if (ProjectMade == true)
+            {
+                ViewBag.ProjectMade = "Project was made succesfully"; 
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -73,28 +78,21 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetInt32("UserID") == null)
-            {
-                Response.WriteAsync("<script language='javascript'>window.alert('Please login to create a new project');window.location.href='/User/Login';</script>");
-                return RedirectToAction("Login", "User", null);
-            }
+            ProjectCreateViewModel vm = new ProjectCreateViewModel();
 
-            ProjectCreateViewModel vm;
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
-            {
-                vm = new ProjectCreateViewModel
-                {
-                    Project = new ProjectCreationDetailsViewModel()
-                    {
-                        UserID = HttpContext.Session.GetInt32("UserID").Value,
-                        CreationDate = DateTime.Now.ToShortDateString()
-                    }
-                };
-            }
-            else
+            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") != null)
             {
                 vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
             }
+            else
+            {
+                vm.Project = new ProjectCreationDetailsViewModel()
+                {
+                    UserID = HttpContext.Session.GetInt32("UserID").Value
+                };
+            }
+
+            ViewBag.Users = userLogic.GetAllUsers();
 
             return View(vm);
         }
@@ -104,17 +102,19 @@ namespace AchmeaProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(vm);
+                ViewBag.Users = userLogic.GetAllUsers();
+                return PartialView(vm);
             }
 
             _session.SetObjectAsJson("Project", vm);
 
-            return RedirectToAction("Select", "ESA");
+            return Json(Url.Action("Select", "ESA"));
         }
 
         [HttpGet]
         public IActionResult ConfirmDetails()
         {
+            //Change
             if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
             {
                 return RedirectToAction("Create", "Project");
@@ -144,6 +144,7 @@ namespace AchmeaProject.Controllers
             }
 
             return RedirectToAction("SaveReqruirementsToProject", "Requirement");
+            //change
         }
     }
 }

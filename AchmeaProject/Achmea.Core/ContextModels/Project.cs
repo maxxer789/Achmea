@@ -7,7 +7,6 @@ namespace AchmeaProject.Models
     {
         public Project()
         {
-            Comment = new HashSet<Comment>();
             ProjectEsaAspect = new HashSet<ProjectEsaAspect>();
             SecurityRequirementProject = new HashSet<SecurityRequirementProject>();
         }
@@ -26,6 +25,7 @@ namespace AchmeaProject.Models
             Title = title;
             Description = description;
             Status = status;
+            CreationDate = DateTime.Now;
         }
 
         public Project(int projectId, int userId, string title, string description, string status, DateTime creationDate)
@@ -39,7 +39,6 @@ namespace AchmeaProject.Models
         }
 
         public virtual User User { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
         public virtual ICollection<ProjectEsaAspect> ProjectEsaAspect { get; set; }
         public virtual ICollection<SecurityRequirementProject> SecurityRequirementProject { get; set; }
     }

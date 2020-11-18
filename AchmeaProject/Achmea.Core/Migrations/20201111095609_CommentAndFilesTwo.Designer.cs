@@ -4,14 +4,16 @@ using AchmeaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Achmea.Core.Migrations
 {
     [DbContext(typeof(AchmeaContext))]
-    partial class AchmeaContextModelSnapshot : ModelSnapshot
+    [Migration("20201111095609_CommentAndFilesTwo")]
+    partial class CommentAndFilesTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,27 +21,7 @@ namespace Achmea.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Achmea.Core.ContextModels.ProjectMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectMembers");
-                });
-
-            modelBuilder.Entity("AchmeaProject.Models.BIVRequirement", b =>
+            modelBuilder.Entity("Achmea.Core.ContextModels.BIVRequirement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,6 +41,26 @@ namespace Achmea.Core.Migrations
                     b.HasIndex("RequirementId");
 
                     b.ToTable("BIVRequirement");
+                });
+
+            modelBuilder.Entity("Achmea.Core.ContextModels.ProjectMembers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("User")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMembers");
                 });
 
             modelBuilder.Entity("AchmeaProject.Models.Biv", b =>
@@ -275,28 +277,6 @@ namespace Achmea.Core.Migrations
                     b.ToTable("Project");
                 });
 
-            modelBuilder.Entity("AchmeaProject.Models.ProjectBiv", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BivId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BivId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectBiv");
-                });
-
             modelBuilder.Entity("AchmeaProject.Models.ProjectEsaAspect", b =>
                 {
                     b.Property<int>("ProjectEsaAspect1")
@@ -371,7 +351,7 @@ namespace Achmea.Core.Migrations
                     b.Property<bool?>("Excluded")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FileOfProofId")
+                    b.Property<int>("FileOfProofId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
@@ -439,16 +419,7 @@ namespace Achmea.Core.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Achmea.Core.ContextModels.ProjectMember", b =>
-                {
-                    b.HasOne("AchmeaProject.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AchmeaProject.Models.BIVRequirement", b =>
+            modelBuilder.Entity("Achmea.Core.ContextModels.BIVRequirement", b =>
                 {
                     b.HasOne("AchmeaProject.Models.Biv", "Biv")
                         .WithMany()
@@ -459,6 +430,15 @@ namespace Achmea.Core.Migrations
                     b.HasOne("AchmeaProject.Models.SecurityRequirement", "SecurityRequirement")
                         .WithMany()
                         .HasForeignKey("RequirementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Achmea.Core.ContextModels.ProjectMembers", b =>
+                {
+                    b.HasOne("AchmeaProject.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -517,21 +497,6 @@ namespace Achmea.Core.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AchmeaProject.Models.ProjectBiv", b =>
-                {
-                    b.HasOne("AchmeaProject.Models.Biv", "Biv")
-                        .WithMany()
-                        .HasForeignKey("BivId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AchmeaProject.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AchmeaProject.Models.ProjectEsaAspect", b =>
                 {
                     b.HasOne("AchmeaProject.Models.EsaAspect", "Aspect")
@@ -551,7 +516,9 @@ namespace Achmea.Core.Migrations
                 {
                     b.HasOne("AchmeaProject.Models.FileOfProof", "FileOfProof")
                         .WithMany()
-                        .HasForeignKey("FileOfProofId");
+                        .HasForeignKey("FileOfProofId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AchmeaProject.Models.Project", "Project")
                         .WithMany("SecurityRequirementProject")

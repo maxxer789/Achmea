@@ -14,25 +14,22 @@ namespace Achmea.Core.Logic
     }
     public class ProjectLogic
     {
-        ProjectDAL projectDAL;
-
-        readonly IProject _IUser;
+        readonly IProject _IProject;
         
         private IEnumerable<Project> Projects;
         
         public ProjectLogic(IProject IUser)
         {
-            projectDAL = new ProjectDAL();
-            _IUser = IUser;
+            _IProject = IUser;
 
         }
 
 
-        public Project MakeNewProject(Project projectModel)
+        public Project MakeNewProject(Project projectModel, int[] members)
         {
             try
             {
-                return projectDAL.AddNewProject(projectModel);
+                return _IProject.AddNewProject(projectModel, members);
             }
             catch (Exception ex)
             {
@@ -46,12 +43,12 @@ namespace Achmea.Core.Logic
 
         public List<EsaAspect> GetEsaForProject(int projectId)
         {
-            return projectDAL.GetEsaForProject(projectId);
+            return _IProject.GetEsaForProject(projectId);
         }
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
         {
-            return projectDAL.GetRequirementsForProject(projectId);
+            return _IProject.GetRequirementsForProject(projectId);
         }
 
        // public Project GetProject(int projectId)

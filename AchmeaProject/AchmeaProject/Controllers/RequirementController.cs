@@ -52,18 +52,26 @@ namespace AchmeaProject.Controllers
 
         public IActionResult SaveReqruirementsToProject()
         {
-            ProjectCreateViewModel pvm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+            try
+            {
+                ProjectCreateViewModel pvm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
 
-            Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
+                Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project), pvm.Members);
 
-            List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
-            List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
+                List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
+                List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
 
-            BivLogic.SaveBivToProject(classifications, proj);
-            AreaLogic.SaveAspectToProject(aspects, proj);
+                BivLogic.SaveBivToProject(classifications, proj);
+                AreaLogic.SaveAspectToProject(aspects, proj);
 
-            Logic.SaveReqruirementsToProject(aspects, classifications, proj);
+                Logic.SaveReqruirementsToProject(aspects, classifications, proj);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
+            _session.Remove("Project");
             return RedirectToAction("index", "home");
         }
 

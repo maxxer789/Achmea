@@ -9,7 +9,7 @@ namespace Achmea.Core.Interface
 {
     public interface IProject
     {
-        public void AddNewProject(string title, int ID);
+        public Project AddNewProject(Project project, int[] MemberIDs);
 
         public IEnumerable<Project> GetProjects();
 

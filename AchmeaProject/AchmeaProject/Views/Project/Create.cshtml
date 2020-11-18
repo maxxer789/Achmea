@@ -1,58 +1,176 @@
 ﻿@model ProjectCreateViewModel;
 
-@{
-}
 
-<div class="row">
-    <div class="col-4"></div>
-    <div class="col-4">
-        <h1>Project gegevens</h1>
-        <form asp-action="Create" asp-controller="Project">
-            <div class="form-group">
-                <label asp-for="@Model.Project.Title" class="control-label"></label>
-                <input asp-for="@Model.Project.Title" class="form-control" />
-                <span asp-validation-for="@Model.Project.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Project.Description" class="control-label"></label>
-                <input asp-for="@Model.Project.Description" class="form-control" />
-                <span asp-validation-for="@Model.Project.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <input asp-for="@Model.Project.CreationDate" class="form-control" />
-            </div>
-            <div class="form-group" hidden="hidden">
-                <input asp-for="@Model.Project.UserID" class="form-control" />
-            </div>
-            <div class="form-group" style="float: right">
-                <button class="btn btn-primary" id="NextBtn" name="nextbtn" type="submit" value="Volgende">Volgende</button>
-            </div>
 
-            @if (Model.Bivs.Count > 0)
-            {
-                <!-- Biv information to pass through -->
-                @for (int i = 0; i < @Model.Bivs.Count; i++)
+@{ ViewData["Title"] = "Home Page"; }
+
+@{ var users = ViewBag.Users as List<AchmeaProject.Models.User>; }
+
+@{ var Employees = "Added employees"; }
+
+
+<div id="content">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <h1>Project gegevens</h1>
+            <form id="myform">
+                <div class="form-group">
+                    <label asp-for="@Model.Project.Title" class="control-label"></label>
+                    <input asp-for="@Model.Project.Title" class="form-control" />
+                    <span asp-validation-for="@Model.Project.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Project.Description" class="control-label"></label>
+                    <input asp-for="@Model.Project.Description" class="form-control" />
+                    <span asp-validation-for="@Model.Project.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden="hidden">
+                    <input asp-for="@Model.Project.CreationDate" class="form-control" />
+                </div>
+                <div class="form-group" hidden="hidden">
+                    <input asp-for="@Model.Project.UserID" class="form-control" />
+                </div>
+                <div class="form-group" style="float: right">
+                </div>
+
+                @if (Model.Bivs.Count > 0)
                 {
-                    @Html.HiddenFor(model => Model.Bivs[i].Id)
-                    @Html.HiddenFor(model => Model.Bivs[i].Name)
-                    @Html.HiddenFor(model => Model.Bivs[i].isSelected)
+                    <!-- Biv information to pass through -->
+                    @for (int i = 0; i < @Model.Bivs.Count; i++)
+                    {
+                        @Html.HiddenFor(model => Model.Bivs[i].Id)
+                        @Html.HiddenFor(model => Model.Bivs[i].Name)
+                        @Html.HiddenFor(model => Model.Bivs[i].isSelected)
+                    }
                 }
-            }
 
-            @if (Model.AspectAreas.Count > 0)
-            {
-                <!-- AspectAreas information to pass through -->
-                @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+                @if (Model.AspectAreas.Count > 0)
                 {
-                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+                    <!-- AspectAreas information to pass through -->
+                    @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+                    {
+                        @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                        @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                        @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                        @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+                    }
                 }
-            }
 
-            <input type="hidden" name="submitclicked" value="">
-        </form>
+            </form>
+
+            <label for="something">
+                Add employee('s)":
+                <input id="something" list="somethingelse">
+                <datalist id="somethingelse">
+                    @foreach (var user in users)
+                    {
+                        <option value="@user.UserId">@user.Firstname @user.Lastname </option>
+                    }
+                </datalist>
+                <button onclick="AddToProject()" type="button" class="btn btn-primary button button4">Add</button>
+                <span id="spanResult"></span>
+            </label>
+
+
+
+            <table class="table table-hover table-dark">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => Employees)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="body">
+                    @if (Model.Members.Length > 0)
+                    {
+                        for (int i = 0; i < Model.Members.Length; i++)
+                        {
+                            <tr>
+                                <td onload="Add(@Model.Members[i])">@Model.Members[i]</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
+        </div>
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    var members = [];
+    var newMember;
+
+    console.log(members);
+
+    function Add(int) {
+        members.push(int);
+    }
+
+    function AddToProject() {
+        var added = false;
+        var Value = document.querySelector('#something').value;
+
+        newMember = Value;
+
+        console.log(newMember);
+        console.log(members);
+
+        let body = document.querySelector('#body');
+
+        let langs = [newMember];
+
+        let nodes = langs.map(lang => {
+            let li = document.createElement('tr');
+            li.textContent = lang;
+            return li;
+        });
+
+        members.forEach(member => {
+            if (member == newMember) {
+                added = true;
+                alert("this Person has already been added to the project");
+            }
+        });
+
+        if (added == false) {
+            members.push(Value);
+            body.append(...nodes);
+        }
+        added = false;
+    }
+
+    $('#NextBtn').click(function (event) {
+
+        event.preventDefault();
+
+        var formdata = $("#myform").serializeArray();
+        members.forEach(member => formdata.push({ name: "Members", value: member}))
+
+        console.log(formdata);
+
+        $.ajax({
+            type: "POST",
+            url: "/Project/Create",
+            dataType: "json",
+            traditional: true,
+            data: $.param(formdata),
+            success: function (data) {
+                if (typeof data == "html") {
+                    $('#content').html(r);
+                }
+                else {
+                    window.location.href = data;
+                }
+            }
+        });
+    });
+
+</script>
