@@ -103,7 +103,8 @@ namespace AchmeaProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(vm);
+                ViewBag.Users = userLogic.GetAllUsers();
+                return PartialView(vm);
             }
 
             _session.SetObjectAsJson("Project", vm);
