@@ -152,6 +152,13 @@ namespace Achmea.Core.Logic
                 Parents = new List<string> { folderId }
             };
 
+            var allowedExtensions = new[] { ".doc", ".docx", ".png" };
+            var extension = Path.GetExtension(Body.Name);
+            if (!allowedExtensions.Contains(extension))
+            {
+                throw new System.InvalidOperationException("File can only be doc, docx or png");
+            }
+
             MemoryStream stream = new MemoryStream();
             uploadFile.CopyTo(stream);
 
@@ -160,6 +167,7 @@ namespace Achmea.Core.Logic
                 FilesResource.CreateMediaUpload request = service.Files.Create(Body, stream, GetMimeType(uploadFile.FileName));
                 request.Upload();
                 return request.ResponseBody.Id;
+                
             }
             catch (Exception ex)
             {
