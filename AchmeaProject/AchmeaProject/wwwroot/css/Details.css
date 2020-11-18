@@ -1,0 +1,85 @@
+﻿body {
+}
+
+main {
+    min-height: 100%;
+    display: grid;
+}
+
+.con-header {
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid darkgray;
+}
+
+.header-title {
+    height: 100%;
+    width: 35%;
+    float: left;
+    padding: 70px 10px;
+    word-wrap: break-word;
+}
+
+.header-desc {
+    height: 100%;
+    width: 65%;
+    float: right;
+    padding: 15px 10px;
+    word-wrap: break-word;
+}
+
+.con-content {
+    width: 100%;
+    height: 100%;
+}
+
+.con-requirement {
+}
+
+.requirement-info {
+    width: 80%;
+    float: left;
+    padding: 10px 10px;
+    word-wrap: break-word;
+    margin: 0 10px 0 10px;
+    cursor: pointer;
+    user-select: none;
+    float: left;
+    border-bottom: 1px solid lightgray;
+}
+
+
+.requirement-check {
+    width: 150px;
+    float: right;
+    padding: 10px 10px;
+    text-align: center;
+    word-wrap: break-word;
+    margin: 0 10px 0 10px;
+    grid-row: 1;
+    border-bottom: 1px solid lightgray;
+}
+
+.requirement-info:hover, .active {
+    background-color: lightgray;
+}
+
+.requirement-info:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: black;
+    float: right;
+    margin-left: 5px;
+    padding-top: 0;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.collapsible {
+    margin: 0 10px 0 10px;
+    padding: 10px 10px;
+    display: none;
+    width: 80%;
+}

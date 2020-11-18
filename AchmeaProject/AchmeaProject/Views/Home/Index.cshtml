@@ -1,6 +1,18 @@
-﻿@{
+﻿
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+@{
+    var users = ViewBag.Users as IEnumerable<AchmeaProject.Models.User>;
+}
+
+@{
+    var Employees = "Added employees";
+}
+
+
 
 <div class="container">
     <div class="modal fade" tabindex="-1" id="loginModal"
@@ -8,21 +20,56 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create new project</h4>
+                    <h4 class="modal-title">Create project</h4>
                     <button type="button" class="close" data-dismiss="modal">
                         ×
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="CreateProject" asp-controller="Customer" asp-action="CreateProject" method="post">
+                    <form>
                         <div class="form-group">
-                            <label>Name your new Project</label>
-                            <input type="text" name="PlaylistName" class="form-control" id="PlaylistName">
+                            <label>Name your new project</label>
+                            <input type="text" name="ProjectTitle" class="form-control" id="Title">
                         </div>
-                        <button type="submit" class="btn btn-primary">Create playlist</button>
+                        <div class="form-group">
+                            <label>Give your project a description</label>
+                            <input type="text" name="ProjectDescription" class="form-control" id="Description">
+                        </div>
+
+                            <label for="something">
+                                Add employee('s)":
+                                <input id="something" list="somethingelse">
+                                <datalist id="somethingelse">
+                                    @foreach (var user in users)
+                                    {
+                                        <option value="@user.UserId">@user.Firstname @user.Lastname </option>
+                                    }
+                                </datalist>
+                                <button onclick="AddToProject()" type="button" class="btn btn-primary button button4">Add</button>
+                                <span id="spanResult"></span>
+                            </label>
+
+
+
+                        <table class="table table-hover table-dark">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => Employees)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="body">
+                            </tbody>
+                        </table>
+
+                        <button type="submit" id="submit" class="btn btn-primary">Create project</button>
                     </form>
+
                 </div>
                 <div class="modal-footer">
+
                     <button type="button" id="btnHideModal" class="btn btn-primary button button4">
                         Hide
                     </button>
@@ -32,8 +79,8 @@
     </div>
 </div>
 
-<button type="submit" id="open" class="btn btn-primary">Create new Playlist</button>
 
+<button type="submit" id="open" class="btn btn-primary">Create new Project</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -47,4 +94,75 @@
     $("#btnHideModal").click(function () {
         $("#loginModal").modal('hide');
     });
+
+
 </script>
+
+<script type="text/javascript">
+
+    var members = [];
+    var newMember;
+
+    for (var i in members) {
+        console.log(i);
+    }
+
+
+
+    function AddToProject() {
+        var added = false;
+        var Value = document.querySelector('#something').value;
+
+        newMember = Value;
+
+        console.log(newMember);
+        console.log(members);
+
+        let body = document.querySelector('#body');
+
+        let langs = [newMember];
+
+        let nodes = langs.map(lang => {
+            let li = document.createElement('tr');
+            li.textContent = lang;
+            return li;
+        });
+
+        for (var member in members) {
+            if (member == newMember) {
+                added = true;
+                alert("this Person has already been added to the project");
+            }
+        }
+        if (added == false) {
+            members.push(Value);
+            body.append(...nodes);
+        } 
+        added = false;
+    }
+
+    $('#submit').click(function (event) {
+
+        event.preventDefault();
+        var requestData = {
+            Members: members,
+            ProjectTitle: document.getElementById("Title").value,
+            ProjectDescription: document.getElementById("Description").value,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Project/CreateProject",
+            dataType: "json",
+            traditional: true,
+            data: requestData,
+        });
+
+        $("#loginModal").modal('hide');
+    });
+
+    //$("input[id=something]").focusout(function () {
+    //    alert($(this).val());
+    //});
+</script>
+
