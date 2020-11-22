@@ -43,13 +43,22 @@
                                     @Html.HiddenFor(model => Model.AspectAreas[i].Description)
                                                     @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}
 
-        @if (Model.Members.Length > 0)
+    @if (Model.Members.Length > 0)
+     {
+        for (int i = 0; i < Model.Members.Length; i++)
         {
-            @for (int i = 0; i < Model.Members.Length; i++)
-            {
-                @Html.HiddenFor(model => Model.Members[i])
-            }
+           @Html.HiddenFor(model => Model.Members[i])
         }
+     }
+
+    @if (Model.Users.Count > 0)
+     {
+        for (int i = 0; i < Model.Users.Count; i++)
+        {
+            @Html.HiddenFor(model => Model.Users[i].UserID)
+            @Html.HiddenFor(model => Model.Users[i].Name)
+        }
+     }
 
         <div class="row">
             <div class="col-3">
