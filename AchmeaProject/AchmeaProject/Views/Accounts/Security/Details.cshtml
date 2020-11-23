@@ -28,16 +28,9 @@
             <div class="requirement-info">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
             </div>
-
-                <div class="requirement-check">
-                    @req.Status
-                </div>
-
-                <div class="accept-decline-button">
-                    <input type="submit" name="accept_button" class="accept-button" value="Accept" />
-                    <input type="submit" name="decline_button" class="decline-button" value="Decline" />
-                </div>
-
+            <div class="requirement-check">
+                @req.Status
+            </div>
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
