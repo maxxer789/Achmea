@@ -15,13 +15,10 @@ namespace Achmea.Core.Logic
     public class ProjectLogic
     {
         readonly IProject _IProject;
-        
-        private IEnumerable<Project> Projects;
-        private IEnumerable<SecurityRequirementProject> SecurityRequirementProjects;
 
-        public ProjectLogic(IProject IUser)
+        public ProjectLogic(IProject iProject)
         {
-            _IProject = IUser;
+            _IProject = iProject;
 
         }
 
@@ -37,14 +34,10 @@ namespace Achmea.Core.Logic
                 throw new Exception(ex.ToString());
             }
         }
+
         public List<Project> GetProjects()
         {
-            return new List<Project>(Projects);
-        }
-
-        public List<EsaAspect> GetEsaForProject(int projectId)
-        {
-            return _IProject.GetEsaForProject(projectId);
+            return new List<Project>(_IProject.GetProjects());
         }
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
@@ -52,10 +45,11 @@ namespace Achmea.Core.Logic
             return _IProject.GetRequirementsForProject(projectId);
         }
 
-        // public Project GetProject(int projectId)
-        //{
-        // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
-        //}
+        public Project GetProject(int projectId)
+        {
+            return _IProject.GetProject(projectId);
+        }
+
         public void UpdateProjectStatus(Project project)
         {
             _IProject.UpdateProjectStatus(project);

@@ -16,19 +16,15 @@ namespace AchmeaProject.Controllers
 {
     public class SecurityController : Controller
     {
-        private readonly IProject IProject;
-        private readonly UserLogic UserLogic;
-        private readonly ProjectLogic ProjectLogic;
-        private readonly IUser IUser;
-        private readonly IRequirement IRequirement;
+        private readonly RequirementLogic _RequirementLogic;
+        private readonly UserLogic _UserLogic;
+        private readonly ProjectLogic _ProjectLogic;
 
-        public SecurityController(IConfiguration config)
+        public SecurityController(IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement)
         {
-            IProject = new ProjectDAL();
-            IUser = new UserDAL();
-            UserLogic = new UserLogic(IUser);
-            ProjectLogic = new ProjectLogic(IProject);
-            IRequirement = new RequirementDAL();
+            _UserLogic = new UserLogic(iUser);
+            _ProjectLogic = new ProjectLogic(iProject);
+            _RequirementLogic = new RequirementLogic(iRequirement);
         }
 
         public IActionResult Index()
@@ -40,7 +36,7 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == "Security")
             {
-                List<Project> list = IProject.GetProjects().ToList();
+                List<Project> list = _ProjectLogic.GetProjects().ToList();
 
                 List<ProjectViewModel> vmList = new List<ProjectViewModel>();
 
@@ -64,7 +60,7 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == "Security")
             {
-                Project project = IProject.GetProject(projectId);
+                Project project = _ProjectLogic.GetProject(projectId);
 
                 ProjectDetailViewModel vm = new ProjectDetailViewModel()
                 {
@@ -73,10 +69,9 @@ namespace AchmeaProject.Controllers
                     Title = project.Title,
                     Description = project.Description,
                     CreationDate = project.CreationDate?.ToString("d"),
-                    EsaAspects = ProjectLogic.GetEsaForProject(projectId),
-                    RequirementProject = ProjectLogic.GetRequirementsForProject(projectId),
-                    Requirements = IRequirement.GetAllRequirements(),
-                    User = UserLogic.GetUserByID(project.UserId)
+                    RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
+                    Requirements = _RequirementLogic.GetAllRequirements(),
+                    User = _UserLogic.GetUserByID(project.UserId)
                 };
 
                 return View("Views/Accounts/Security/Details.cshtml", vm);

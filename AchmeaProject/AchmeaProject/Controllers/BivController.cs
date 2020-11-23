@@ -16,16 +16,14 @@ namespace AchmeaProject.Controllers
 {
     public class BivController : Controller
     {
-        private readonly BivLogic Logic;
-        private readonly IBiv Interface;
+        private readonly BivLogic _BivLogic;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public BivController(IConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public BivController(IConfiguration config, IHttpContextAccessor httpContextAccessor, IBiv iBiv)
         {
-            Interface = new BivDAL();
-            Logic = new BivLogic(Interface);
+            _BivLogic = new BivLogic(iBiv);
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -43,7 +41,7 @@ namespace AchmeaProject.Controllers
 
                 if (vm.Bivs.Count == 0)
                 {
-                    vm.Bivs = ViewModelConverter.BivModelToBivViewModel(Logic.GetBiv());
+                    vm.Bivs = ViewModelConverter.BivModelToBivViewModel(_BivLogic.GetBiv());
                 }
 
                 return View(vm);
