@@ -203,5 +203,29 @@ namespace AchmeaProject.Models.ViewModelConverter
                 RequirementNumber = req.RequirementNumber
             };
         }
+
+        public static UserSelectionViewModel UserToUserSelectionViewModel(User user)
+        {
+            return new UserSelectionViewModel
+            {
+                UserID = user.UserId,
+                Name = user.Firstname + " " + user.Lastname
+            };
+        }
+
+        public static List<UserSelectionViewModel> UserToUserSelectionViewModel(List<User> users)
+        {
+            List<UserSelectionViewModel> UserVMs = new List<UserSelectionViewModel>();
+            foreach (User user in users)
+            {
+                UserVMs.Add(new UserSelectionViewModel
+                {
+                    UserID = user.UserId,
+                    Name = user.Firstname + " " + user.Lastname
+                });
+            }
+
+            return UserVMs;
+        }
     }
 }
