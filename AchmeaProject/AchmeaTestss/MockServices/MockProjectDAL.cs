@@ -50,5 +50,10 @@ namespace AchmeaTestss.MockServices
             List<SecurityRequirementProject> requirementList = new List<SecurityRequirementProject>();
             return requirementList;
         }
+
+        public void UpdateProjectStatus(Project givenProject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
