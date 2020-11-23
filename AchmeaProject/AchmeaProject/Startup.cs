@@ -31,6 +31,8 @@ namespace AchmeaProject
             services.AddTransient<IProject, ProjectDAL>();
             services.AddTransient<IRequirement, RequirementDAL>();
             services.AddTransient<IUser, UserDAL>();
+            services.AddTransient<IAspectArea, AspectAreaDAL>();
+            services.AddTransient<IBiv, BivDAL>();
 
             services.AddSession(options =>
             {
