@@ -15,8 +15,6 @@ namespace Achmea.Core.Interface
 
         public Project GetProject(int projectId);
 
-        public List<EsaAspect> GetEsaForProject(int projectId);
-
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId);
 
         public void UpdateProjectStatus(Project givenProject);
