@@ -12,7 +12,14 @@ namespace AchmeaTestss.MockServices
 
         public MockProjectDAL()
         {
-            Projects
+            Projects.Add(new Project()
+            {
+                ProjectId = 1,
+                UserId = 1,
+                Title = "Test Project 1",
+                Description = "This is the description for test project 1.",
+                CreationDate = DateTime.Now
+            });
         }
 
         public Project AddNewProject(Project project, int[] MemberIDs)
