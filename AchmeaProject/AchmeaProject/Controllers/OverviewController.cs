@@ -41,7 +41,6 @@ namespace AchmeaProject.Controllers
                     {
                         ProjectId = model.ProjectId,
                         Title = model.Title,
-                        Status = model.Status,
                         CreationDate = model.CreationDate?.ToString("d")
                     };
                     if (viewModel.CreationDate == "1-1-0001")
@@ -67,7 +66,6 @@ namespace AchmeaProject.Controllers
                     UserId = project.UserId,
                     Title = project.Title,
                     Description = project.Description,
-                    Status = project.Status,
                     CreationDate = project.CreationDate?.ToString("d"),
                     EsaAspects = Interface.GetEsaForProject(projectId),
                     RequirementProject = Interface.GetRequirementsForProject(projectId),

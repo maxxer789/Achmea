@@ -17,7 +17,8 @@ namespace Achmea.Core.Logic
         readonly IProject _IProject;
         
         private IEnumerable<Project> Projects;
-        
+        private IEnumerable<SecurityRequirementProject> SecurityRequirementProjects;
+
         public ProjectLogic(IProject IUser)
         {
             _IProject = IUser;
@@ -51,9 +52,13 @@ namespace Achmea.Core.Logic
             return _IProject.GetRequirementsForProject(projectId);
         }
 
-       // public Project GetProject(int projectId)
+        // public Project GetProject(int projectId)
         //{
-           // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
+        // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
         //}
+        public void UpdateProjectStatus(Project project)
+        {
+            _IProject.UpdateProjectStatus(project);
+        }
     }
 }

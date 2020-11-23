@@ -27,7 +27,7 @@ namespace AchmeaProject.Controllers
         {
             projectLogic = new ProjectLogic(iProject);
 
-             userLogic = new UserLogic(new UserDAL());
+            userLogic = new UserLogic(new UserDAL());
 
             _httpContextAccessor = httpContextAccessor;
         }
@@ -53,7 +53,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
         {
-            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
+            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription);
             bool ProjectMade;
 
             try
@@ -69,7 +69,7 @@ namespace AchmeaProject.Controllers
 
             if (ProjectMade == true)
             {
-                ViewBag.ProjectMade = "Project was made succesfully"; 
+                ViewBag.ProjectMade = "Project was made succesfully";
             }
 
             return RedirectToAction("Index", "Home");
