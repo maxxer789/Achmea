@@ -11,69 +11,51 @@ using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
 using Achmea.Core.SQL;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
-        ProjectLogic projectLogic;
-
+        private readonly ProjectLogic projectLogic;
         private readonly UserLogic userLogic;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
+        private readonly ISession _session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject)
+        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject, IUser iuser)
         {
             projectLogic = new ProjectLogic(iProject);
 
-             userLogic = new UserLogic(new UserDAL());
+            userLogic = new UserLogic(iuser);
 
-            _httpContextAccessor = httpContextAccessor;
+            _session = httpContextAccessor.HttpContext.Session;
         }
 
-        //[HttpGet("{search}")]
-        //public List<ProjectModel> Search(string SearchTerm)
+        //[HttpPost]
+        //public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
         //{
-        //    List<ProjectModel> result;
+        //    Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription);
+        //    bool ProjectMade;
 
         //    try
         //    {
-        //        result = projectDAL.Search(SearchTerm);
-
+        //        var hey = Members;
+        //        projectLogic.MakeNewProject(projectModel, Members);
+        //        ProjectMade = true;
         //    }
-        //    catch (Exception ex)
+        //    catch
         //    {
-        //        throw new Exception(ex.ToString());
+        //        ProjectMade = false;
         //    }
 
-        //    return result;
+        //    if (ProjectMade == true)
+        //    {
+        //        ViewBag.ProjectMade = "Project was made succesfully";
+        //    }
 
+        //    return RedirectToAction("Index", "Home");
         //}
-        [HttpPost]
-        public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
-        {
-            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
-            bool ProjectMade;
-
-            try
-            {
-                var hey = Members;
-                projectLogic.MakeNewProject(projectModel, Members);
-                ProjectMade = true;
-            }
-            catch
-            {
-                ProjectMade = false;
-            }
-
-            if (ProjectMade == true)
-            {
-                ViewBag.ProjectMade = "Project was made succesfully"; 
-            }
-
-            return RedirectToAction("Index", "Home");
-        }
 
         [HttpGet]
         public IActionResult Create()
@@ -92,7 +74,14 @@ namespace AchmeaProject.Controllers
                 };
             }
 
-            ViewBag.Users = userLogic.GetAllUsers();
+            List<User> users = userLogic.GetAllUsers().ToList();
+            List<SelectListItem> SelectUsers = new List<SelectListItem>();
+            foreach (var user in users)
+            {
+                SelectUsers.Add(new SelectListItem(user.Firstname + " " + user.Lastname, user.UserId.ToString()));
+            }
+
+            ViewBag.Users = ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetAllUsers().ToList());
 
             return View(vm);
         }
@@ -102,19 +91,23 @@ namespace AchmeaProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Users = userLogic.GetAllUsers();
-                return PartialView(vm);
+                ViewBag.Users = ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetAllUsers().ToList());
+                return View(vm);
+            }
+
+            foreach  (int userid in vm.Members)
+            {
+                vm.Users.Add(ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetUserByID(userid)));
             }
 
             _session.SetObjectAsJson("Project", vm);
 
-            return Json(Url.Action("Select", "ESA"));
+            return RedirectToAction("Select", "ESA");
         }
 
         [HttpGet]
         public IActionResult ConfirmDetails()
         {
-            //Change
             if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
             {
                 return RedirectToAction("Create", "Project");
@@ -144,7 +137,6 @@ namespace AchmeaProject.Controllers
             }
 
             return RedirectToAction("SaveReqruirementsToProject", "Requirement");
-            //change
         }
     }
 }
