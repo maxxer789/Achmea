@@ -76,16 +76,22 @@ namespace AchmeaProject.Controllers
         {
             if (vm.File != null)
             {
-                string FileId = GoogleDriveConnection.UploadFile(service, vm.File);
-                FileOfProof fileOfProof = new FileOfProof
+                if (GoogleDriveConnection.ValidateFileType(vm.File))
                 {
-                    DocumentTitle = Path.GetFileName(vm.File.FileName),
-                    FileLocation = FileId
-                };
+                    string FileId = GoogleDriveConnection.UploadFile(service, vm.File);
+                    FileOfProof fileOfProof = new FileOfProof
+                    {
+                        DocumentTitle = Path.GetFileName(vm.File.FileName),
+                        FileLocation = FileId
+                    };
 
-                _evidenceLogic.UploadFileOfProof(fileOfProof, vm.SecurityRequirementProjectID);
+                    _evidenceLogic.UploadFileOfProof(fileOfProof, vm.SecurityRequirementProjectID);
 
-                return Json("succes");
+                    return Json("succes");
+                }
+
+                return Json("File can only be doc, docx, pdf or png");
+
             }
             else
             {

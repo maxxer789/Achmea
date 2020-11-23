@@ -156,7 +156,7 @@ namespace Achmea.Core.Logic
             var extension = Path.GetExtension(Body.Name);
             if (!allowedExtensions.Contains(extension))
             {
-                throw new System.InvalidOperationException("File can only be doc, docx or png");
+                throw new System.InvalidOperationException("File can only be doc, docx, pdf or png");
             }
 
             MemoryStream stream = new MemoryStream();
@@ -183,6 +183,13 @@ namespace Achmea.Core.Logic
             if (regKey != null && regKey.GetValue("Content Type") != null)
                 mimeType = regKey.GetValue("Content Type").ToString();
             return mimeType;
+        }
+
+        public static bool ValidateFileType(IFormFile file)
+        {
+            var allowedExtensions = new[] { ".doc", ".docx", ".png", ".pdf" };
+            var extension = Path.GetExtension(Path.GetFileName(file.FileName));
+            return allowedExtensions.Contains(extension);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Achmea.Core.SQL
                 SaveChanges();
                 SecurityRequirementProject SecPro = SecurityRequirementProject.Find(SecurityRequirementProjectID);
                 SecPro.FileOfProofId = file.FileOfProofId;
+                SecPro.Status = Logic._Status.Under_review;
                 SecurityRequirementProject.Update(SecPro);
                 SaveChanges();
                 return file;
