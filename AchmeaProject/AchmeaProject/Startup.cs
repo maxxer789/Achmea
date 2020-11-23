@@ -26,6 +26,7 @@ namespace AchmeaProject
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IProject, ProjectDAL>();
             services.AddTransient<IUser, UserDAL>();
+            services.AddTransient<IEvidence, EvidenceDAL>();
 
             services.AddSession(options =>
             {

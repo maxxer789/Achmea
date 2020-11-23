@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Achmea.Core.Interface;
 using Achmea.Core.Logic;
 using AchmeaProject.Models;
 using Google.Apis.Auth.OAuth2;
@@ -25,14 +26,16 @@ namespace AchmeaProject.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly DriveService service;
+        private readonly EvidenceLogic _evidenceLogic;
 
-        public EvidenceController(IWebHostEnvironment webHost, IConfiguration configuration)
+        public EvidenceController(IWebHostEnvironment webHost, IConfiguration configuration, IEvidence iEvidence)
         {
             _webHostEnvironment = webHost;
             string webRootPath = _webHostEnvironment.WebRootPath;
             string contentRootPath = _webHostEnvironment.ContentRootPath;
             string serviceAccountEmail = configuration.GetSection("ServiceAccountGoogleDrive:ServiceAccountEmail").Value;
             service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath, serviceAccountEmail);
+            _evidenceLogic = new EvidenceLogic(iEvidence);
         }
 
         public IActionResult Index()
@@ -67,5 +70,29 @@ namespace AchmeaProject.Controllers
 
             return View(files);
         }
+
+        [HttpPost]
+        public JsonResult Upload(EvidenceUploadViewModel vm)
+        {
+            if (vm.File != null)
+            {
+                string FileId = GoogleDriveConnection.UploadFile(service, vm.File);
+                FileOfProof fileOfProof = new FileOfProof
+                {
+                    DocumentTitle = Path.GetFileName(vm.File.FileName),
+                    FileLocation = FileId
+                };
+
+                _evidenceLogic.UploadFileOfProof(fileOfProof, vm.SecurityRequirementProjectID);
+
+                return Json("succes");
+            }
+            else
+            {
+                return Json("No file selected");
+            }
+        }
     }
+
+
 }

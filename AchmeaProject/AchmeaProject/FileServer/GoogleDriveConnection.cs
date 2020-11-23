@@ -152,7 +152,7 @@ namespace Achmea.Core.Logic
                 Parents = new List<string> { folderId }
             };
 
-            var allowedExtensions = new[] { ".doc", ".docx", ".png" };
+            var allowedExtensions = new[] { ".doc", ".docx", ".png", ".pdf" };
             var extension = Path.GetExtension(Body.Name);
             if (!allowedExtensions.Contains(extension))
             {
