@@ -22,18 +22,23 @@ namespace AchmeaTestss
         [TestMethod]
         public void ProjectConstructorsWork()
         {
-            Project p2 = new Project(4, 4, "Test Project 4", "This is the description for test project 4");
-            Project p3 = new Project(4, 4, "Test Project 4", "This is the description for test project 4", DateTime.Now);
+            int id = 4;
+            int userid = 5;
+            string title = "Test project 4";
+            string description = "This is the description for test project 4.";
 
-            Assert.AreEqual(4, p2.ProjectId);
-            Assert.AreEqual(4, p2.UserId);
-            Assert.AreEqual("Test Project 4", p2.Title);
-            Assert.AreEqual("This is the description for test project 4", p2.Description);
+            Project p2 = new Project(id, userid, title, description);
+            Project p3 = new Project(id, userid, title, description, DateTime.Now);
 
-            Assert.AreEqual(4, p3.ProjectId);
-            Assert.AreEqual(4, p3.UserId);
-            Assert.AreEqual("Test Project 4", p3.Title);
-            Assert.AreEqual("This is the description for test project 4", p3.Description);
+            Assert.AreEqual(id, p2.ProjectId);
+            Assert.AreEqual(userid, p2.UserId);
+            Assert.AreEqual(title, p2.Title);
+            Assert.AreEqual(description, p2.Description);
+
+            Assert.AreEqual(id, p3.ProjectId);
+            Assert.AreEqual(userid, p3.UserId);
+            Assert.AreEqual(title, p3.Title);
+            Assert.AreEqual(description, p3.Description);
         }
 
         [TestMethod]
