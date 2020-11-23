@@ -13,6 +13,7 @@ namespace Achmea.Core.Logic
     public class RequirementLogic
     {
         private IRequirement _IReq;
+
         public RequirementLogic(IRequirement IReq)
         {
             _IReq = IReq;

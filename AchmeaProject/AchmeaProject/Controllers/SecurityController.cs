@@ -73,7 +73,6 @@ namespace AchmeaProject.Controllers
                     Title = project.Title,
                     Description = project.Description,
                     CreationDate = project.CreationDate?.ToString("d"),
-                    EsaAspects = ProjectLogic.GetEsaForProject(projectId),
                     RequirementProject = ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = IRequirement.GetAllRequirements(),
                     User = UserLogic.GetUserByID(project.UserId)

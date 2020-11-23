@@ -21,31 +21,20 @@ namespace AchmeaProject.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        private readonly AspectAreaLogic AreaLogic;
-        private readonly IAspectArea AreaInterface;
+        private readonly AspectAreaLogic _AspectAreaLogic;
 
-        private readonly ProjectLogic ProjectLogic;
-        private readonly IProject IProject;
+        private readonly ProjectLogic _ProjectLogic;
 
-        private readonly BivLogic BivLogic;
-        private readonly IBiv BivInterface;
+        private readonly BivLogic _BivLogic;
 
-        private readonly RequirementLogic Logic;
-        private readonly IRequirement Interface;
+        private readonly RequirementLogic _RequirementLogic;
 
-        public RequirementController(IHttpContextAccessor httpContextAccessor)
+        public RequirementController(IHttpContextAccessor httpContextAccessor, IProject iProject, IAspectArea iAspectArea, IBiv iBiv, IRequirement iRequirement)
         {
-            IProject = new ProjectDAL();
-            ProjectLogic = new ProjectLogic(IProject);
-
-            Interface = new RequirementDAL();
-            AreaInterface = new AspectAreaDAL();
-
-            Logic = new RequirementLogic(Interface);
-            AreaLogic = new AspectAreaLogic(AreaInterface);
-
-            BivInterface = new BivDAL();
-            BivLogic = new BivLogic(BivInterface);
+            _ProjectLogic = new ProjectLogic(iProject);
+            _RequirementLogic = new RequirementLogic(iRequirement);
+            _AspectAreaLogic = new AspectAreaLogic(iAspectArea);
+            _BivLogic = new BivLogic(iBiv);
 
             _httpContextAccessor = httpContextAccessor;
         }
@@ -56,15 +45,15 @@ namespace AchmeaProject.Controllers
             {
                 ProjectCreateViewModel pvm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
 
-                Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project), pvm.Members);
+                Project proj = _ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project), pvm.Members);
 
                 List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
                 List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
 
-                BivLogic.SaveBivToProject(classifications, proj);
-                AreaLogic.SaveAspectToProject(aspects, proj);
+                _BivLogic.SaveBivToProject(classifications, proj);
+                _AspectAreaLogic.SaveAspectToProject(aspects, proj);
 
-                Logic.SaveReqruirementsToProject(aspects, classifications, proj);
+                _RequirementLogic.SaveReqruirementsToProject(aspects, classifications, proj);
             }
             catch(Exception ex)
             {
@@ -85,7 +74,7 @@ namespace AchmeaProject.Controllers
                 asp.AspectId = Convert.ToInt32(id);
                 areas.Add(asp);
             }
-            requirements = Logic.getRequiermentsFromAreas(areas).ToList();
+            requirements = _RequirementLogic.getRequiermentsFromAreas(areas).ToList();
 
             return RedirectToAction("Index", "ESA");
         }
@@ -110,7 +99,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult ExcludeRequirement([FromBody] ExcludeRequirementViewModel ervm)
         {
-            Logic.ExcludeRequirement(ervm.RequirementId, ervm.ProjectId, ervm.Reason);
+            _RequirementLogic.ExcludeRequirement(ervm.RequirementId, ervm.ProjectId, ervm.Reason);
 
             return RedirectToAction("Details", "Overview", ervm.ProjectId);
         }
@@ -122,8 +111,8 @@ namespace AchmeaProject.Controllers
             string[] Groups = {  "5. Informatiebeveiligingsbeleid", "6. Organiseren van informatiebeveiliging", "7. Veilig personeel", "8. Beheer van bedrijfsmiddelen",
                             "9. Toegangsbeveiliging", "10. Cryptografie", "11. Fysieke beveiliging en beveiliging van de omgeving", "12. Beveiliging bedrijfsvoering",
                             "13. Communicatiebeveiliging", "14. Acquisitie, ontwikkeling en onderhoud van informatiesystemen", "15. Leveranciersrelaties", "18. Naleving"};
-            ViewBag.Bivs = BivLogic.GetBiv();
-            ViewBag.Areas = AreaLogic.GetAreas();
+            ViewBag.Bivs = _BivLogic.GetBiv();
+            ViewBag.Areas = _AspectAreaLogic.GetAreas();
             ViewBag.Families = families;
             ViewBag.Groups = Groups;
             return View();
@@ -137,7 +126,7 @@ namespace AchmeaProject.Controllers
                 List<int> areaIds = new List<int>();
                 int[] bivsa = { 0, 0, 0 };
 
-                List<Biv> bivs = BivLogic.GetBiv();
+                List<Biv> bivs = _BivLogic.GetBiv();
 
                 foreach (string id in rcvm.AreaIds)
                 {
@@ -172,7 +161,7 @@ namespace AchmeaProject.Controllers
                 }
                 SecurityRequirement req = ViewModelConverter.securityRequirementViewModelToModel(rcvm);
 
-                Logic.CreateRequirement(req, bivIds, areaIds);
+                _RequirementLogic.CreateRequirement(req, bivIds, areaIds);
             }
 
             return RedirectToAction("Add");
