@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Achmea.Core.Models
 {
-    public class ChatMessage
+    public class Comment
     {
 
         public string Message { get; set; }

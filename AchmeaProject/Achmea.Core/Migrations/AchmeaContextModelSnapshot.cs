@@ -93,7 +93,7 @@ namespace Achmea.Core.Migrations
                         .HasColumnName("Post_DateTime")
                         .HasColumnType("date");
 
-                    b.Property<int>("SecurityRequirementProjectId")
+                    b.Property<int?>("SecurityRequirementProjectId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -465,11 +465,9 @@ namespace Achmea.Core.Migrations
 
             modelBuilder.Entity("AchmeaProject.Models.Comment", b =>
                 {
-                    b.HasOne("AchmeaProject.Models.SecurityRequirementProject", "SecurityRequirementProject")
+                    b.HasOne("AchmeaProject.Models.SecurityRequirementProject", null)
                         .WithMany("Comments")
-                        .HasForeignKey("SecurityRequirementProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SecurityRequirementProjectId");
 
                     b.HasOne("AchmeaProject.Models.User", "User")
                         .WithMany("Comment")

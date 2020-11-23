@@ -18,9 +18,13 @@ namespace AchmeaProject.Controllers
         private readonly UserLogic userLogic;
         UserDAL userDAL;
         private readonly ILogger<HomeController> _logger;
+        CommentLogic commentLogic;
+        CommentDAL commentDAL;
 
         public HomeController(ILogger<HomeController> logger)
         {
+            commentDAL = new CommentDAL();
+            commentLogic = new CommentLogic(commentDAL);
             userDAL = new UserDAL();
             userLogic = new UserLogic(userDAL);
             _logger = logger;
@@ -28,6 +32,8 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.Comments = commentLogic.GetAllComments();
+
             if (HttpContext.Session.GetString("RoleID") != null)
             {
                 ViewBag.Users = userLogic.GetAllUsers();
