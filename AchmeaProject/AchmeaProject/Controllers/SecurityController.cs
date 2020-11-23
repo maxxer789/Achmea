@@ -82,5 +82,9 @@ namespace AchmeaProject.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult updateStatus(int projectId)
+        {
+            return Index();
+        }
     }
 }
