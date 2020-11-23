@@ -60,17 +60,6 @@ main {
     border-bottom: 1px solid lightgray;
 }
 
-.accept-decline-button {
-    width: 100px;
-    float: right;
-    padding: 10px 10px;
-    text-align: center;
-    word-wrap: break-word;
-    margin: 0 10px 0 10px;
-    grid-row: 1;
-    border-bottom: 1px solid lightgray;
-}
-
 .requirement-info:hover, .active {
     background-color: lightgray;
 }
