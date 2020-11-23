@@ -53,16 +53,37 @@ namespace AchmeaTestss
         }
 
         [TestMethod]
+        public void CanGetSingleProject()
+        {
+            int projectId = 1;
+            Project project = _ProjectLogic.GetProject(projectId);
+
+            Assert.IsNotNull(project);
+            Assert.AreEqual(projectId, project.ProjectId);
+        }
+
+        [TestMethod]
         public void CanCreateNewProject()
         {
+            List<Project> oldProjects = _ProjectLogic.GetProjects();
             Project project = new Project(3, 3, "Test Project 3", "This is the description for test project 3.");
             int[] members = { 1, 2 };
 
             _ProjectLogic.MakeNewProject(project, members);
-            List<Project> projects = _ProjectLogic.GetProjects();
+            List<Project> newProjects = _ProjectLogic.GetProjects();
 
-            Assert.AreEqual(3, projects.Count);
-            Assert.AreEqual(project.ProjectId, projects[2].ProjectId);
+            Assert.AreNotEqual(oldProjects, newProjects);
+        }
+
+        [TestMethod]
+        public void CanGetRequirementsForProject()
+        {
+            int projectId = 1;
+            Project project = _ProjectLogic.GetProject(projectId);
+            List<SecurityRequirementProject> requirements = _ProjectLogic.GetRequirementsForProject(projectId);
+
+            Assert.IsNotNull(requirements);
+            Assert.AreEqual(project.SecurityRequirementProject.Count, requirements.Count);
         }
     }
 }
