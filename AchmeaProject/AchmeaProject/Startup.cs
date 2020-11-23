@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Achmea.Core;
 using Achmea.Core.Interface;
 using Achmea.Core.SQL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +29,7 @@ namespace AchmeaProject
         {
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IProject, ProjectDAL>();
+            services.AddTransient<IRequirement, RequirementDAL>();
             services.AddTransient<IUser, UserDAL>();
 
             services.AddSession(options =>

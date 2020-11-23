@@ -15,12 +15,10 @@ namespace AchmeaProject.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserLogic Logic;
-        private readonly IUser Interface;
-        public UserController(IConfiguration config)
+        private readonly UserLogic _UserLogic;
+        public UserController(IConfiguration config, IUser iUser)
         {
-            Interface = new UserDAL();
-            Logic = new UserLogic(Interface);
+            _UserLogic = new UserLogic(iUser);
         }
 
         [HttpGet]
@@ -35,7 +33,7 @@ namespace AchmeaProject.Controllers
             {
                 try
                 {
-                    User User = Logic.Login(VM.Email);
+                    User User = _UserLogic.Login(VM.Email);
 
                     if (VM.Password == User.Password)
                     {
