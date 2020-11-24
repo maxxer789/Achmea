@@ -227,5 +227,18 @@ namespace AchmeaProject.Models.ViewModelConverter
 
             return UserVMs;
         }
+
+        public static SecurityRequirementProject securityRequirementProjectViewModelToModel(SecurityRequirementProjectViewModel req)
+        {
+            return new SecurityRequirementProject
+            {
+                SecurityRequirementProjectId = req.SecurityRequirementProjectId,
+                ProjectId = req.ProjectId,
+                SecurityRequirementId = req.SecurityRequirementId,
+                Excluded = req.Excluded,
+                Reason = req.Reason,
+                Status = req.Status,
+            };
+        }
     }
 }

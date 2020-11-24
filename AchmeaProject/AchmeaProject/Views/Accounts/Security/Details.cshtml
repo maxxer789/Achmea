@@ -28,9 +28,19 @@
             <div class="requirement-info">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
             </div>
+
             <div class="requirement-check">
                 @req.Status
             </div>
+
+            @Html.ActionLink("UpdateRequirentStatus","Security")
+            {
+                <div>
+                    <input type="button" name="approve_button" class="approve_button" value="Approve" />
+                    <input type="button" name="decline_button" class="decline_button" value="Decline" />
+                </div>
+            }
+
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />

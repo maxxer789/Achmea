@@ -14,5 +14,7 @@ namespace Achmea.Core.Interface
         IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, Project project);
         SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason);
         SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds);
+        public void UpdateRequirentStatus(SecurityRequirementProject givenRequirement);
+
     }
 }

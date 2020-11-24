@@ -58,6 +58,10 @@ namespace Achmea.Core.Logic
             return _IReq.CreateRequirement(req, bivIds, areaIds);
         }
 
+        public void UpdateRequirentStatus(SecurityRequirementProject requirement)
+        {
+            _IReq.UpdateRequirentStatus(requirement);
+        }
     }
     public enum _Status
     {
