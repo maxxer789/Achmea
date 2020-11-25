@@ -4,6 +4,7 @@ using AchmeaProject.Models;
 using AchmeaTestss.MockServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AchmeaTestss.TestClasses
 {
@@ -74,6 +75,72 @@ namespace AchmeaTestss.TestClasses
             int amountAfterCreate = Logic.GetAllRequirements().Count;
 
             Assert.AreNotEqual(initialRequirementsAmount, amountAfterCreate);
+        }
+
+        [TestMethod]
+        public void GetRequirementFromAspectarea_ValidAspectarea()
+        {
+            List<EsaAspect> aspectareas = new List<EsaAspect>();
+
+            aspectareas.Add(new EsaAspect()
+            {
+                AspectId = 0,
+            });
+
+            List<SecurityRequirement> requirements = Logic.getRequiermentsFromAreas(aspectareas).ToList();
+
+            Assert.IsNotNull(requirements);
+            Assert.IsTrue(requirements.Count > 0);
+
+        }
+
+        [TestMethod]
+        public void GetRequirementFromAspectarea_InvalidAspectarea()
+        {
+            List<EsaAspect> aspectareas = new List<EsaAspect>();
+
+            aspectareas.Add(new EsaAspect()
+            {
+                AspectId = 19,
+            });
+
+            List<SecurityRequirement> requirements = Logic.getRequiermentsFromAreas(aspectareas).ToList();
+
+            Assert.IsNotNull(requirements);
+            Assert.IsTrue(requirements.Count == 0);
+
+        }
+
+        [TestMethod]
+        public void GetRequirementsFromBiv_ValidBivs()
+        {
+            List<Biv> classifications = new List<Biv>();
+
+            classifications.Add(new Biv()
+            {
+                Id = 0
+            });
+
+            List<SecurityRequirement> requirements = Logic.getRequiermentsFromBiv(classifications).ToList();
+
+            Assert.IsNotNull(requirements);
+            Assert.IsTrue(requirements.Count > 0);
+        }
+
+        [TestMethod]
+        public void GetRequirementsFromBiv_InvalidBivs()
+        {
+            List<Biv> classifications = new List<Biv>();
+
+            classifications.Add(new Biv()
+            {
+                Id = 211
+            });
+
+            List<SecurityRequirement> requirements = Logic.getRequiermentsFromBiv(classifications).ToList();
+
+            Assert.IsNotNull(requirements);
+            Assert.IsTrue(requirements.Count == 0);
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using Achmea.Core.Interface;
 using AchmeaProject.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AchmeaTestss.MockServices
 {
@@ -31,12 +29,30 @@ namespace AchmeaTestss.MockServices
 
         public IEnumerable<SecurityRequirement> GetRequiermentsFromAreas(List<EsaAspect> aspects)
         {
-            return Requirements;
+            List<EsaArea> Areas = new List<EsaArea>();
+            foreach (EsaAspect asp in aspects)
+            {
+                Areas.AddRange(esaAspArea.Where(ea => ea.EsaAspectId == asp.AspectId).Select(ee => ee.EsaArea));
+            }
+
+            List<SecurityRequirement> requirements = new List<SecurityRequirement>();
+            foreach (EsaArea area in Areas)
+            {
+                requirements.AddRange(esaAreaReq.Where(ear => ear.EsaAreaId == area.AreaId).Select(req => req.Requirement));
+            }
+
+            return requirements;
         }
 
         public IEnumerable<SecurityRequirement> getRequiermentsFromBiv(List<Biv> classifications)
         {
-            return new List<SecurityRequirement>();
+            List<SecurityRequirement> requirements = new List<SecurityRequirement>();
+            foreach (Biv classification in classifications)
+            {
+                requirements.AddRange(bivRequirements.Where(br => br.BivId == classification.Id).Select(brr => brr.SecurityRequirement));
+            }
+
+            return requirements;
         }
 
         public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, Project project)

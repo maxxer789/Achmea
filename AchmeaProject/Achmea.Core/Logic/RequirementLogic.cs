@@ -37,8 +37,7 @@ namespace Achmea.Core.Logic
 
         public IEnumerable<SecurityRequirement> getRequiermentsFromBiv(List<Biv> classifications)
         {
-            List<SecurityRequirement> requirements = new List<SecurityRequirement>();
-            requirements = _IReq.getRequiermentsFromBiv(classifications).ToList();
+            List<SecurityRequirement> requirements =_IReq.getRequiermentsFromBiv(classifications).ToList();
             return requirements;
         }
         public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<EsaAspect> aspects, List<Biv> bivs, Project project)
