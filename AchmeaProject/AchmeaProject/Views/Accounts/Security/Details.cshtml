@@ -1,5 +1,6 @@
 ﻿@using Achmea.Core;
 @model ProjectDetailViewModel
+
 @{
     ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
@@ -33,14 +34,6 @@
                 @req.Status
             </div>
 
-            @Html.ActionLink("UpdateRequirentStatus","Security")
-            {
-                <div>
-                    <input type="button" name="approve_button" class="approve_button" value="Approve" />
-                    <input type="button" name="decline_button" class="decline_button" value="Decline" />
-                </div>
-            }
-
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
@@ -52,6 +45,10 @@
                 {
                     <div class="download">No file uploaded by Developer</div>
                 }
+                <div>
+                    <input type="radio" asp-for="@req.Status" value="Approved" /> Approve
+                    <input type="radio" asp-for="@req.Status" value="Declined" /> Decline
+                </div>
             </div>
         </div>
     }

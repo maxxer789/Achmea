@@ -16,5 +16,7 @@ namespace AchmeaProject.Models
 
         public virtual Project Project { get; set; }
         public virtual SecurityRequirement SecurityRequirement { get; set; }
+
+
     }
 }

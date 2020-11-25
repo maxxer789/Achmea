@@ -83,9 +83,17 @@ namespace AchmeaProject.Controllers
         public IActionResult UpdateRequirentStatus(SecurityRequirementProjectViewModel vm)
         {           
             SecurityRequirementProject requirement = ViewModelConverter.SecurityRequirementProjectViewModelToModel(vm);
-            _RequirementLogic.UpdateRequirentStatus(requirement);
 
-            return View("", vm);
+            if (vm.Status == "Approved")
+            {
+                _RequirementLogic.UpdateRequirentStatus(requirement);
+            }
+            if (vm.Status == "Declined")
+            {
+                _RequirementLogic.UpdateRequirentStatus(requirement);
+            }
+
+            return View("Views/Accounts/Security/Projectview.cshtml", vm);
         }
     }
 }
