@@ -16,13 +16,11 @@ namespace AchmeaProject.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly UserLogic logic;
-        private readonly IUser Interface;
+        private readonly UserLogic _UserLogic;
 
-        public AdminController(IConfiguration config)
+        public AdminController(IConfiguration config, IUser iUser)
         {
-            Interface = new UserDAL();
-            logic = new UserLogic(Interface);
+            _UserLogic = new UserLogic(iUser);
         }
 
 
@@ -52,15 +50,15 @@ namespace AchmeaProject.Controllers
             {
                 try
                 {
-                    User user = logic.Login(VM.Email);
+                    User user = _UserLogic.Login(VM.Email);
                     ModelState.AddModelError(string.Empty, "Email already exists!");
                 }
                 catch
                 {
                     User user = ViewModelConverter.VmtoUser(VM);
-                    logic.InsertUser(user);
+                    _UserLogic.InsertUser(user);
 
-                    HttpContext.Session.SetInt32("UserID", logic.InsertUser(user));
+                    HttpContext.Session.SetInt32("UserID", _UserLogic.InsertUser(user));
                     HttpContext.Session.SetString("Firstname", VM.Firstname);
                     HttpContext.Session.SetString("RoleID", user.RoleId);
 
@@ -75,7 +73,7 @@ namespace AchmeaProject.Controllers
             if (HttpContext.Session.GetString("RoleID") == "Admin")
             {
                 List<UserViewModel> vm = new List<UserViewModel>();
-                foreach (User U in logic.GetAllUsers())
+                foreach (User U in _UserLogic.GetAllUsers())
                 {
                     UserViewModel Uvm = ViewModelConverter.UserToVm(U);
 
@@ -88,7 +86,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Delete_User(int id)
         {
-            logic.DeleteUser(id);
+            _UserLogic.DeleteUser(id);
 
             return RedirectToAction("UserList", "Admin");
         }
@@ -98,7 +96,7 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == "Admin")
             {
-                UserViewModel vm = ViewModelConverter.UserToVm(logic.GetUserByID(id));
+                UserViewModel vm = ViewModelConverter.UserToVm(_UserLogic.GetUserByID(id));
                 return View("Views/Accounts/Admin/UserEdit.cshtml", vm);
             }
             return RedirectToAction("Index", "Home");
@@ -108,7 +106,7 @@ namespace AchmeaProject.Controllers
         {
             User user = ViewModelConverter.VmtoUser(vm);
 
-            logic.UpdateUser(user);
+            _UserLogic.UpdateUser(user);
 
             return View("Views/Accounts/Admin/UserDetails.cshtml", vm);
         }
@@ -117,7 +115,7 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == "Admin")
             {
-                User user = logic.GetUserByID(id);
+                User user = _UserLogic.GetUserByID(id);
                 UserViewModel vm = ViewModelConverter.UserToVm(user);
 
                 return View("Views/Accounts/Admin/UserDetails.cshtml", vm);

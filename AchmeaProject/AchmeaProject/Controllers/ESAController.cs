@@ -18,16 +18,14 @@ namespace AchmeaProject.Controllers
 {
     public class ESAController : Controller
     {
-        private readonly AspectAreaLogic Logic;
-        private readonly IAspectArea Interface;
+        private readonly AspectAreaLogic _AspectAreaLogic;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ESAController(IConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public ESAController(IConfiguration config, IHttpContextAccessor httpContextAccessor, IAspectArea iAspectArea)
         {
-            Interface = new AspectAreaDAL();
-            Logic = new AspectAreaLogic(Interface);
+            _AspectAreaLogic = new AspectAreaLogic(iAspectArea);
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -45,7 +43,7 @@ namespace AchmeaProject.Controllers
 
                 if (vm.AspectAreas.Count == 0)
                 {
-                    vm.AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(Logic.GetAspectAreas());
+                    vm.AspectAreas = ViewModelConverter.AspectAreaModelToESA_AspectViewModel(_AspectAreaLogic.GetAspectAreas());
                 }
 
                 return View(vm);

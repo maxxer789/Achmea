@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using static AchmeaProject.Models.Project;
 
 namespace Achmea.Core.SQL
 {
@@ -121,7 +122,7 @@ namespace Achmea.Core.SQL
                 srp.SecurityRequirementId = req.RequirementId;
                 srp.ProjectId = project.ProjectId;
                 srp.Excluded = false;
-                srp.Status = Status.ToDo.ToString();
+                srp.Status = _Status.Submit_evidence;
 
                 SecurityRequirementProject.Add(srp);
                 SaveChanges();
@@ -135,10 +136,10 @@ namespace Achmea.Core.SQL
             srp.SecurityRequirementId = requirementId;
             srp.ProjectId = projectId;
 
-            srp = SecurityRequirementProject.ToList().Find(s => s.ProjectId == projectId && s.SecurityRequirementId == requirementId && s.Status == Status.ToDo.ToString());
+            srp = SecurityRequirementProject.ToList().Find(s => s.ProjectId == projectId && s.SecurityRequirementId == requirementId && s.Status == _Status.Submit_evidence);
             srp.Excluded = true;
             srp.Reason = reason;
-            srp.Status = Status.Excluded.ToString();
+            srp.Status = _Status.Excluded;
             SecurityRequirementProject.Update(srp);
             SaveChanges();
 

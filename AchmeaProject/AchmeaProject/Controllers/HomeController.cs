@@ -15,14 +15,15 @@ namespace AchmeaProject.Controllers
 {//test
     public class HomeController : Controller
     {
-        private readonly UserLogic userLogic;
-        UserDAL userDAL;
+        private readonly UserLogic _UserLogic;
         private readonly ILogger<HomeController> _logger;
         CommentLogic commentLogic;
         CommentDAL commentDAL;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUser iUser)
         {
+
+            _UserLogic = new UserLogic(iUser);
             commentDAL = new CommentDAL();
             commentLogic = new CommentLogic(commentDAL);
             userDAL = new UserDAL();
@@ -50,7 +51,7 @@ namespace AchmeaProject.Controllers
 
             if (HttpContext.Session.GetString("RoleID") != null)
             {
-                ViewBag.Users = userLogic.GetAllUsers();
+                ViewBag.Users = _UserLogic.GetAllUsers();
                 return View();
             }
             return RedirectToAction("Login", "User");
