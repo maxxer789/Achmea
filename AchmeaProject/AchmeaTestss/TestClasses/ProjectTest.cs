@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace AchmeaTestss
+namespace AchmeaTestss.TestClasses
 {
     [TestClass]
     public class ProjectTest
