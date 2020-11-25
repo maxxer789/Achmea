@@ -82,7 +82,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult UpdateRequirentStatus(SecurityRequirementProjectViewModel vm)
         {           
-            SecurityRequirementProject requirement = ViewModelConverter.securityRequirementProjectViewModelToModel(vm);
+            SecurityRequirementProject requirement = ViewModelConverter.SecurityRequirementProjectViewModelToModel(vm);
             _RequirementLogic.UpdateRequirentStatus(requirement);
 
             return View("", vm);
