@@ -19,7 +19,7 @@ namespace AchmeaProject.Controllers
         private readonly IRequirement Requirement;
         private readonly IUser UserLogic;
 
-        //delete
+        
         public OverviewController(IConfiguration config)
         {
             Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
