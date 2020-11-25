@@ -17,15 +17,38 @@ namespace AchmeaProject.Controllers
     {
         private readonly UserLogic _UserLogic;
         private readonly ILogger<HomeController> _logger;
+        CommentLogic commentLogic;
+        CommentDAL commentDAL;
 
         public HomeController(ILogger<HomeController> logger, IUser iUser)
         {
+
             _UserLogic = new UserLogic(iUser);
+            commentDAL = new CommentDAL();
+            commentLogic = new CommentLogic(commentDAL);
+            userDAL = new UserDAL();
+            userLogic = new UserLogic(userDAL);
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            var comments = commentLogic.GetAllComments();
+
+            List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+            
+            foreach(var comment in comments)
+            {
+                CommentViewModel commentViewModel = new CommentViewModel
+                {
+                    Message = comment.Content,
+                    UserName = userLogic.GetUserByID(comment.UserId).Firstname
+                };
+                commentViewModels.Add(commentViewModel);
+            }
+
+            ViewBag.Comments = commentViewModels;
+
             if (HttpContext.Session.GetString("RoleID") != null)
             {
                 ViewBag.Users = _UserLogic.GetAllUsers();

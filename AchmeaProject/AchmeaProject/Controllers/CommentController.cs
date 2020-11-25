@@ -1,44 +1,60 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Logging;
-//using Microsoft.AspNetCore.Cors;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.SignalR;
-//using Microsoft.AspNetCore.Identity;
-//using System.Diagnostics.CodeAnalysis;
-//using Achmea.Core.Hubs;
-//using Achmea.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
+using Achmea.Core.Hubs;
+using Achmea.Core.Interface;
+using Achmea.Core.Logic;
+using Achmea.Core.Models;
+using Achmea.Core.SQL;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
-//namespace AchmeaProject.Controllers
-//{
-//    [ApiController]
-//    [Route("api/comment")]
-//    public class CommentController : ControllerBase
-//    {
-//        private readonly IHubContext<CommentHub> _commentHub;
+namespace AchmeaProject.Controllers
+{
+    public class CommentController : Controller
+    {
+        private readonly IHubContext<CommentHub> _commentHub;
+        CommentLogic commentLogic;
+        CommentDAL commentDAL;
 
-//        public CommentController([NotNull] IHubContext<CommentHub> commentHub)
-//        {
-//            _commentHub = commentHub;
-//        }
+        public CommentController([NotNull] IHubContext<CommentHub> commentHub)
+        {
+            commentDAL = new CommentDAL();
+            commentLogic = new CommentLogic(commentDAL);
+            _commentHub = commentHub;
+        }
 
 
-//        //[HttpGet("/test")]
-//        //public string dunno()
-//        //{
-//        //    return "hey";
-//        //}
+        //[HttpGet("/test")]
+        //public string dunno()
+        //{
+        //    return "hey";
+        //}
 
-//        [HttpPost("messages")]
-//        public async Task<IActionResult> Create([FromBody]ChatMessage message)
-//        {
-//            await _commentHub.Clients.All.SendAsync("ReceiveMessage", message);
+        //[HttpPost("messages")]
+        //public async Task<IActionResult> Create([FromBody] ChatMessage message)
+        //{
 
-//            return Ok();
-//        }
+        //    await _commentHub.Clients.All.SendAsync("ReceiveMessage", message);
 
-//    }
-//}
+        //    return Ok();
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(string message)
+        {
+            string user = HttpContext.Session.GetString("Firstname");
+
+            var userID = HttpContext.Session.GetInt32("UserID");
+
+            commentLogic.CreateMessage(userID.Value, message, 1);
+
+            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message);
+
+            return Ok();
+        }
+    }
+}
