@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Achmea.Core.Logic;
 
 namespace AchmeaProject.Models
 {
@@ -12,7 +11,7 @@ namespace AchmeaProject.Models
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public _Status Status { get; set; }
+        public string Status { get; set; }
         public string CreationDate { get; set; }
         public List<EsaAspect> EsaAspects { get; set; }
         public List<SecurityRequirementProject> RequirementProject { get; set; }

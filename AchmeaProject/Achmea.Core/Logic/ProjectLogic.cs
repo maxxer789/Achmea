@@ -14,11 +14,16 @@ namespace Achmea.Core.Logic
     }
     public class ProjectLogic
     {
-        readonly IProject _IProject;
+        ProjectDAL projectDAL;
 
-        public ProjectLogic(IProject iProject)
+        readonly IProject _IUser;
+        
+        private IEnumerable<Project> Projects;
+        
+        public ProjectLogic(IProject IUser)
         {
-            _IProject = iProject;
+            projectDAL = new ProjectDAL();
+            _IUser = IUser;
 
         }
 
@@ -27,32 +32,31 @@ namespace Achmea.Core.Logic
         {
             try
             {
-                return _IProject.AddNewProject(projectModel, members);
+                return projectDAL.AddNewProject(projectModel, members);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
             }
         }
-
         public List<Project> GetProjects()
         {
-            return new List<Project>(_IProject.GetProjects());
+            return new List<Project>(Projects);
+        }
+
+        public List<EsaAspect> GetEsaForProject(int projectId)
+        {
+            return projectDAL.GetEsaForProject(projectId);
         }
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
         {
-            return _IProject.GetRequirementsForProject(projectId);
+            return projectDAL.GetRequirementsForProject(projectId);
         }
 
-        public Project GetProject(int projectId)
-        {
-            return _IProject.GetProject(projectId);
-        }
-
-        public void UpdateProjectStatus(Project project)
-        {
-            _IProject.UpdateProjectStatus(project);
-        }
+       // public Project GetProject(int projectId)
+        //{
+           // return Projects.FirstOrDefault(x => x.ProjectId == projectId);
+        //}
     }
 }

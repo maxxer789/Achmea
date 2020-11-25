@@ -21,48 +21,51 @@ namespace AchmeaProject.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        private readonly AspectAreaLogic _AspectAreaLogic;
+        private readonly AspectAreaLogic AreaLogic;
+        private readonly IAspectArea AreaInterface;
 
-        private readonly ProjectLogic _ProjectLogic;
+        private readonly ProjectLogic ProjectLogic;
+        private readonly IProject IProject;
 
-        private readonly BivLogic _BivLogic;
+        private readonly BivLogic BivLogic;
+        private readonly IBiv BivInterface;
 
-        private readonly RequirementLogic _RequirementLogic;
+        private readonly RequirementLogic Logic;
+        private readonly IRequirement Interface;
 
-        public RequirementController(IHttpContextAccessor httpContextAccessor, IProject iProject, IAspectArea iAspectArea, IBiv iBiv, IRequirement iRequirement)
+        public RequirementController(IHttpContextAccessor httpContextAccessor)
         {
-            _ProjectLogic = new ProjectLogic(iProject);
-            _RequirementLogic = new RequirementLogic(iRequirement);
-            _AspectAreaLogic = new AspectAreaLogic(iAspectArea);
-            _BivLogic = new BivLogic(iBiv);
+            IProject = new ProjectDAL();
+            ProjectLogic = new ProjectLogic(IProject);
+
+            Interface = new RequirementDAL();
+            AreaInterface = new AspectAreaDAL();
+
+            Logic = new RequirementLogic(Interface);
+            AreaLogic = new AspectAreaLogic(AreaInterface);
+
+            BivInterface = new BivDAL();
+            BivLogic = new BivLogic(BivInterface);
 
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public IActionResult SaveReqruirementsToProject()
-        {
-            try
-            {
-                ProjectCreateViewModel pvm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
+        //public IActionResult SaveReqruirementsToProject()
+        //{
+        //    ProjectCreateViewModel pvm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
 
-                Project proj = _ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project), pvm.Members);
+        //    Project proj = ProjectLogic.MakeNewProject(ViewModelConverter.ProjectViewModelToProjectModel(pvm.Project));
 
-                List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
-                List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
+        //    List<Biv> classifications = ViewModelConverter.BivViewModelToBivModel(pvm.Bivs.Where(c => c.isSelected == true).ToList());
+        //    List<EsaAspect> aspects = ViewModelConverter.AspectAreaViewModelToESA_AspectModel(pvm.AspectAreas.Where(a => a.isSelected == true).ToList());
 
-                _BivLogic.SaveBivToProject(classifications, proj);
-                _AspectAreaLogic.SaveAspectToProject(aspects, proj);
+        //    BivLogic.SaveBivToProject(classifications, proj);
+        //    AreaLogic.SaveAspectToProject(aspects, proj);
 
-                _RequirementLogic.SaveReqruirementsToProject(aspects, classifications, proj);
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+        //    Logic.SaveReqruirementsToProject(aspects, classifications, proj);
 
-            _session.Remove("Project");
-            return RedirectToAction("index", "home");
-        }
+        //    return RedirectToAction("index", "home");
+        //}
 
         public IActionResult GetRequirementsFromAreas(List<string> Ids)
         {
@@ -74,7 +77,7 @@ namespace AchmeaProject.Controllers
                 asp.AspectId = Convert.ToInt32(id);
                 areas.Add(asp);
             }
-            requirements = _RequirementLogic.getRequiermentsFromAreas(areas).ToList();
+            requirements = Logic.getRequiermentsFromAreas(areas).ToList();
 
             return RedirectToAction("Index", "ESA");
         }
@@ -99,7 +102,7 @@ namespace AchmeaProject.Controllers
         [HttpPost]
         public IActionResult ExcludeRequirement([FromBody] ExcludeRequirementViewModel ervm)
         {
-            _RequirementLogic.ExcludeRequirement(ervm.RequirementId, ervm.ProjectId, ervm.Reason);
+            Logic.ExcludeRequirement(ervm.RequirementId, ervm.ProjectId, ervm.Reason);
 
             return RedirectToAction("Details", "Overview", ervm.ProjectId);
         }
@@ -111,8 +114,8 @@ namespace AchmeaProject.Controllers
             string[] Groups = {  "5. Informatiebeveiligingsbeleid", "6. Organiseren van informatiebeveiliging", "7. Veilig personeel", "8. Beheer van bedrijfsmiddelen",
                             "9. Toegangsbeveiliging", "10. Cryptografie", "11. Fysieke beveiliging en beveiliging van de omgeving", "12. Beveiliging bedrijfsvoering",
                             "13. Communicatiebeveiliging", "14. Acquisitie, ontwikkeling en onderhoud van informatiesystemen", "15. Leveranciersrelaties", "18. Naleving"};
-            ViewBag.Bivs = _BivLogic.GetBiv();
-            ViewBag.Areas = _AspectAreaLogic.GetAreas();
+            ViewBag.Bivs = BivLogic.GetBiv();
+            ViewBag.Areas = AreaLogic.GetAreas();
             ViewBag.Families = families;
             ViewBag.Groups = Groups;
             return View();
@@ -126,7 +129,7 @@ namespace AchmeaProject.Controllers
                 List<int> areaIds = new List<int>();
                 int[] bivsa = { 0, 0, 0 };
 
-                List<Biv> bivs = _BivLogic.GetBiv();
+                List<Biv> bivs = BivLogic.GetBiv();
 
                 foreach (string id in rcvm.AreaIds)
                 {
@@ -161,7 +164,7 @@ namespace AchmeaProject.Controllers
                 }
                 SecurityRequirement req = ViewModelConverter.securityRequirementViewModelToModel(rcvm);
 
-                _RequirementLogic.CreateRequirement(req, bivIds, areaIds);
+                Logic.CreateRequirement(req, bivIds, areaIds);
             }
 
             return RedirectToAction("Add");

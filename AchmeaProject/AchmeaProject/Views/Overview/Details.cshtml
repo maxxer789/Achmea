@@ -26,11 +26,7 @@
             @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
         </div>
         <div class="requirement-check">
-            @{ 
-                string status = req.Status.ToString();
-                status = status.Replace("_", " ");
-            }
-            @status
+            @req.Status
         </div>
         <div class="collapsible">
             @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
