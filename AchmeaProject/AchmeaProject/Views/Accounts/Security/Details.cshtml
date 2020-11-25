@@ -45,10 +45,17 @@
                 {
                     <div class="download">No file uploaded by Developer</div>
                 }
+
                 <div>
-                    <input type="radio" asp-for="@req.Status" value="Approved" /> Approve
-                    <input type="radio" asp-for="@req.Status" value="Declined" /> Decline
+                    <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
+                        <input type="radio" name="Approved" value="true"/> Approve
+                        <input type="radio" name="Approved" value="false"/> Decline
+                        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+                        <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
+                        <input type="submit" value="Submit"/>
+                    </form>
                 </div>
+
             </div>
         </div>
     }

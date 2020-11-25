@@ -80,20 +80,21 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateRequirentStatus(SecurityRequirementProjectViewModel vm)
-        {           
-            SecurityRequirementProject requirement = ViewModelConverter.SecurityRequirementProjectViewModelToModel(vm);
-
-            if (vm.Status == "Approved")
+        public IActionResult UpdateRequirementStatus(bool Approved, int ProjectId, int ReqId)
+        {
+            SecurityRequirementProject req = _ProjectLogic.GetRequirementsForProject(ProjectId).Where(x => x.SecurityRequirementProjectId == ReqId).SingleOrDefault();
+            if (Approved)
             {
-                _RequirementLogic.UpdateRequirentStatus(requirement);
+                _Status status = _Status.Approved;
+                _RequirementLogic.UpdateRequirentStatus(req, status);
             }
-            if (vm.Status == "Declined")
+            else
             {
-                _RequirementLogic.UpdateRequirentStatus(requirement);
+                _Status status = _Status.Declined;
+                _RequirementLogic.UpdateRequirentStatus(req, status);
             }
 
-            return View("Views/Accounts/Security/Projectview.cshtml", vm);
+            return RedirectToAction("Details", new { projectId = ProjectId });
         }
     }
 }

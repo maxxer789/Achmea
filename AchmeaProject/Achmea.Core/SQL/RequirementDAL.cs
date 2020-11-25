@@ -177,14 +177,13 @@ namespace Achmea.Core.SQL
             return req;
         }
 
-        public void UpdateRequirentStatus(SecurityRequirementProject givenRequirement)
+        public void UpdateRequirentStatus(SecurityRequirementProject givenRequirement, _Status newStatus)
         {
-            SecurityRequirementProject requirement = new SecurityRequirementProject() { SecurityRequirementId = givenRequirement.SecurityRequirementId };
+             givenRequirement.Status = newStatus;
 
-            requirement.Status = givenRequirement.Status;
+            SecurityRequirementProject.Attach(givenRequirement);
+            SecurityRequirementProject.Update(givenRequirement);
 
-            SecurityRequirementProject.Attach(requirement);
-            SecurityRequirementProject.Update(requirement);
             SaveChanges();
         }
     }

@@ -13,9 +13,12 @@ namespace AchmeaProject.Models
         public bool? Excluded { get; set; }
         public string Reason { get; set; }
         public string Status { get; set; }
+        
 
         public virtual Project Project { get; set; }
         public virtual SecurityRequirement SecurityRequirement { get; set; }
+
+        
 
 
     }
