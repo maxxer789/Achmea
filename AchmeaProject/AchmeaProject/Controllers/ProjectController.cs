@@ -15,7 +15,6 @@ namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
-        //brr
         ProjectDAL projectDAL;
         ProjectLogic projectLogic;
 

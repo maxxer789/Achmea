@@ -5,7 +5,6 @@ namespace AchmeaProject.Models
 {
     public partial class Project
     {
-        //brr
         public Project()
         {
             ProjectEsaAspect = new HashSet<ProjectEsaAspect>();

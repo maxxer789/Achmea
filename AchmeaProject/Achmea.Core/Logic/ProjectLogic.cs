@@ -7,7 +7,6 @@ using System.Text;
 
 namespace Achmea.Core.Logic
 {
-    //brr
     public enum ProjectStatus
     {
         InProgress,

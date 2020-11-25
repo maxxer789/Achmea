@@ -15,7 +15,7 @@ using Achmea.Core.ContextModels;
 
 namespace Achmea.Core
 {
-    //brr
+
     public class ProjectDAL : AchmeaContext, IProject
     {
         List<Project> projectModels;

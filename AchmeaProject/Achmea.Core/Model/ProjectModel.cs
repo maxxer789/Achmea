@@ -9,7 +9,6 @@ namespace Achmea.Core.Model
 {
     public class ProjectModel
     {
-        //brr
         private int ProjectId { get; set; }
         private int UserId { get; set; }
         private string Title { get; set; }
