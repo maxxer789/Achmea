@@ -24,7 +24,7 @@
 
         <!-- title -->
         <div class="row  d-flex justify-content-center">
-                <h2>Biv classificaties</h2>
+            <h2>Biv classificaties</h2>
         </div>
         <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -38,10 +38,27 @@
         <!-- AspectAreas information to pass through -->
         @for (int i = 0; i < @Model.AspectAreas.Count; i++)
         {
-@Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                                @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                                                @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}
+    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                                                    @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}
+
+    @if (Model.Members.Length > 0)
+     {
+        for (int i = 0; i < Model.Members.Length; i++)
+        {
+           @Html.HiddenFor(model => Model.Members[i])
+        }
+     }
+
+    @if (Model.Users.Count > 0)
+     {
+        for (int i = 0; i < Model.Users.Count; i++)
+        {
+            @Html.HiddenFor(model => Model.Users[i].UserID)
+            @Html.HiddenFor(model => Model.Users[i].Name)
+        }
+     }
 
         <div class="row">
             <div class="col-3">
@@ -49,15 +66,15 @@
             </div>
             @for (var j = 0; j < @Model.Bivs.Count(e => e.Name.Contains("b")); j++)
             {
-<div class="col-3">
-    <label class="checkboxlabel">
-        @Model.Bivs[j].Name
-        @Html.HiddenFor(model => Model.Bivs[j].Name)
-        @Html.HiddenFor(model => Model.Bivs[j].Id)
-        @Html.CheckBoxFor(model => Model.Bivs[j].isSelected, new { @class = "bbb" })
-        <span class="checkmark"></span>
-    </label>
-</div>}
+    <div class="col-3">
+        <label class="checkboxlabel">
+            @Model.Bivs[j].Name
+            @Html.HiddenFor(model => Model.Bivs[j].Name)
+            @Html.HiddenFor(model => Model.Bivs[j].Id)
+            @Html.CheckBoxFor(model => Model.Bivs[j].isSelected, new { @class = "bbb" })
+            <span class="checkmark"></span>
+        </label>
+    </div>}
         </div>
 
         <div class="row">
@@ -66,15 +83,15 @@
             </div>
             @for (var k = 3; k < 6; k++)
             {
-<div class="col-3">
-    <label class="checkboxlabel">
-        @Model.Bivs[k].Name
-        @Html.HiddenFor(model => Model.Bivs[k].Name)
-        @Html.HiddenFor(model => Model.Bivs[k].Id)
-        @Html.CheckBoxFor(model => Model.Bivs[k].isSelected, new { @class = "iii" })
-        <span class="checkmark"></span>
-    </label>
-</div>}
+    <div class="col-3">
+        <label class="checkboxlabel">
+            @Model.Bivs[k].Name
+            @Html.HiddenFor(model => Model.Bivs[k].Name)
+            @Html.HiddenFor(model => Model.Bivs[k].Id)
+            @Html.CheckBoxFor(model => Model.Bivs[k].isSelected, new { @class = "iii" })
+            <span class="checkmark"></span>
+        </label>
+    </div>}
         </div>
         <div class="row">
             <div class="col-3">
@@ -82,16 +99,16 @@
             </div>
             @for (var m = 6; m < 9; m++)
             {
-<div class="col-3">
-    <label class="checkboxlabel">
-        @Model.Bivs[m].Name
-        @Html.HiddenFor(model => Model.Bivs[m].Name)
-        @Html.HiddenFor(model => Model.Bivs[m].Id)
-        @Html.CheckBoxFor(model => Model.Bivs[m].isSelected, new { @class = "vvv" })
+    <div class="col-3">
+        <label class="checkboxlabel">
+            @Model.Bivs[m].Name
+            @Html.HiddenFor(model => Model.Bivs[m].Name)
+            @Html.HiddenFor(model => Model.Bivs[m].Id)
+            @Html.CheckBoxFor(model => Model.Bivs[m].isSelected, new { @class = "vvv" })
 
-        <span class="checkmark"></span>
-    </label>
-</div>}
+            <span class="checkmark"></span>
+        </label>
+    </div>}
         </div>
         <br />
         <input type="hidden" name="submitclicked" value="">

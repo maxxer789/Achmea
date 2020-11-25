@@ -9,7 +9,6 @@
         <thead>
             <tr class="table-header">
                 <th>Title</th>
-                <th>Status</th>
                 <th>Creation Date</th>
             </tr>
         </thead>
@@ -18,7 +17,6 @@
             {
                 <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
                     <td>@project.Title</td>
-                    <td>@project.Status</td>
                     <td>@project.CreationDate</td>
                 </tr>
             }
