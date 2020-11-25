@@ -32,7 +32,21 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Comments = commentLogic.GetAllComments();
+            var comments = commentLogic.GetAllComments();
+
+            List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+            
+            foreach(var comment in comments)
+            {
+                CommentViewModel commentViewModel = new CommentViewModel
+                {
+                    Message = comment.Content,
+                    UserName = userLogic.GetUserByID(comment.UserId).Firstname
+                };
+                commentViewModels.Add(commentViewModel);
+            }
+
+            ViewBag.Comments = commentViewModels;
 
             if (HttpContext.Session.GetString("RoleID") != null)
             {
