@@ -238,7 +238,7 @@ namespace AchmeaProject.Models.ViewModelConverter
                 SecurityRequirementId = req.SecurityRequirementId,
                 Excluded = req.Excluded,
                 Reason = req.Reason,
-                Status = Enum.Parse(req.Status)
+                Status = (_Status)Enum.Parse(typeof(_Status), req.Status)
         };
         }
     }
