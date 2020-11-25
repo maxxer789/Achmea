@@ -10,28 +10,28 @@ using Achmea.Core.Interface;
 using Microsoft.Extensions.Configuration;
 using Achmea.Core.SQL;
 using Microsoft.AspNetCore.Http;
-using Achmea.Core.Logic;
 
 namespace AchmeaProject.Controllers
 {
     public class OverviewController : Controller
     {
-        private readonly ProjectLogic _ProjectLogic;
-        private readonly RequirementLogic _RequirementLogic;
-        private readonly UserLogic _UserLogic;
+        private readonly IProject Interface;
+        private readonly IRequirement Requirement;
+        private readonly IUser UserLogic;
 
-        public OverviewController(IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser)
+        //delete
+        public OverviewController(IConfiguration config)
         {
-            _ProjectLogic = new ProjectLogic(iProject);
-            _RequirementLogic = new RequirementLogic(iRequirement);
-            _UserLogic = new UserLogic(iUser);
+            Interface = new ProjectDAL(config.GetConnectionString("DefaultConnection"));
+            Requirement = new RequirementDAL();
+            UserLogic = new UserDAL();
         }
 
         public IActionResult Index()
         {
             if (HttpContext.Session.GetString("RoleID") != null)
             {
-                List<Project> list = _ProjectLogic.GetProjects().ToList();
+                List<Project> list = Interface.GetProjects().ToList();
 
                 List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
@@ -41,6 +41,7 @@ namespace AchmeaProject.Controllers
                     {
                         ProjectId = model.ProjectId,
                         Title = model.Title,
+                        Status = model.Status,
                         CreationDate = model.CreationDate?.ToString("d")
                     };
                     if (viewModel.CreationDate == "1-1-0001")
@@ -58,7 +59,7 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") != null)
             {
-                Project project = _ProjectLogic.GetProject(projectId);
+                Project project = Interface.GetProject(projectId);
 
                 ProjectDetailViewModel model = new ProjectDetailViewModel()
                 {
@@ -66,10 +67,12 @@ namespace AchmeaProject.Controllers
                     UserId = project.UserId,
                     Title = project.Title,
                     Description = project.Description,
+                    Status = project.Status,
                     CreationDate = project.CreationDate?.ToString("d"),
-                    RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
-                    Requirements = _RequirementLogic.GetAllRequirements(),
-                    User = _UserLogic.GetUserByID(project.UserId)
+                    EsaAspects = Interface.GetEsaForProject(projectId),
+                    RequirementProject = Interface.GetRequirementsForProject(projectId),
+                    Requirements = Requirement.GetAllRequirements(),
+                    User = UserLogic.GetUserByID(project.UserId)
                 };
 
                 return View(model);

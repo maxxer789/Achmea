@@ -16,15 +16,17 @@ namespace AchmeaProject.Controllers
 {
     public class SecurityController : Controller
     {
-        private readonly RequirementLogic _RequirementLogic;
-        private readonly UserLogic _UserLogic;
-        private readonly ProjectLogic _ProjectLogic;
+        private readonly IProject IProject;
+        private readonly UserLogic UserLogic;
+        private readonly ProjectLogic ProjectLogic;
+        private readonly IUser IUser;
 
-        public SecurityController(IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement)
+        public SecurityController(IConfiguration config)
         {
-            _UserLogic = new UserLogic(iUser);
-            _ProjectLogic = new ProjectLogic(iProject);
-            _RequirementLogic = new RequirementLogic(iRequirement);
+            IProject = new ProjectDAL();
+            IUser = new UserDAL();
+            UserLogic = new UserLogic(IUser);
+            ProjectLogic = new ProjectLogic(IProject);
         }
 
         public IActionResult Index()
@@ -34,9 +36,9 @@ namespace AchmeaProject.Controllers
 
         public IActionResult ProjectList()
         {
-            if (HttpContext.Session.GetString("RoleID") == "Security")
+            if (HttpContext.Session.GetString("RoleId") == "Developer")
             {
-                List<Project> list = _ProjectLogic.GetProjects().ToList();
+                List<Project> list = IProject.GetProjects().ToList();
 
                 List<ProjectViewModel> vmList = new List<ProjectViewModel>();
 
@@ -46,8 +48,8 @@ namespace AchmeaProject.Controllers
                     {
                         ProjectId = model.ProjectId,
                         Title = model.Title,
+                        Status = model.Status,
                         Description = model.Description,
-                        CreationDate = model.CreationDate?.ToString("d")
                     };
                     vmList.Add(viewModel);
                 }
@@ -58,20 +60,16 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Details(int projectId)
         {
-            if (HttpContext.Session.GetString("RoleID") == "Security")
+            if (HttpContext.Session.GetString("RoleId") == "Developer")
             {
-                Project project = _ProjectLogic.GetProject(projectId);
+                Project P = IProject.GetProject(projectId);
 
                 ProjectDetailViewModel vm = new ProjectDetailViewModel()
                 {
-                    ProjectId = project.ProjectId,
-                    UserId = project.UserId,
-                    Title = project.Title,
-                    Description = project.Description,
-                    CreationDate = project.CreationDate?.ToString("d"),
-                    RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
-                    Requirements = _RequirementLogic.GetAllRequirements(),
-                    User = _UserLogic.GetUserByID(project.UserId)
+                    ProjectId = P.ProjectId,
+                    Title = P.Title,
+                    Description = P.Description,
+                    Status = P.Status
                 };
 
                 return View("Views/Accounts/Security/Details.cshtml", vm);

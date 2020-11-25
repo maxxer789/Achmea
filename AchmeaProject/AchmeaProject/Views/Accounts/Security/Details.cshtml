@@ -1,67 +1,13 @@
-﻿@using Achmea.Core;
+﻿@using Achmea.Core.Model
 @model ProjectDetailViewModel
+
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Detail"; 
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/Details.css" />
-<div class="con-header">
-    <div class="header-title">
-        <h2>@Model.Title</h2>
-        <h4>Creation date:</h4>
-        <p>@Model.CreationDate</p>
-    </div>
-    <div class="header-desc">
-        @*<h3>@Model.Employee</h3>*@
-        <h4>Employees:</h4>
-        <p>@Model.User.Firstname</p>
-        <h4>Description:</h4>
-        <p>@Model.Description</p>
-    </div>
-</div>
-<br />
-<div class="con-content">
-    @foreach (SecurityRequirementProject req in Model.RequirementProject)
-    {
-        <div class="con-requirements">
-            <div class="requirement-info">
-                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
-            </div>
-            <div class="requirement-check">
-                @req.Status
-            </div>
-            <div class="collapsible">
-                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
-                <br /><br />
-                @if (Model.RequirementProject.Where(requirementP => requirementP.SecurityRequirementId == req.SecurityRequirementId).SingleOrDefault().FileOfProofId != null)
-                {
-                    <div class="download"><button>Download File</button></div>
-                }
-                else
-                {
-                    <div class="download">No file uploaded by Developer</div>
-                }
-            </div>
-        </div>
-    }
-</div>
-
-
-<script>
-    var coll = document.getElementsByClassName("requirement-info");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
-    }
-</script>
-
+<ul>
+    <li>@Model.ProjectId</li>
+    <li>@Model.Title</li>
+    <li>@Model.Status</li>
+</ul>

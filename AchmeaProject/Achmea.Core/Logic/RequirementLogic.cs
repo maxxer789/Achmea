@@ -3,17 +3,23 @@ using Achmea.Core.Model;
 using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace Achmea.Core.Logic
 {
+    public enum Status
+    {
+        ToDo,
+        Completed,
+        Declined,
+        Excluded
+    }
+
     public class RequirementLogic
     {
         private IRequirement _IReq;
-
         public RequirementLogic(IRequirement IReq)
         {
             _IReq = IReq;
@@ -57,24 +63,5 @@ namespace Achmea.Core.Logic
         {
             return _IReq.CreateRequirement(req, bivIds, areaIds);
         }
-
     }
-    public enum _Status
-    {
-        [Description("Submit evidence")]
-        Submit_evidence,
-
-        [Description("Under Review")]
-        Under_review,
-
-        [Description("Approved")]
-        Approved,
-
-        [Description("Declined")]
-        Declined,
-
-        [Description("Excluded")]
-        Excluded
-    }
-
 }
