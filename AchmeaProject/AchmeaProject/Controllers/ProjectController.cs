@@ -10,78 +10,75 @@ using Achmea.Core.Interface;
 using AchmeaProject.Models;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
-using Achmea.Core.SQL;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
     public class ProjectController : Controller
     {
-        private readonly ProjectLogic projectLogic;
-        private readonly UserLogic userLogic;
+        ProjectDAL projectDAL;
+        ProjectLogic projectLogic;
 
-        private readonly ISession _session;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public ProjectController(IHttpContextAccessor httpContextAccessor, IProject iProject, IUser iuser)
+        public ProjectController(IHttpContextAccessor httpContextAccessor)
         {
-            projectLogic = new ProjectLogic(iProject);
-
-            userLogic = new UserLogic(iuser);
-
-            _session = httpContextAccessor.HttpContext.Session;
+            projectDAL = new ProjectDAL();
+            projectLogic = new ProjectLogic(projectDAL);
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        //[HttpPost]
-        //public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
+        //[HttpGet("{search}")]
+        //public List<ProjectModel> Search(string SearchTerm)
         //{
-        //    Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription);
-        //    bool ProjectMade;
+        //    List<ProjectModel> result;
 
         //    try
         //    {
-        //        var hey = Members;
-        //        projectLogic.MakeNewProject(projectModel, Members);
-        //        ProjectMade = true;
+        //        result = projectDAL.Search(SearchTerm);
+
         //    }
-        //    catch
+        //    catch (Exception ex)
         //    {
-        //        ProjectMade = false;
+        //        throw new Exception(ex.ToString());
         //    }
 
-        //    if (ProjectMade == true)
-        //    {
-        //        ViewBag.ProjectMade = "Project was made succesfully";
-        //    }
+        //    return result;
 
-        //    return RedirectToAction("Index", "Home");
         //}
+        [HttpPost]
+        public ActionResult CreateProject(int[] Members, string ProjectTitle, string ProjectDescription)
+        {
+            Project projectModel = new Project(1, 1, ProjectTitle, ProjectDescription, "In Progress");
+            bool ProjectMade;
+
+            try
+            {
+                var hey = Members;
+                projectLogic.MakeNewProject(projectModel, Members);
+                ProjectMade = true;
+            }
+            catch
+            {
+                ProjectMade = false;
+            }
+
+            if (ProjectMade == true)
+            {
+                ViewBag.ProjectMade = "Project was made succesfully"; 
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpGet]
         public IActionResult Create()
         {
             ProjectCreateViewModel vm = new ProjectCreateViewModel();
-
-            if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") != null)
+            vm.Project = new ProjectCreationDetailsViewModel()
             {
-                vm = _session.GetObjectFromJson<ProjectCreateViewModel>("Project");
-            }
-            else
-            {
-                vm.Project = new ProjectCreationDetailsViewModel()
-                {
-                    UserID = HttpContext.Session.GetInt32("UserID").Value
-                };
-            }
-
-            List<User> users = userLogic.GetAllUsers().ToList();
-            List<SelectListItem> SelectUsers = new List<SelectListItem>();
-            foreach (var user in users)
-            {
-                SelectUsers.Add(new SelectListItem(user.Firstname + " " + user.Lastname, user.UserId.ToString()));
-            }
-
-            ViewBag.Users = ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetAllUsers().ToList());
+                UserID = HttpContext.Session.GetInt32("UserID").Value
+            };
 
             return View(vm);
         }
@@ -91,13 +88,7 @@ namespace AchmeaProject.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Users = ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetAllUsers().ToList());
                 return View(vm);
-            }
-
-            foreach  (int userid in vm.Members)
-            {
-                vm.Users.Add(ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetUserByID(userid)));
             }
 
             _session.SetObjectAsJson("Project", vm);
@@ -108,6 +99,7 @@ namespace AchmeaProject.Controllers
         [HttpGet]
         public IActionResult ConfirmDetails()
         {
+            //Change
             if (_session.GetObjectFromJson<ProjectCreateViewModel>("Project") == null)
             {
                 return RedirectToAction("Create", "Project");
@@ -137,6 +129,7 @@ namespace AchmeaProject.Controllers
             }
 
             return RedirectToAction("SaveReqruirementsToProject", "Requirement");
+            //change
         }
     }
 }

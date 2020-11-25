@@ -4,21 +4,20 @@
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/Overview.css" />
-<h1>Overview</h1>
-<table>
+<table class="table table-hover">
     <thead>
-        <tr class="table-header">
+        <tr>
             <th>Title</th>
-            <th>Creation Date</th>
+            <th>Status</th>
+            <th>Members</th>
         </tr>
     </thead>
     <tbody>
         @foreach (ProjectViewModel P in Model)
         {
-            <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = P.ProjectId})'">
-                <th>@P.Title</th>
-                <td>@P.CreationDate</td>
+            <tr onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = P.ProjectId})'">
+                <td>@P.Title</td>
+                <td>@P.Status</td>
             </tr>
         }
     </tbody>

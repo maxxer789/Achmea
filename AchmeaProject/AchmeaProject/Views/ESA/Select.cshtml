@@ -23,7 +23,7 @@
 
         <!-- title -->
         <div class="row  d-flex justify-content-center">
-            <h2>ESA Aspectgebieden</h2>
+                <h2>ESA Aspectgebieden</h2>
         </div>
         <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -39,24 +39,6 @@
             @Html.HiddenFor(model => Model.Bivs[i].Id)
                                 @Html.HiddenFor(model => Model.Bivs[i].Name)
                                                     @Html.HiddenFor(model => Model.Bivs[i].isSelected)}}
-
-
-        @if (Model.Members.Length > 0)
-        {
-            @for (int i = 0; i < Model.Members.Length; i++)
-            {
-                @Html.HiddenFor(model => Model.Members[i])
-            }
-        }
-
-        @if (Model.Users.Count > 0)
-        {
-            for (int i = 0; i < Model.Users.Count; i++)
-            {
-                @Html.HiddenFor(model => Model.Users[i].UserID)
-                @Html.HiddenFor(model => Model.Users[i].Name)
-            }
-        }
 
 
         @for (var i = 0; i < @Model.AspectAreas.Count; i++)

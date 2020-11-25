@@ -9,15 +9,14 @@ namespace Achmea.Core.Interface
 {
     public interface IProject
     {
-        public Project AddNewProject(Project project, int[] MemberIDs);
+        public void AddNewProject(string title, int ID);
 
         public IEnumerable<Project> GetProjects();
 
         public Project GetProject(int projectId);
 
+        public List<EsaAspect> GetEsaForProject(int projectId);
+
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId);
-
-        public void UpdateProjectStatus(Project givenProject);
-
     }
 }
