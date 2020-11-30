@@ -72,13 +72,22 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public JsonResult Upload(EvidenceUploadViewModel vm)
+        public IActionResult Upload(EvidenceUploadViewModel vm, int projectId)
         {
             if (vm.File != null)
             {
                 if (GoogleDriveConnection.ValidateFileType(vm.File))
                 {
-                    string FileId = GoogleDriveConnection.UploadFile(service, vm.File);
+                    string FileId;
+                    try
+                    {
+                        FileId = GoogleDriveConnection.UploadFile(service, vm.File);
+                    }
+                    catch (Exception)
+                    {
+                        TempData["Error"] = "Error encountered while uploading file";
+                        return RedirectToAction("Details", "Overview", new { projectId = projectId });
+                    }
                     FileOfProof fileOfProof = new FileOfProof
                     {
                         DocumentTitle = Path.GetFileName(vm.File.FileName),
@@ -87,16 +96,18 @@ namespace AchmeaProject.Controllers
 
                     _evidenceLogic.UploadFileOfProof(fileOfProof, vm.SecurityRequirementProjectID);
 
-                    return Json("succes");
+                    TempData["Error"] = "File uploaded succesfully";
                 }
 
-                return Json("File can only be doc, docx, pdf or png");
+                TempData["Error"] = "File must be of type doc, docx, pdf or png";
 
             }
             else
             {
-                return Json("No file selected");
+                TempData["Error"] = "Please select a file for uploading";
             }
+
+            return RedirectToAction("Details", "Overview", new { projectId = projectId });
         }
     }
 

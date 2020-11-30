@@ -72,6 +72,10 @@ namespace AchmeaProject.Controllers
                     User = _UserLogic.GetUserByID(project.UserId)
                 };
 
+                if (TempData["Error"] != null)
+                {
+                    ViewBag.Error = TempData["Error"].ToString();
+                }
                 return View(model);
             }
             return RedirectToAction("Login", "User");
