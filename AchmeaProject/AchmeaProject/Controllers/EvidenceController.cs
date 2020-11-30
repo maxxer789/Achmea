@@ -38,39 +38,6 @@ namespace AchmeaProject.Controllers
             _evidenceLogic = new EvidenceLogic(iEvidence);
         }
 
-        public IActionResult Index()
-        {
-            EvidenceFileViewModel files = new EvidenceFileViewModel();
-            return View(files);
-        }
-
-        [HttpPost]
-        public IActionResult Index(IFormFile file)
-        {
-            if (file != null)
-            {
-                string id = GoogleDriveConnection.UploadFile(service, file);
-
-                return RedirectToAction("SelectById", "Evidence", new { id });
-            }
-            else
-            {
-                EvidenceFileViewModel files = new EvidenceFileViewModel();
-
-                return View(files);
-            }
-        }
-
-        public IActionResult SelectById(string id)
-        {
-            EvidenceFileViewModel files = new EvidenceFileViewModel
-            {
-                File = GoogleDriveConnection.GetFileById(service, id)
-            };
-
-            return View(files);
-        }
-
         [HttpPost]
         public IActionResult Upload(EvidenceUploadViewModel vm, int projectId)
         {
