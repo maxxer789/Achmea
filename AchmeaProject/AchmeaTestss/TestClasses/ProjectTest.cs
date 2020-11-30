@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace AchmeaTestss
+namespace AchmeaTestss.TestClasses
 {
     [TestClass]
     public class ProjectTest
@@ -22,18 +22,23 @@ namespace AchmeaTestss
         [TestMethod]
         public void ProjectConstructorsWork()
         {
-            Project p2 = new Project(4, 4, "Test Project 4", "This is the description for test project 4");
-            Project p3 = new Project(4, 4, "Test Project 4", "This is the description for test project 4", DateTime.Now);
+            int id = 4;
+            int userid = 5;
+            string title = "Test project 4";
+            string description = "This is the description for test project 4.";
 
-            Assert.AreEqual(4, p2.ProjectId);
-            Assert.AreEqual(4, p2.UserId);
-            Assert.AreEqual("Test Project 4", p2.Title);
-            Assert.AreEqual("This is the description for test project 4", p2.Description);
+            Project p2 = new Project(id, userid, title, description);
+            Project p3 = new Project(id, userid, title, description, DateTime.Now);
 
-            Assert.AreEqual(4, p3.ProjectId);
-            Assert.AreEqual(4, p3.UserId);
-            Assert.AreEqual("Test Project 4", p3.Title);
-            Assert.AreEqual("This is the description for test project 4", p3.Description);
+            Assert.AreEqual(id, p2.ProjectId);
+            Assert.AreEqual(userid, p2.UserId);
+            Assert.AreEqual(title, p2.Title);
+            Assert.AreEqual(description, p2.Description);
+
+            Assert.AreEqual(id, p3.ProjectId);
+            Assert.AreEqual(userid, p3.UserId);
+            Assert.AreEqual(title, p3.Title);
+            Assert.AreEqual(description, p3.Description);
         }
 
         [TestMethod]
@@ -48,16 +53,37 @@ namespace AchmeaTestss
         }
 
         [TestMethod]
+        public void CanGetSingleProject()
+        {
+            int projectId = 1;
+            Project project = _ProjectLogic.GetProject(projectId);
+
+            Assert.IsNotNull(project);
+            Assert.AreEqual(projectId, project.ProjectId);
+        }
+
+        [TestMethod]
         public void CanCreateNewProject()
         {
+            List<Project> oldProjects = _ProjectLogic.GetProjects();
             Project project = new Project(3, 3, "Test Project 3", "This is the description for test project 3.");
             int[] members = { 1, 2 };
 
             _ProjectLogic.MakeNewProject(project, members);
-            List<Project> projects = _ProjectLogic.GetProjects();
+            List<Project> newProjects = _ProjectLogic.GetProjects();
 
-            Assert.AreEqual(3, projects.Count);
-            Assert.AreEqual(project.ProjectId, projects[2].ProjectId);
+            Assert.AreNotEqual(oldProjects, newProjects);
+        }
+
+        [TestMethod]
+        public void CanGetRequirementsForProject()
+        {
+            int projectId = 1;
+            Project project = _ProjectLogic.GetProject(projectId);
+            List<SecurityRequirementProject> requirements = _ProjectLogic.GetRequirementsForProject(projectId);
+
+            Assert.IsNotNull(requirements);
+            Assert.AreEqual(project.SecurityRequirementProject.Count, requirements.Count);
         }
     }
 }

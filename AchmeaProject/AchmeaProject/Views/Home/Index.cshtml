@@ -1,85 +1,84 @@
-﻿
+﻿@*@{
+        ViewData["Title"] = "Home Page";
+    }
 
-@{
-    ViewData["Title"] = "Home Page";
-}
+    @{
+        var users = ViewBag.Users as IEnumerable<AchmeaProject.Models.User>;
+    }
 
-@{
-    var users = ViewBag.Users as IEnumerable<AchmeaProject.Models.User>;
-}
-
-@{
-    var Employees = "Added employees";
-}
+    @{
+        var Employees = "Added employees";
+    }
 
 
 
-<div class="container">
-    <a class="btn btn-primary" asp-action="Create" asp-controller="Project">Create new project</a>
-</div>
-    @*<div class="modal fade" tabindex="-1" id="loginModal"
-        data-keyboard="false" data-backdrop="static">*@
-    @*<div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Create project</h4>
-                            <button type="button" class="close" data-dismiss="modal">
-                                ×
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label>Name your new project</label>
-                                    <input type="text" name="ProjectTitle" class="form-control" id="Title">
-                                </div>
-                                <div class="form-group">
-                                    <label>Give your project a description</label>
-                                    <input type="text" name="ProjectDescription" class="form-control" id="Description">
-                                </div>
+    <div class="container">
+        <div class="modal fade" tabindex="-1" id="loginModal"
+             data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create project</h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Name your new project</label>
+                                <input type="text" name="ProjectTitle" class="form-control" id="Title">
+                            </div>
+                            <div class="form-group">
+                                <label>Give your project a description</label>
+                                <input type="text" name="ProjectDescription" class="form-control" id="Description">
+                            </div>
 
-                                    <label for="something">
-                                        Add employee('s)":
-                                        <input id="something" list="somethingelse">
-                                        <datalist id="somethingelse">
-                                            @foreach (var user in users)
-                                            {
-                                                <option value="@user.UserId">@user.Firstname @user.Lastname </option>
-                                            }
-                                        </datalist>
-                                        <button onclick="AddToProject()" type="button" class="btn btn-primary button button4">Add</button>
-                                        <span id="spanResult"></span>
-                                    </label>
+                                <label for="something">
+                                    Add employee('s)":
+                                    <input id="something" list="somethingelse">
+                                    <datalist id="somethingelse">
+                                        @foreach (var user in users)
+                                        {
+                                            <option value="@user.UserId">@user.Firstname @user.Lastname </option>
+                                        }
+                                    </datalist>
+                                    <button onclick="AddToProject()" type="button" class="btn btn-primary button button4">Add</button>
+                                    <span id="spanResult"></span>
+                                </label>
 
 
 
-                                <table class="table table-hover table-dark">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                @Html.DisplayNameFor(model => Employees)
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="body">
-                                    </tbody>
-                                </table>
+                            <table class="table table-hover table-dark">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => Employees)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="body">
+                                </tbody>
+                            </table>
 
-                                <button type="submit" id="submit" class="btn btn-primary">Create project</button>
-                            </form>
+                            <button type="submit" id="submit" class="btn btn-primary">Create project</button>
+                        </form>
 
-                        </div>
-                        <div class="modal-footer">
+                    </div>
+                    <div class="modal-footer">
 
-                            <button type="button" id="btnHideModal" class="btn btn-primary button button4">
-                                Hide
-                            </button>
-                        </div>
+                        <button type="button" id="btnHideModal" class="btn btn-primary button button4">
+                            Hide
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>*@
+        </div>
+    </div>
+
+
+    <button type="submit" id="open" class="btn btn-primary">Create new Project</button>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -127,7 +126,6 @@
                 return li;
             });
 
-
             for (var member in members) {
                 if (member == newMember) {
                     added = true;
@@ -155,12 +153,87 @@
                 url: "/Project/CreateProject",
                 dataType: "json",
                 traditional: true,
-                data: requestData
+                data: requestData,
             });
+
+            $("#loginModal").modal('hide');
         });
 
         //$("input[id=something]").focusout(function () {
         //    alert($(this).val());
         //});
-    </script>
+    </script>*@
 
+@{
+    var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>;
+}
+
+<div class="container">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-2">Message</div>
+        <div class="col-4"><input type="text" id="messageInput" /></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-6">
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @foreach (var comment in comments)
+        {
+            <ul id="existingcomments">@comment.UserName says @comment.Message</ul>
+        }
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+
+<script>
+    "use strict";
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
+
+    //Disable send button until connection is established
+    document.getElementById("sendButton").disabled = true;
+
+    connection.on("ReceiveMessage", function (user, message) {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = user + " says " + msg;
+        var li = document.createElement("li");
+        li.textContent = encodedMsg;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    $('#sendButton').click(function (event) {
+
+        event.preventDefault();
+        var requestData = {
+            message: document.getElementById("messageInput").value,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Comment/SendMessage",
+            dataType: "json",
+            traditional: true,
+            data: requestData,
+        });
+    });
+</script>
