@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Achmea.Core.Logic;
+using Google.Apis.Drive.v3.Data;
 
 namespace AchmeaProject.Models
 {
@@ -18,5 +19,11 @@ namespace AchmeaProject.Models
         public List<SecurityRequirementProject> RequirementProject { get; set; }
         public List<SecurityRequirement> Requirements { get; set; }
         public User User { get; set; }
+        public List<File> Files { get; set; }
+
+        public ProjectDetailViewModel()
+        {
+            Files = new List<File>();
+        }
     }
 }

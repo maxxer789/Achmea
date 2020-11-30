@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Achmea.Core.SQL;
 using Microsoft.AspNetCore.Http;
 using Achmea.Core.Logic;
+using Microsoft.AspNetCore.Hosting;
+using Google.Apis.Drive.v3;
 
 namespace AchmeaProject.Controllers
 {
@@ -19,12 +21,20 @@ namespace AchmeaProject.Controllers
         private readonly ProjectLogic _ProjectLogic;
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly DriveService service;
 
-        public OverviewController(IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser)
+        public OverviewController(IWebHostEnvironment webHost, IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser)
         {
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
             _UserLogic = new UserLogic(iUser);
+
+            _webHostEnvironment = webHost;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string serviceAccountEmail = config.GetSection("ServiceAccountGoogleDrive:ServiceAccountEmail").Value;
+            service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath, serviceAccountEmail);
         }
 
         public IActionResult Index()
@@ -71,6 +81,14 @@ namespace AchmeaProject.Controllers
                     Requirements = _RequirementLogic.GetAllRequirements(),
                     User = _UserLogic.GetUserByID(project.UserId)
                 };
+
+                foreach (var item in model.RequirementProject)
+                {
+                    if (item.FileOfProof != null)
+                    {
+                        model.Files.Add(GoogleDriveConnection.GetFileById(service, item.FileOfProof.FileLocation));
+                    }
+                }
 
                 if (TempData["Error"] != null)
                 {

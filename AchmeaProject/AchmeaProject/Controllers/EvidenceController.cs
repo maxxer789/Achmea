@@ -98,9 +98,10 @@ namespace AchmeaProject.Controllers
 
                     TempData["Error"] = "File uploaded succesfully";
                 }
-
-                TempData["Error"] = "File must be of type doc, docx, pdf or png";
-
+                else
+                {
+                    TempData["Error"] = "File must be of type doc, docx, pdf or png";
+                }
             }
             else
             {

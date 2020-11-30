@@ -32,6 +32,10 @@
     <div class="collapsible">
         @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
         <br /><br />
+        @if (req.FileOfProof != null)
+        {
+    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
+        }
         <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
             <label>Bewijsmateriaal uploaden: </label><br />
             <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
