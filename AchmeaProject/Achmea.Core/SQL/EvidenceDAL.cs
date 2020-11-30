@@ -10,20 +10,43 @@ namespace Achmea.Core.SQL
     {
         public FileOfProof UploadFileOfProof(FileOfProof file, int SecurityRequirementProjectID)
         {
-            try
+            if (SecurityRequirementProject.Find(SecurityRequirementProjectID).FileOfProofId != null)
             {
-                FileOfProof.Add(file);
-                SaveChanges();
-                SecurityRequirementProject SecPro = SecurityRequirementProject.Find(SecurityRequirementProjectID);
-                SecPro.FileOfProofId = file.FileOfProofId;
-                SecPro.Status = Logic._Status.Under_review;
-                SecurityRequirementProject.Update(SecPro);
-                SaveChanges();
-                return file;
+                try
+                {
+                    FileOfProof currentFile = FileOfProof.Find(SecurityRequirementProject.Find(SecurityRequirementProjectID).FileOfProofId);
+                    currentFile.FileLocation = file.FileLocation;
+                    currentFile.DocumentTitle = file.DocumentTitle;
+                    FileOfProof.Update(currentFile);
+                    SaveChanges();
+                    SecurityRequirementProject SecPro = SecurityRequirementProject.Find(SecurityRequirementProjectID);
+                    SecPro.Status = Logic._Status.Under_review;
+                    SecurityRequirementProject.Update(SecPro);
+                    SaveChanges();
+                    return file;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception(ex.Message);
+                try
+                {
+                    FileOfProof.Add(file);
+                    SaveChanges();
+                    SecurityRequirementProject SecPro = SecurityRequirementProject.Find(SecurityRequirementProjectID);
+                    SecPro.FileOfProofId = file.FileOfProofId;
+                    SecPro.Status = Logic._Status.Under_review;
+                    SecurityRequirementProject.Update(SecPro);
+                    SaveChanges();
+                    return file;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
         }
     }
