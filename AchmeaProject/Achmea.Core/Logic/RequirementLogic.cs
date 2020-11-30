@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
@@ -53,16 +54,27 @@ namespace Achmea.Core.Logic
 
         public SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason)
         {
-            return _IReq.ExcludeRequirement(requirementId, projectId, reason);
+            if (reason.Trim() != string.Empty)
+            {
+                return _IReq.ExcludeRequirement(requirementId, projectId, reason);
+            }
+            return null;
         }
 
         public SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds)
         {
-            if (bivIds.Count <= 3 || areaIds.Count > 0)
+            if (bivIds.Count <= 3 && bivIds.Count > 0 && areaIds.Count > 0 && req.Name != string.Empty && req.RequirementNumber != string.Empty && req.Family != string.Empty && req.Description != string.Empty)
             {
+                foreach (PropertyInfo prop in req.GetType().GetProperties())
+                {
+                    if (prop.PropertyType == typeof(string))
+                    {
+                        prop.SetValue(req, prop.GetValue(req).ToString().Trim());
+                    }
+                }
                 return _IReq.CreateRequirement(req, bivIds, areaIds);
             }
-            throw new ArgumentException();
+            return req;
         }
 
     }

@@ -1,7 +1,9 @@
 ﻿using Achmea.Core.Interface;
 using AchmeaProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Achmea.Core.Logic;
 
 namespace AchmeaTestss.MockServices
 {
@@ -11,6 +13,8 @@ namespace AchmeaTestss.MockServices
         private List<EsaAreaRequirement> esaAreaReq = new List<EsaAreaRequirement>();
         private List<EsaAspectArea> esaAspArea = new List<EsaAspectArea>();
         private List<BIVRequirement> bivRequirements = new List<BIVRequirement>();
+        private List<Project> Projects = new List<Project>();
+        List<SecurityRequirementProject> srps = new List<SecurityRequirementProject>();
 
         public MockRequirementDAL()
         {
@@ -57,7 +61,16 @@ namespace AchmeaTestss.MockServices
 
         public IEnumerable<SecurityRequirementProject> SaveReqruirementsToProject(List<SecurityRequirement> requirements, Project project)
         {
-            return new List<SecurityRequirementProject>();
+            foreach(SecurityRequirement req in requirements)
+            {
+                srps.Add(new SecurityRequirementProject()
+                {
+                    SecurityRequirementId = req.RequirementId,
+                    ProjectId = project.ProjectId,
+                    Status = _Status.Submit_evidence,
+                });
+            }
+            return srps;
         }
 
         public SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason)
@@ -67,6 +80,7 @@ namespace AchmeaTestss.MockServices
 
         public SecurityRequirement CreateRequirement(SecurityRequirement req, List<int> bivIds, List<int> areaIds)
         {
+            req.RequirementId = Requirements[Requirements.Count - 1].RequirementId + 1;
             Requirements.Add(req);
             return req;
         }
@@ -158,6 +172,9 @@ namespace AchmeaTestss.MockServices
                 MainGroup = "9",
                 RequirementNumber = "AT1"
             });
+            #endregion
+            #region Projects
+            Projects.Add(new Project(0, 0, "Project 0", "Project for 1", DateTime.Now));
             #endregion
             #region AspectAreas
             esaAspArea.Add(new EsaAspectArea()

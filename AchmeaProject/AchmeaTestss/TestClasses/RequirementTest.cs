@@ -11,8 +11,8 @@ namespace AchmeaTestss.TestClasses
     [TestClass]
     public class RequirementTest
     {
-        IRequirement _IReq;
-        RequirementLogic Logic;
+        private IRequirement _IReq;
+        private RequirementLogic Logic;
 
         public RequirementTest()
         {
@@ -59,23 +59,6 @@ namespace AchmeaTestss.TestClasses
             Assert.AreEqual(req.MainGroup, reqMain1);
         }
 
-        [TestMethod]
-        public void CreateNewRequirement()
-        {
-            List<int> bivIds = new List<int>();
-            List<int> areaIds = new List<int>();
-            SecurityRequirement req = new SecurityRequirement("New Requirement", "New Description", "New Details", "AP", "AP1", "7. groep 7");
-            bivIds.Add(1);
-            areaIds.Add(1);
-
-            int initialRequirementsAmount = Logic.GetAllRequirements().Count;
-
-            Logic.CreateRequirement(req, bivIds, areaIds);
-
-            int amountAfterCreate = Logic.GetAllRequirements().Count;
-
-            Assert.AreNotEqual(initialRequirementsAmount, amountAfterCreate);
-        }
 
         [TestMethod]
         public void GetRequirementFromAspectarea_ValidAspectarea()
@@ -101,7 +84,7 @@ namespace AchmeaTestss.TestClasses
 
             aspectareas.Add(new EsaAspect()
             {
-                AspectId = 19,
+                AspectId = 191,
             });
 
             List<SecurityRequirement> requirements = Logic.getRequiermentsFromAreas(aspectareas).ToList();
@@ -141,6 +124,118 @@ namespace AchmeaTestss.TestClasses
 
             Assert.IsNotNull(requirements);
             Assert.IsTrue(requirements.Count == 0);
+        }
+
+        [TestMethod]
+        public void CreateRequirement_RightInfo()
+        {
+            SecurityRequirement req = new SecurityRequirement("Requirement 4", "Description 4", "", "AO", "AO5", "8");
+            List<int> bivIds = new List<int>();
+            bivIds.Add(1);
+            bivIds.Add(4);
+            bivIds.Add(7);
+            List<int> areaIds = new List<int>();
+            areaIds.Add(1);
+            areaIds.Add(2);
+            areaIds.Add(3);
+
+            List<SecurityRequirement> initialRequirements = Logic.GetAllRequirements().ToList();
+
+            req = Logic.CreateRequirement(req, bivIds, areaIds);
+
+            Assert.AreNotEqual(initialRequirements.Count, Logic.GetAllRequirements().Count);
+            Assert.IsFalse(initialRequirements.Any(requ => requ.RequirementId == req.RequirementId));
+            Assert.IsTrue(Logic.GetAllRequirements().Any(requ => requ.RequirementId == req.RequirementId));
+        }
+
+        [TestMethod]
+        public void CreateRequirement_MissingBivs()
+        {
+            SecurityRequirement req = new SecurityRequirement("Requirement 4", "Description 4", "", "AO", "AO5", "8");
+            List<int> bivIds = new List<int>();
+            List<int> areaIds = new List<int>();
+            areaIds.Add(1);
+            areaIds.Add(2);
+            areaIds.Add(3);
+
+            List<SecurityRequirement> initialRequirements = Logic.GetAllRequirements().ToList();
+
+            req = Logic.CreateRequirement(req, bivIds, areaIds);
+
+            Assert.AreEqual(initialRequirements.Count, Logic.GetAllRequirements().Count);
+            Assert.IsFalse(req.RequirementId > 0);
+        }
+
+        [TestMethod]
+        public void CreateRequirement_MissingAreas()
+        {
+            SecurityRequirement req = new SecurityRequirement("Requirement 4", "Description 4", "", "AO", "AO5", "8");
+            List<int> bivIds = new List<int>();
+            bivIds.Add(1);
+            bivIds.Add(4);
+            bivIds.Add(7);
+            List<int> areaIds = new List<int>();
+
+            List<SecurityRequirement> initialRequirements = Logic.GetAllRequirements().ToList();
+
+            req = Logic.CreateRequirement(req, bivIds, areaIds);
+
+            Assert.AreEqual(initialRequirements.Count, Logic.GetAllRequirements().Count);
+            Assert.IsFalse(req.RequirementId > 0);
+        }
+
+        [TestMethod]
+        public void CreateRequirement_MissingInfo()
+        {
+            SecurityRequirement req = new SecurityRequirement("Requirement 4", "", "Details 4", "AO", "AO5", "8");
+            List<int> bivIds = new List<int>();
+            bivIds.Add(1);
+            bivIds.Add(4);
+            bivIds.Add(7);
+            List<int> areaIds = new List<int>();
+            areaIds.Add(1);
+            areaIds.Add(2);
+            areaIds.Add(3);
+
+            List<SecurityRequirement> initialRequirements = Logic.GetAllRequirements().ToList();
+
+            req = Logic.CreateRequirement(req, bivIds, areaIds);
+
+            Assert.AreEqual(initialRequirements.Count, Logic.GetAllRequirements().Count);
+            Assert.IsFalse(req.RequirementId > 0);
+        }
+
+        [TestMethod]
+        public void SaveRequirementsToProject_RightInfo()
+        {
+            Project project = new Project()
+            {
+                ProjectId = 0,
+            };
+            List<Biv> bivs = new List<Biv>();
+            bivs.Add(new Biv()
+            {
+                Id= 1,
+                Name = "B1"
+            });
+            bivs.Add(new Biv()
+            {
+                Id= 2,
+                Name = "I1"
+            });
+            List<EsaAspect> aspects = new List<EsaAspect>();
+            aspects.Add(new EsaAspect()
+            {
+                AspectId = 0,
+            });
+            aspects.Add(new EsaAspect()
+            {
+                AspectId = 2,
+            });
+
+            List<SecurityRequirementProject> srps = Logic.SaveReqruirementsToProject(aspects, bivs, project).ToList();
+
+            Assert.IsTrue(srps.Count > 1);
         }
     }
 }
