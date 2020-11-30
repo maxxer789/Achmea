@@ -1,58 +1,100 @@
 ﻿@model ProjectCreateViewModel;
 
-@{
-}
+@{ ViewData["Title"] = "Home Page"; }
 
-<div class="row">
-    <div class="col-4"></div>
-    <div class="col-4">
-        <h1>Project gegevens</h1>
-        <form asp-action="Create" asp-controller="Project">
-            <div class="form-group">
-                <label asp-for="@Model.Project.Title" class="control-label"></label>
-                <input asp-for="@Model.Project.Title" class="form-control" />
-                <span asp-validation-for="@Model.Project.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Project.Description" class="control-label"></label>
-                <input asp-for="@Model.Project.Description" class="form-control" />
-                <span asp-validation-for="@Model.Project.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <input asp-for="@Model.Project.CreationDate" class="form-control" />
-            </div>
-            <div class="form-group" hidden="hidden">
-                <input asp-for="@Model.Project.UserID" class="form-control" />
-            </div>
-            <div class="form-group" style="float: right">
-                <button class="btn btn-primary" id="NextBtn" name="nextbtn" type="submit" value="Volgende">Volgende</button>
-            </div>
+@{ var users = ViewBag.Users as List<UserSelectionViewModel>; }
 
-            @if (Model.Bivs.Count > 0)
-            {
-                <!-- Biv information to pass through -->
-                @for (int i = 0; i < @Model.Bivs.Count; i++)
-                {
-                    @Html.HiddenFor(model => Model.Bivs[i].Id)
-                    @Html.HiddenFor(model => Model.Bivs[i].Name)
-                    @Html.HiddenFor(model => Model.Bivs[i].isSelected)
-                }
-            }
+<head>
+    <link href="~/lib/Chosen/chosen.min.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/Chosen/chosen.jquery.js"></script>
 
-            @if (Model.AspectAreas.Count > 0)
-            {
-                <!-- AspectAreas information to pass through -->
-                @for (int i = 0; i < @Model.AspectAreas.Count; i++)
-                {
-                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
-                }
-            }
+    @using Microsoft.AspNetCore.Http
+    @inject IHttpContextAccessor HttpContextAccessor
+</head>
 
-            <input type="hidden" name="submitclicked" value="">
-        </form>
+<body>
+    <div id="content">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <h1>Project gegevens</h1>
+                <form asp-controller="Project" asp-action="Create" id="myform">
+                    <div class="form-group">
+                        <label asp-for="@Model.Project.Title" class="control-label"></label>
+                        <input asp-for="@Model.Project.Title" class="form-control" />
+                        <span asp-validation-for="@Model.Project.Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Project.Description" class="control-label"></label>
+                        <input asp-for="@Model.Project.Description" class="form-control" />
+                        <span asp-validation-for="@Model.Project.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <input asp-for="@Model.Project.CreationDate" class="form-control" />
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <input asp-for="@Model.Project.UserID" class="form-control" />
+                    </div>
+                    <div class="form-group" style="float: right">
+                    </div>
+
+                    <br />
+
+                    <select asp-for="Members" data-placeholder="Selecteer uw projectleden" class="chosen-select" multiple>
+                        @foreach (var user in users)
+                        {
+                            if (user.UserID == HttpContextAccessor.HttpContext.Session.GetInt32("UserID"))
+                            {
+
+                            }
+                            else if (Model.Members.Contains(user.UserID))
+                            {
+                                <option value="@user.UserID" selected="selected">@user.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@user.UserID">@user.Name</option>
+                            }
+                        }
+                    </select>
+
+                    <br />
+                    <br />
+
+                    @if (Model.Bivs.Count > 0)
+                    {
+                        <!-- Biv information to pass through -->
+                        @for (int i = 0; i < @Model.Bivs.Count; i++)
+                        {
+                            @Html.HiddenFor(model => Model.Bivs[i].Id)
+                            @Html.HiddenFor(model => Model.Bivs[i].Name)
+                            @Html.HiddenFor(model => Model.Bivs[i].isSelected)
+                        }
+                    }
+
+                    @if (Model.AspectAreas.Count > 0)
+                    {
+                        <!-- AspectAreas information to pass through -->
+                        @for (int i = 0; i < @Model.AspectAreas.Count; i++)
+                        {
+                            @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                            @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                            @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                            @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+                        }
+                    }
+
+                    <button class="btn btn-primary" type="submit" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
+
+                </form>
+            </div>
+        </div>
     </div>
-</div>
+</body>
 
+<script type="text/javascript">
+    $(".chosen-select").chosen({
+        width: "100%"
+    });
+</script>

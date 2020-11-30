@@ -135,7 +135,6 @@ namespace AchmeaProject.Models.ViewModelConverter
                 ProjectId = Pmodel.ProjectId,
                 Title = Pmodel.Title,
                 Description = Pmodel.Description,
-                Status = Pmodel.Status
             };
 
             return vm;
@@ -152,7 +151,6 @@ namespace AchmeaProject.Models.ViewModelConverter
                     ProjectId = model.ProjectId,
                     Title = model.Title,
                     Description = model.Description,
-                    Status = model.Status
                 };
                 vms.Add(vm);
             }
@@ -204,6 +202,30 @@ namespace AchmeaProject.Models.ViewModelConverter
                 MainGroup = req.MainGroup,
                 RequirementNumber = req.RequirementNumber
             };
+        }
+
+        public static UserSelectionViewModel UserToUserSelectionViewModel(User user)
+        {
+            return new UserSelectionViewModel
+            {
+                UserID = user.UserId,
+                Name = user.Firstname + " " + user.Lastname
+            };
+        }
+
+        public static List<UserSelectionViewModel> UserToUserSelectionViewModel(List<User> users)
+        {
+            List<UserSelectionViewModel> UserVMs = new List<UserSelectionViewModel>();
+            foreach (User user in users)
+            {
+                UserVMs.Add(new UserSelectionViewModel
+                {
+                    UserID = user.UserId,
+                    Name = user.Firstname + " " + user.Lastname
+                });
+            }
+
+            return UserVMs;
         }
     }
 }

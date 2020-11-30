@@ -254,11 +254,6 @@ namespace Achmea.Core.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
                     b.Property<string>("Title")
                         .HasColumnType("varchar(50)")
                         .HasMaxLength(50)
@@ -385,8 +380,8 @@ namespace Achmea.Core.Migrations
                         .HasColumnName("Security_RequirementID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("SecurityRequirementProjectId");
 
