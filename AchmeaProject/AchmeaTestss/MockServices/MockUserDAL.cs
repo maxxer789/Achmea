@@ -10,6 +10,12 @@ namespace AchmeaTestss.MockServices
     class MockUserDAL : IUser
     {
         private List<User> Users;
+
+        public MockUserDAL()
+        {
+            Users = Populate();
+        }
+
         public IEnumerable<User> GetAllUsers()
         {
             return Users;
@@ -34,12 +40,49 @@ namespace AchmeaTestss.MockServices
 
         public void UpdateUser(User givenUser)
         {
-            
+            User userOld = Users.Where(user => user.UserId == givenUser.UserId).FirstOrDefault();
+            userOld = givenUser;
         }
 
         public User GetUserByEmail(string email)
         {
             return Users.Where(user => user.Email == email).SingleOrDefault();
+        }
+
+        public List<User> Populate()
+        {
+            List<User> _Users = new List<User>();
+            _Users.Add(new User()
+            {
+                UserId = 1,
+                Firstname = "Testy",
+                Lastname = "McTesterson",
+                Email = "test@test.com",
+                Password = "password",
+                PhoneNumber = 0612345678,
+                RoleId = "Developer"
+            });
+            _Users.Add(new User()
+            {
+                UserId = 2,
+                Firstname = "Method",
+                Lastname = "McMethodson",
+                Email = "test@test.nl",
+                Password = "password2",
+                PhoneNumber = 0687654321,
+                RoleId = "Security"
+            });
+            _Users.Add(new User()
+            {
+                UserId = 3,
+                Firstname = "Public",
+                Lastname = "McPublicson",
+                Email = "test@test.de",
+                Password = "password3",
+                PhoneNumber = 0618273465,
+                RoleId = "Admin"
+            });
+            return _Users;
         }
     }
 }
