@@ -1,5 +1,6 @@
 ﻿@using Achmea.Core;
 @model ProjectDetailViewModel
+
 @{
     ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
@@ -28,9 +29,11 @@
             <div class="requirement-info">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
             </div>
+
             <div class="requirement-check">
                 @req.Status
             </div>
+
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
@@ -42,6 +45,17 @@
                 {
                     <div class="download">No file uploaded by Developer</div>
                 }
+
+                <div>
+                    <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
+                        <input type="radio" name="Approved" value="true"/> Approve
+                        <input type="radio" name="Approved" value="false"/> Decline
+                        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+                        <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
+                        <input type="submit" value="Submit"/>
+                    </form>
+                </div>
+
             </div>
         </div>
     }

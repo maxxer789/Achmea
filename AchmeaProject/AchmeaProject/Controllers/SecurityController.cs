@@ -78,5 +78,23 @@ namespace AchmeaProject.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        public IActionResult UpdateRequirementStatus(bool Approved, int ProjectId, int ReqId)
+        {
+            SecurityRequirementProject req = _ProjectLogic.GetRequirementsForProject(ProjectId).Where(x => x.SecurityRequirementProjectId == ReqId).SingleOrDefault();
+            if (Approved)
+            {
+                _Status status = _Status.Approved;
+                _RequirementLogic.UpdateRequirentStatus(req, status);
+            }
+            else
+            {
+                _Status status = _Status.Declined;
+                _RequirementLogic.UpdateRequirentStatus(req, status);
+            }
+
+            return RedirectToAction("Details", new { projectId = ProjectId });
+        }
     }
 }

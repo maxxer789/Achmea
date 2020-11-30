@@ -17,7 +17,5 @@ namespace Achmea.Core.Interface
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId);
 
-        public void UpdateProjectStatus(Project givenProject);
-
     }
 }

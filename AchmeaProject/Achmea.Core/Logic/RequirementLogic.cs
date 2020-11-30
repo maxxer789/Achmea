@@ -65,6 +65,10 @@ namespace Achmea.Core.Logic
             throw new ArgumentException();
         }
 
+        public void UpdateRequirentStatus(SecurityRequirementProject requirement, _Status newStatus)
+        {
+            _IReq.UpdateRequirentStatus(requirement, newStatus);
+        }
     }
     public enum _Status
     {

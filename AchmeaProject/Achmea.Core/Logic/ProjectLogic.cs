@@ -49,10 +49,5 @@ namespace Achmea.Core.Logic
         {
             return _IProject.GetProject(projectId);
         }
-
-        public void UpdateProjectStatus(Project project)
-        {
-            _IProject.UpdateProjectStatus(project);
-        }
     }
 }
