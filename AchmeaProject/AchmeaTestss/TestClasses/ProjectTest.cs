@@ -63,6 +63,15 @@ namespace AchmeaTestss.TestClasses
         }
 
         [TestMethod]
+        public void CanGetSingleProject_IsInvalid()
+        {
+            int projectId = 0;
+            Project project = _ProjectLogic.GetProject(projectId);
+
+            Assert.IsNull(project);
+        }
+
+        [TestMethod]
         public void CanCreateNewProject()
         {
             List<Project> oldProjects = _ProjectLogic.GetProjects();
@@ -84,6 +93,17 @@ namespace AchmeaTestss.TestClasses
 
             Assert.IsNotNull(requirements);
             Assert.AreEqual(project.SecurityRequirementProject.Count, requirements.Count);
+        }
+
+        [TestMethod]
+        public void CanGetRequirementsForProject_InvalidProject()
+        {
+            int projectId = 0;
+            Project project = _ProjectLogic.GetProject(projectId);
+            List<SecurityRequirementProject> requirements = _ProjectLogic.GetRequirementsForProject(projectId);
+
+            Assert.IsNotNull(requirements);
+            Assert.AreEqual(0, requirements.Count);
         }
     }
 }
