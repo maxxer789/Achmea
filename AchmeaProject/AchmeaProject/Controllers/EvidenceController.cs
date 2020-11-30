@@ -45,34 +45,42 @@ namespace AchmeaProject.Controllers
             {
                 if (GoogleDriveConnection.ValidateFileType(vm.File))
                 {
-                    string FileId;
+                    string UploadedFileId;
+                    string databaseFileId;
                     try
                     {
-                        FileId = GoogleDriveConnection.UploadFile(service, vm.File);
+                        databaseFileId = _evidenceLogic.GetBySecurityRequirementProjectID(vm.SecurityRequirementProjectID).FileLocation;
+                        UploadedFileId = GoogleDriveConnection.UploadFile(service, vm.File);
                     }
                     catch (Exception)
                     {
-                        TempData["Error"] = "Error encountered while uploading file";
+                        TempData["Message"] = "Error encountered while uploading file";
                         return RedirectToAction("Details", "Overview", new { projectId = projectId });
                     }
+
                     FileOfProof fileOfProof = new FileOfProof
                     {
                         DocumentTitle = Path.GetFileName(vm.File.FileName),
-                        FileLocation = FileId
+                        FileLocation = UploadedFileId
                     };
 
                     _evidenceLogic.UploadFileOfProof(fileOfProof, vm.SecurityRequirementProjectID);
 
-                    TempData["Error"] = "File uploaded succesfully";
+                    if (databaseFileId != null)
+                    {
+                        GoogleDriveConnection.DeleteFileById(service, databaseFileId);
+                    }
+
+                    TempData["Message"] = "File uploaded succesfully";
                 }
                 else
                 {
-                    TempData["Error"] = "File must be of type doc, docx, pdf or png";
+                    TempData["Message"] = "File must be of type doc, docx, pdf or png";
                 }
             }
             else
             {
-                TempData["Error"] = "Please select a file for uploading";
+                TempData["Message"] = "Please select a file for uploading";
             }
 
             return RedirectToAction("Details", "Overview", new { projectId = projectId });

@@ -8,5 +8,6 @@ namespace Achmea.Core.Interface
     public interface IEvidence
     {
         FileOfProof UploadFileOfProof(FileOfProof file, int SecurityRequirementProjectID);
+        FileOfProof GetBySecurityRequirementProjectID(int id);
     }
 }

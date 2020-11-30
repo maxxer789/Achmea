@@ -137,6 +137,20 @@ namespace Achmea.Core.Logic
             }
         }
 
+        public static bool DeleteFileById(DriveService service, string id)
+        {
+            try
+            {
+                var request = service.Files.Delete(id);
+                var File = request.Execute();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public static string UploadFile(DriveService service, IFormFile uploadFile)
         {
             //Get Id of parent folder Achmea for visibility purposes

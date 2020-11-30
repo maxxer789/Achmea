@@ -1,5 +1,6 @@
 ﻿using Achmea.Core.Interface;
 using AchmeaProject.Models;
+using Google.Apis.Drive.v3.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -48,6 +49,11 @@ namespace Achmea.Core.SQL
                     throw new Exception(ex.Message);
                 }
             }
+        }
+
+        public FileOfProof GetBySecurityRequirementProjectID(int id)
+        {
+            return FileOfProof.Find(SecurityRequirementProject.Find(id).FileOfProofId);
         }
     }
 }

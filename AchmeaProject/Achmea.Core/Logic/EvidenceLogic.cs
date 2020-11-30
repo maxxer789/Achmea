@@ -15,5 +15,9 @@ namespace Achmea.Core.Logic
         {
             _IEvidence.UploadFileOfProof(file, SecurityRequirementProjectID);
         }
+        public FileOfProof GetBySecurityRequirementProjectID(int id)
+        {
+            return _IEvidence.GetBySecurityRequirementProjectID(id);
+        }
     }
 }

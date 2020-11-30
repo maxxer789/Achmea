@@ -90,10 +90,11 @@ namespace AchmeaProject.Controllers
                     }
                 }
 
-                if (TempData["Error"] != null)
+                if (TempData["Message"] != null)
                 {
-                    ViewBag.Error = TempData["Error"].ToString();
+                    ViewBag.Message = TempData["Message"].ToString();
                 }
+
                 return View(model);
             }
             return RedirectToAction("Login", "User");
