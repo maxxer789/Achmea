@@ -41,7 +41,7 @@
                 <br /><br />
                 @if (Model.RequirementProject.Where(requirementP => requirementP.SecurityRequirementId == req.SecurityRequirementId).SingleOrDefault().FileOfProofId != null)
                 {
-                    <div class="download"><button>Download File</button></div>
+                    <div class="download"><a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink" class="btn btn-primary">Download File</a></div> 
                 }
                 else
                 {
