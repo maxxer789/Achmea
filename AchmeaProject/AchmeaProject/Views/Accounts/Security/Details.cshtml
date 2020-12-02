@@ -1,5 +1,7 @@
 ﻿@using Achmea.Core;
 @model ProjectDetailViewModel
+@using AchmeaProject.Helpers;
+
 @{
     ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_SecurityLayout.cshtml";
@@ -15,7 +17,10 @@
     <div class="header-desc">
         @*<h3>@Model.Employee</h3>*@
         <h4>Employees:</h4>
-        <p>@Model.User.Firstname</p>
+        @foreach (User User in Model.Users)
+        {
+            <p>@User.Firstname</p>
+        }
         <h4>Description:</h4>
         <p>@Model.Description</p>
     </div>
@@ -28,20 +33,38 @@
             <div class="requirement-info">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
             </div>
+
             <div class="requirement-check">
-                @req.Status
+                @*@req.Status*@
+                @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
             </div>
+
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
                 @if (Model.RequirementProject.Where(requirementP => requirementP.SecurityRequirementId == req.SecurityRequirementId).SingleOrDefault().FileOfProofId != null)
                 {
-                    <div class="download"><button>Download File</button></div>
+                    <div class="download"><a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink" class="btn btn-primary">Download File</a></div> 
                 }
                 else
                 {
                     <div class="download">No file uploaded by Developer</div>
                 }
+
+                <div>
+                    <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
+                        
+                        <input type="radio" name="Approved" value="true" /> Approve
+                        <input type="radio" name="Approved" value="false" /> Decline
+
+                        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+                        <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
+
+                        <input type="submit" id="submitButton" value="Submit"/>
+
+                    </form>
+                </div>
+
             </div>
         </div>
     }
@@ -65,3 +88,18 @@
     }
 </script>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#Approved').find('input').prop('checked', false);
+        $('#submitButton').hide();
+        $('#Approved').change(function () {
+            if (this.checked) {
+                $('#submitButton').show();
+            }
+            else {
+                $('#submitButton').hide();
+            }
+        });
+    });
+</script>

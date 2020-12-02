@@ -8,6 +8,8 @@ using Achmea.Core.Logic;
 using Achmea.Core.SQL;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
+using Google.Apis.Drive.v3;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,17 +21,32 @@ namespace AchmeaProject.Controllers
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;
         private readonly ProjectLogic _ProjectLogic;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly DriveService service;
 
-        public SecurityController(IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement)
+        public SecurityController(IWebHostEnvironment webHost, IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement)
         {
             _UserLogic = new UserLogic(iUser);
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
+
+            _webHostEnvironment = webHost;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string serviceAccountEmail = config.GetSection("ServiceAccountGoogleDrive:ServiceAccountEmail").Value;
+            service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath, serviceAccountEmail);
         }
 
         public IActionResult Index()
         {
-            return View("Views/Accounts/Security/Index.cshtml");
+            if (HttpContext.Session.GetString("RoleID") == "Security")
+            {
+                return View("Views/Accounts/Security/Index.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
         }
 
         public IActionResult ProjectList()
@@ -53,7 +70,7 @@ namespace AchmeaProject.Controllers
                 }
                 return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "User");
         }
 
         public IActionResult Details(int projectId)
@@ -71,12 +88,38 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    User = _UserLogic.GetUserByID(project.UserId)
+                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
                 };
+
+                foreach (var item in vm.RequirementProject)
+                {
+                    if (item.FileOfProof != null)
+                    {
+                        vm.Files.Add(GoogleDriveConnection.GetFileById(service, item.FileOfProof.FileLocation));
+                    }
+                }
 
                 return View("Views/Accounts/Security/Details.cshtml", vm);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "User");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateRequirementStatus(bool Approved, int ProjectId, int ReqId)
+        {
+            SecurityRequirementProject req = _ProjectLogic.GetRequirementsForProject(ProjectId).Where(x => x.SecurityRequirementProjectId == ReqId).SingleOrDefault();
+            if (Approved)
+            {
+                _Status status = _Status.Approved;
+                _RequirementLogic.UpdateRequirentStatus(req, status);
+            }
+            else
+            {
+                _Status status = _Status.Declined;
+                _RequirementLogic.UpdateRequirentStatus(req, status);
+            }
+
+            return RedirectToAction("Details", new { projectId = ProjectId });
         }
     }
 }
