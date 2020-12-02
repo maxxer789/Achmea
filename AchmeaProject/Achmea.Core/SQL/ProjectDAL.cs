@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Achmea.Core.ContextModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Achmea.Core
 {
@@ -126,7 +127,7 @@ namespace Achmea.Core
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
         {
             List<SecurityRequirementProject> requirements = new List<SecurityRequirementProject>();
-            foreach (SecurityRequirementProject reqproject in SecurityRequirementProject)
+            foreach (SecurityRequirementProject reqproject in SecurityRequirementProject.Include(p => p.FileOfProof))
             {
                 if (reqproject.ProjectId == projectId)
                 {
