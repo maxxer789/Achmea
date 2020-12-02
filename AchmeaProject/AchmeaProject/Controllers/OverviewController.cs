@@ -98,7 +98,7 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    User = _UserLogic.GetUserByID(project.UserId)
+                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
                 };
 
                 return View(model);
