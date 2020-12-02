@@ -1,4 +1,5 @@
 ﻿using Achmea.Core.Interface;
+using Achmea.Core.Logic;
 using AchmeaProject.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,11 @@ namespace AchmeaTestss.MockServices
         {
             Requirements.Add(req);
             return req;
+        }
+
+        public void UpdateRequirentStatus(SecurityRequirementProject givenRequirement, _Status newStatus)
+        {
+
         }
 
         private void Populate()

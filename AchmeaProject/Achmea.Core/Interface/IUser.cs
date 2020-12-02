@@ -10,10 +10,11 @@ namespace Achmea.Core.Interface
     public interface IUser
     {
         User GetUserByID(int id);
-        int InsertUser(User givenUser);
+        User InsertUser(User givenUser);
         void DeleteUser(int id);
         void UpdateUser(User givenUser);
         IEnumerable<User> GetAllUsers();
         User GetUserByEmail(string email);
+        List<User> GetMembersByProjectId(int projectId);
     }
 }

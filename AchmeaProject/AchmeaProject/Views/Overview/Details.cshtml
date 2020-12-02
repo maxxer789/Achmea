@@ -12,9 +12,12 @@
     <div class="header-desc">
         @Model.Description
         <br /><br />
-        Client:
-        <br /><br />
-        Developer: @Model.User.Firstname @Model.User.Lastname
+        Employees:
+        @foreach (User User in Model.Users)
+        {
+            <br /><br />
+            @User.Firstname @User.Lastname
+       }
     </div>
 </div>
 <div class="con-content">

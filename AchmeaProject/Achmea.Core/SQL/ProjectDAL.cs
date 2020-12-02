@@ -52,7 +52,7 @@ namespace Achmea.Core
             foreach(int memberId in MemberIds)
             {
                 ProjectMember projectMember = new ProjectMember();
-                projectMember.userId = memberId;
+                projectMember.UserId = memberId;
                 projectMember.ProjectId = project.ProjectId;
                 ProjectMembers.Add(projectMember);
             }
