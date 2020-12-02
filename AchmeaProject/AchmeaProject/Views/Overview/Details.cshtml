@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Details";
 }
+
+@{
+    var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>;
+}
+
 <link rel="stylesheet" href="~/css/Details.css" />
 <div class="con-header">
     <div class="header-title">
@@ -13,37 +18,82 @@
     <div class="header-desc">
         @Model.Description
         <br /><br />
-        Client: 
+        Client:
         <br /><br />
         Developer: @Model.User.Firstname @Model.User.Lastname
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <ul id="messageOutput"></ul>
+        </div>
     </div>
 </div>
 <div class="con-content">
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
-    <div class="con-requirements">
-        <div class="requirement-info">
-            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
+        <div class="con-requirements">
+            <div class="requirement-info">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
+            </div>
+            <div class="requirement-check">
+                @{
+                    string status = req.Status.ToString();
+                    status = status.Replace("_", " ");
+                }
+                @status
+            </div>
+            <div class="collapsible">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+                <br /><br />
+                <form onsubmit="return false;">
+                    <label>Bewijsmateriaal uploaden: </label><br />
+                    <input type="file" name="evidence" /><br /><br />
+                    <input type="submit" value="Uploaden" />
+                </form>
+            </div>
         </div>
-        <div class="requirement-check">
-            @{ 
-                string status = req.Status.ToString();
-                status = status.Replace("_", " ");
-            }
-            @status
+
+        <form>
+            <div class="container">
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-2">Message</div>
+                    <div class="col-4"><input type="text" id="@req.SecurityRequirementProjectId" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                    </div>
+                </div>
+                <div class="row">&nbsp;</div>
+
+
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-12">
+                <hr />
+            </div>
         </div>
-        <div class="collapsible">
-            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
-            <br /><br />
-            <form onsubmit="return false;">
-                <label>Bewijsmateriaal uploaden: </label><br />
-                <input type="file" name="evidence" /><br /><br />
-                <input type="submit" value="Uploaden" />
-            </form>
+        <div class="row">
+            <div class="col-6">
+                @foreach (var comment in comments)
+                {
+                    if (comment.ProjectReqId == req.SecurityRequirementProjectId)
+                    {
+                        <ul id="existingcomments">@comment.UserName says @comment.Message</ul>
+                    }
+                }
+                <ul id="@req.SecurityRequirementProjectId+messageOutput" >hey</ul>
+            </div>
         </div>
-    </div>
-    }
+
+                    }
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
 
 <script>
     var coll = document.getElementsByClassName("requirement-info");
@@ -59,5 +109,45 @@
                 content.style.display = "block";
             }
         });
-    } 
+    }
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
+
+    
+    //Disable send button until connection is established
+    document.getElementById("sendButton").disabled = true;
+
+    connection.on("ReceiveMessage", function (user, message, id,) {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = user + " says " + msg;
+        var li = document.createElement("li");
+        li.textContent = encodedMsg;
+        document.getElementById(id + '+messageOutput').appendChild(li);
+
+
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    function ButtonClick(id, cancerID) {
+
+        event.preventDefault();
+        var requestData = {
+            message: document.getElementById(id).value,
+            id: id,
+            cancerID: cancerID
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Comment/SendMessage",
+            dataType: "json",
+            traditional: true,
+            data: requestData,
+        });
+    };
 </script>

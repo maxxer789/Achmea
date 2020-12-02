@@ -148,6 +148,11 @@ namespace Achmea.Core
             SaveChanges();
         }
 
+        public void GetReqIDs()
+        {
+
+        }
+
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)
         //{
         //    //IQueryable<ProjectModel> query = (IQueryable<ProjectModel>)GetProjects();

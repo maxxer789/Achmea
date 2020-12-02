@@ -56,7 +56,37 @@ namespace AchmeaProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string message)
+        public async Task<IActionResult> SendMessage(string message, int id, int cancerID)
+        {
+            string user = HttpContext.Session.GetString("Firstname");
+
+
+
+            var userID = HttpContext.Session.GetInt32("UserID");
+
+
+
+            commentLogic.CreateMessage(userID.Value, message, id);
+
+
+
+            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message, id, cancerID);
+
+
+
+            return Ok();
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> JoinGroup(string group, string message)
+        //{
+        //    _commentHub.Groups.AddToGroupAsync(group);
+
+        //    return Ok();
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessageToGroup(string group, string message)
         {
             string user = HttpContext.Session.GetString("Firstname");
 
@@ -70,7 +100,7 @@ namespace AchmeaProject.Controllers
 
 
 
-            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message);
+            await _commentHub.Clients.Group(group).SendAsync("ReceiveMessage", user, message);
 
 
 

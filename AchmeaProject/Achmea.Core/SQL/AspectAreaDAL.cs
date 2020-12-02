@@ -28,16 +28,25 @@ namespace Achmea.Core.SQL
 
         public IEnumerable<EsaAspect> SaveAspectToProject(List<EsaAspect> aspects, Project project)
         {
+
+            
             foreach (EsaAspect aspect in aspects)
             {
                 ProjectEsaAspect pa = new ProjectEsaAspect();
                 pa.AspectId = aspect.AspectId;
                 pa.ProjectId = project.ProjectId;
+                
 
                 ProjectEsaAspect.Add(pa);
                 SaveChanges();
+                AddCommentSectionForAspect(pa);
             }
             return aspects;
+        }
+
+        public void AddCommentSectionForAspect(ProjectEsaAspect pa)
+        {
+            
         }
     }
 }
