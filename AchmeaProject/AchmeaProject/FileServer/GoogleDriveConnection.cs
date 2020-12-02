@@ -137,6 +137,20 @@ namespace Achmea.Core.Logic
             }
         }
 
+        public static bool DeleteFileById(DriveService service, string id)
+        {
+            try
+            {
+                var request = service.Files.Delete(id);
+                var File = request.Execute();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public static string UploadFile(DriveService service, IFormFile uploadFile)
         {
             //Get Id of parent folder Achmea for visibility purposes
@@ -152,11 +166,11 @@ namespace Achmea.Core.Logic
                 Parents = new List<string> { folderId }
             };
 
-            var allowedExtensions = new[] { ".doc", ".docx", ".png" };
+            var allowedExtensions = new[] { ".doc", ".docx", ".png", ".pdf" };
             var extension = Path.GetExtension(Body.Name);
             if (!allowedExtensions.Contains(extension))
             {
-                throw new System.InvalidOperationException("File can only be doc, docx or png");
+                throw new System.InvalidOperationException("File can only be doc, docx, pdf or png");
             }
 
             MemoryStream stream = new MemoryStream();
@@ -183,6 +197,13 @@ namespace Achmea.Core.Logic
             if (regKey != null && regKey.GetValue("Content Type") != null)
                 mimeType = regKey.GetValue("Content Type").ToString();
             return mimeType;
+        }
+
+        public static bool ValidateFileType(IFormFile file)
+        {
+            var allowedExtensions = new[] { ".doc", ".docx", ".png", ".pdf" };
+            var extension = Path.GetExtension(Path.GetFileName(file.FileName));
+            return allowedExtensions.Contains(extension);
         }
     }
 }
