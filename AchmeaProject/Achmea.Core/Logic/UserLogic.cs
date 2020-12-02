@@ -27,9 +27,13 @@ namespace Achmea.Core.Logic
             return _IUser.GetUserByID(id);
         }
 
-        public int InsertUser(User user)
+        public User InsertUser(User user)
         {
-            return _IUser.InsertUser(user);
+            if(Login(user.Email) == null)
+            {
+                return _IUser.InsertUser(user);
+            }
+            throw new Exception();
         }
 
         public User Login(string Email)

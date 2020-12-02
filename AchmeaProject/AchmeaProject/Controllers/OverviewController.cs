@@ -82,7 +82,7 @@ namespace AchmeaProject.Controllers
                     User = _UserLogic.GetUserByID(project.UserId)
                 };
 
-                foreach (var item in model.RequirementProject)
+                foreach (SecurityRequirementProject item in model.RequirementProject)
                 {
                     if (item.FileOfProof != null)
                     {

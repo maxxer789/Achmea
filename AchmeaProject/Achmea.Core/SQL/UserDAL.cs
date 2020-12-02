@@ -43,7 +43,7 @@ namespace Achmea.Core.SQL
         }
 
 
-        public int InsertUser(User givenUser)
+        public User InsertUser(User givenUser)
         {
             User user = new User();
             user.Email = givenUser.Email;
@@ -57,7 +57,7 @@ namespace Achmea.Core.SQL
             User.Add(user);
             SaveChanges();
 
-            return user.UserId;
+            return user;
         }
 
 

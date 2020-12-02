@@ -39,7 +39,14 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            return View("Views/Accounts/Security/Index.cshtml");
+            if (HttpContext.Session.GetString("RoleID") == "Security")
+            {
+                return View("Views/Accounts/Security/Index.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
         }
 
         public IActionResult ProjectList()
@@ -63,7 +70,7 @@ namespace AchmeaProject.Controllers
                 }
                 return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "User");
         }
 
         public IActionResult Details(int projectId)
@@ -94,7 +101,7 @@ namespace AchmeaProject.Controllers
 
                 return View("Views/Accounts/Security/Details.cshtml", vm);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "User");
         }
 
         [HttpPost]
