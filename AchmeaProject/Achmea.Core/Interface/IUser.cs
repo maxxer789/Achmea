@@ -15,5 +15,6 @@ namespace Achmea.Core.Interface
         void UpdateUser(User givenUser);
         IEnumerable<User> GetAllUsers();
         User GetUserByEmail(string email);
+        List<User> GetMembersByProjectId(int projectId);
     }
 }

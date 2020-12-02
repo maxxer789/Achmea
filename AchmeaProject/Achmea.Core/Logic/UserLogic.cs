@@ -49,5 +49,10 @@ namespace Achmea.Core.Logic
         {
             return _IUser.GetAllUsers();
         }
+
+        public List<User> GetMembersByProjectId(int projectId)
+        {
+            return _IUser.GetMembersByProjectId(projectId);
+        }
     }
 }
