@@ -1,4 +1,5 @@
 ﻿@using Achmea.Core;
+@using AchmeaProject.Helpers;
 @model ProjectDetailViewModel
 @{ ViewData["Title"] = "Details"; }
 <link rel="stylesheet" href="~/css/Details.css" />
@@ -7,48 +8,46 @@
     <div class="header-title">
         <h4>@Model.Title</h4>
         <br /><br />
-        Created at @Model.CreationDate
+        Aangemaakt op @Model.CreationDate
     </div>
     <div class="header-desc">
         @Model.Description
         <br /><br />
-        Employees:
+        Medewerkers:
         @foreach (User User in Model.Users)
         {
             <br /><br />
             @User.Firstname @User.Lastname
-       }
+        }
     </div>
 </div>
 <div class="con-content">
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
-<div class="con-requirements">
-    <div class="requirement-info">
-        @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
-    </div>
-    <div class="requirement-check">
-        @{ string status = req.Status.ToString();
-            status = status.Replace("_", " "); }
-        @status
-    </div>
-    <div class="collapsible">
-        @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
-        <br /><br />
-        @if (req.FileOfProof != null)
-        {
-            <label>Huidige bewijsstuk:  </label>
-            <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
-        }
-        <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
-            <label>Bewijsmateriaal uploaden: </label><br />
-            <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
-            <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
-            @Html.HiddenFor(model => Model.ProjectId)
-            <input type="submit" value="Uploaden" />
-        </form>
-    </div>
-</div>}
+        <div class="con-requirements">
+            <div class="requirement-info">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
+            </div>
+            <div class="requirement-check">
+                @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
+            </div>
+            <div class="collapsible">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+                <br /><br />
+                @if (req.FileOfProof != null)
+                {
+                    <label>Huidige bewijsstuk:  </label>
+                    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
+                }
+                <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
+                    <label>Bewijsmateriaal uploaden: </label><br />
+                    <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
+                    <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
+                    @Html.HiddenFor(model => Model.ProjectId)
+                    <input type="submit" value="Uploaden" />
+                </form>
+            </div>
+        </div>}
 </div>
 
 <script>

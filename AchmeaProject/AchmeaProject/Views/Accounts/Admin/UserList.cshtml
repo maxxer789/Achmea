@@ -16,19 +16,19 @@
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Password)
+                    Wachtwoord
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Firstname)
+                    Voornaam
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Lastname)
+                    Achternaam
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                    Telefoonnummer
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RoleID)
+                    Type medewerker
                 </th>
                 <th></th>
             </tr>
@@ -59,9 +59,9 @@
                     @Html.DisplayFor(modelItem => item.RoleID)
                 </td>
                 <td>
-                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Edit_User">Edit</a> |
+                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Edit_User">Bewerken</a> |
                     <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Details_User">Details</a> |
-                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Delete_User">Delete</a>
+                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Delete_User">Verwijderen</a>
                 </td>
                 
             </tr>

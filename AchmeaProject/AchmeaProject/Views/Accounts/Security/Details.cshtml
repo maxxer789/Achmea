@@ -11,17 +11,17 @@
 <div class="con-header">
     <div class="header-title">
         <h2>@Model.Title</h2>
-        <h4>Creation date:</h4>
+        <h4>Aanmaak datum:</h4>
         <p>@Model.CreationDate</p>
     </div>
     <div class="header-desc">
         @*<h3>@Model.Employee</h3>*@
-        <h4>Employees:</h4>
+        <h4>Medewerkers:</h4>
         @foreach (User User in Model.Users)
         {
             <p>@User.Firstname</p>
         }
-        <h4>Description:</h4>
+        <h4>Beschrijving:</h4>
         <p>@Model.Description</p>
     </div>
 </div>
@@ -48,19 +48,19 @@
                 }
                 else
                 {
-                    <div class="download">No file uploaded by Developer</div>
+                    <div class="download">Geen bestand beschikbaar</div>
                 }
 
                 <div>
                     <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
                         
-                        <input type="radio" name="Approved" value="true" /> Approve
-                        <input type="radio" name="Approved" value="false" /> Decline
+                        <input type="radio" name="Approved" value="true" /> Accepteer
+                        <input type="radio" name="Approved" value="false" /> Weiger
 
                         <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
                         <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
 
-                        <input type="submit" id="submitButton" value="Submit"/>
+                        <input type="submit" id="submitButton" value="Bevestig"/>
 
                     </form>
                 </div>
