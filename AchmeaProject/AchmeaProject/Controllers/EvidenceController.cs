@@ -46,10 +46,14 @@ namespace AchmeaProject.Controllers
                 if (GoogleDriveConnection.ValidateFileType(vm.File))
                 {
                     string UploadedFileId;
-                    string databaseFileId;
+                    string databaseFileId = null;
+
                     try
                     {
-                        databaseFileId = _evidenceLogic.GetBySecurityRequirementProjectID(vm.SecurityRequirementProjectID).FileLocation;
+                        if (_evidenceLogic.GetBySecurityRequirementProjectID(vm.SecurityRequirementProjectID) != null)
+                        {
+                            databaseFileId = _evidenceLogic.GetBySecurityRequirementProjectID(vm.SecurityRequirementProjectID).FileLocation;
+                        }
                         UploadedFileId = GoogleDriveConnection.UploadFile(service, vm.File);
                     }
                     catch (Exception)

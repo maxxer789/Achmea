@@ -20,10 +20,10 @@ namespace AchmeaTestss.MockServices
             return Users.Where(user => user.UserId == id).FirstOrDefault();
         }
 
-        public int InsertUser(User user)
+        public User InsertUser(User user)
         {
             Users.Add(user);
-            return user.UserId;
+            return user;
         }
 
         public void DeleteUser(int id)
@@ -40,6 +40,11 @@ namespace AchmeaTestss.MockServices
         public User GetUserByEmail(string email)
         {
             return Users.Where(user => user.Email == email).SingleOrDefault();
+        }
+
+        public List<User> GetMembersByProjectId(int projectId)
+        {
+            return Users;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            if(HttpContext.Session.GetString("RoleID") == "Admin")
+            if (HttpContext.Session.GetString("RoleID") == "Admin")
             {
                 return View("Views/Accounts/Admin/Index.cshtml");
             }
@@ -50,19 +50,14 @@ namespace AchmeaProject.Controllers
             {
                 try
                 {
-                    User user = _UserLogic.Login(VM.Email);
-                    ModelState.AddModelError(string.Empty, "Email already exists!");
+                    User user = ViewModelConverter.VmtoUser(VM);
+                    user = _UserLogic.InsertUser(user);
+
+                    return RedirectToAction("UserList", "Admin");
                 }
                 catch
                 {
-                    User user = ViewModelConverter.VmtoUser(VM);
-                    _UserLogic.InsertUser(user);
-
-                    HttpContext.Session.SetInt32("UserID", _UserLogic.InsertUser(user));
-                    HttpContext.Session.SetString("Firstname", VM.Firstname);
-                    HttpContext.Session.SetString("RoleID", user.RoleId);
-
-                    return RedirectToAction("UserList", "Admin", VM);
+                    ModelState.AddModelError(string.Empty, "Email already exists!");
                 }
             }
             return View("Views/Accounts/Admin/Register.cshtml");

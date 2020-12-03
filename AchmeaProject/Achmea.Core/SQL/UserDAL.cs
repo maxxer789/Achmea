@@ -1,7 +1,9 @@
 ﻿
+using Achmea.Core.ContextModels;
 using Achmea.Core.Interface;
 using Achmea.Core.Model;
 using AchmeaProject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -43,7 +45,7 @@ namespace Achmea.Core.SQL
         }
 
 
-        public int InsertUser(User givenUser)
+        public User InsertUser(User givenUser)
         {
             User user = new User();
             user.Email = givenUser.Email;
@@ -57,7 +59,7 @@ namespace Achmea.Core.SQL
             User.Add(user);
             SaveChanges();
 
-            return user.UserId;
+            return user;
         }
 
 
@@ -75,6 +77,16 @@ namespace Achmea.Core.SQL
             User.Attach(user);
             User.Update(user);
             SaveChanges();
+        }
+
+        public List<User> GetMembersByProjectId(int projectId)
+        {
+            List<User> users = new List<User>();
+            foreach(ProjectMember pm in ProjectMembers.Include(pm => pm.User).Where(p => p.ProjectId == projectId))
+            {
+                users.Add(pm.User);
+            }
+            return users;
         }
     }
 }
