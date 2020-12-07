@@ -31,64 +31,74 @@
 <div class="con-content">
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
-        <div class="con-requirements">
-            <div class="requirement-info">
-                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
-            </div>
-            <div class="requirement-check">
-                @{
-                    string status = req.Status.ToString();
-                    status = status.Replace("_", " ");
-                }
-                @status
-            </div>
-            <div class="collapsible">
-                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
-                <br /><br />
-                <form onsubmit="return false;">
-                    <label>Bewijsmateriaal uploaden: </label><br />
-                    <input type="file" name="evidence" /><br /><br />
-                    <input type="submit" value="Uploaden" />
-                </form>
-            </div>
+    <div class="con-requirements">
+        <div class="requirement-info">
+            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
         </div>
-
-        <form>
-            <div class="container">
-                <div class="row">&nbsp;</div>
+        <div class="requirement-check">
+            @{
+                string status = req.Status.ToString();
+                status = status.Replace("_", " ");
+            }
+            @status
+        </div>
+        <div class="collapsible">
+            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+            <br /><br />
+            <div class="message-info">
+                Opmerkingen
+            </div>
+            <br />
+            <div class="collapsible message-board">
                 <div class="row">
-                    <div class="col-2">Message</div>
-                    <div class="col-4"><input type="text" id="@req.SecurityRequirementProjectId" /></div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                    <div class="col-12">
+                        <hr />
                     </div>
                 </div>
-                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="message-container" id="message-container">
+                        @foreach (var comment in comments)
+                        {
+                            if (comment.ProjectReqId == req.SecurityRequirementProjectId)
+                            {
+                                <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>
+                            }
+                        }
+                        <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
+                <form>
+                    <div class="container">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <div>Message:</div>
+                            <div class="message-box"><input type="text" class="message-input" id="@req.SecurityRequirementProjectId" /></div>
+                            <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                        </div>
+                    </div>
+                </form>
 
-
+                <div class="row">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
             </div>
-        </form>
-        <div class="row">
-            <div class="col-12">
-                <hr />
-            </div>
+            <br /><br />
+            <form onsubmit="return false;">
+                <label>Bewijsmateriaal uploaden: </label><br />
+                <input type="file" name="evidence" /><br /><br />
+                <input type="submit" value="Uploaden" />
+            </form>
+            <br />
         </div>
-        <div class="row">
-            <div class="col-6">
-                @foreach (var comment in comments)
-                {
-                    if (comment.ProjectReqId == req.SecurityRequirementProjectId)
-                    {
-                        <ul id="existingcomments">@comment.UserName says @comment.Message</ul>
-                    }
-                }
-                <ul id="@req.SecurityRequirementProjectId+messageOutput" ></ul>
-            </div>
-        </div>
-
-                    }
+    </div>
+     }
 </div>
 
 
@@ -111,6 +121,24 @@
         });
     }
 
+    var coll = document.getElementsByClassName("message-info");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+
+                var element = document.getElementById("message-container");
+                element.scrollTop = element.scrollHeight;
+            }
+        });
+    }
+
     var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
 
     
@@ -119,12 +147,14 @@
 
     connection.on("ReceiveMessage", function (user, message, id,) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + " says " + msg;
-        var li = document.createElement("li");
-        li.textContent = encodedMsg;
-        document.getElementById(id + '+messageOutput').appendChild(li);
+        var encodedMsg = user + ": " + msg;
+        var ul = document.createElement("ul");
+        ul.textContent = encodedMsg;
+        document.getElementById(id + '+messageOutput').appendChild(ul);
 
 
+        var element = document.getElementById("message-container");
+        element.scrollTop = element.scrollHeight;
     });
 
     connection.start().then(function () {

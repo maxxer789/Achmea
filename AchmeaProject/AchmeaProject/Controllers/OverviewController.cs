@@ -82,7 +82,8 @@ namespace AchmeaProject.Controllers
                     {
                         Message = comment.Content,
                         UserName = userLogic.GetUserByID(comment.UserId).Firstname,
-                        ProjectReqId = comment.SecurityRequirementProjectId
+                        ProjectReqId = comment.SecurityRequirementProjectId,
+                        PostDateTime = comment.PostDateTime
                     };
                     commentViewModels.Add(commentViewModel);
                 }
