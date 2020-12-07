@@ -18,19 +18,15 @@ namespace AchmeaProject.Controllers
     public class HomeController : Controller
     {
         private readonly UserLogic userLogic;
-        UserDAL userDAL;
+        private readonly ProjectLogic projectLogic;
         private readonly ILogger<HomeController> _logger;
-        CommentLogic commentLogic;
-        CommentDAL commentDAL;
 
 
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUser iUser, IProject iPorject)
         {
-            commentDAL = new CommentDAL();
-            commentLogic = new CommentLogic(commentDAL);
-            userDAL = new UserDAL();
-            userLogic = new UserLogic(userDAL);
+            projectLogic = new ProjectLogic(iPorject);
+            userLogic = new UserLogic(iUser);
             _logger = logger;
         }
 
