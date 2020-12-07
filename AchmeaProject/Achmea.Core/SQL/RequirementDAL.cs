@@ -126,9 +126,17 @@ namespace Achmea.Core.SQL
 
                 SecurityRequirementProject.Add(srp);
                 SaveChanges();
+                //AddCommentSection(srp);
             }
             return SecurityRequirementProject.ToList().Where(sr => sr.ProjectId == project.ProjectId);
         }
+
+        //public void AddCommentSection(SecurityRequirementProject srp)
+        //{
+        //        Comment comment = new Comment();
+        //        comment.SecurityRequirementProjectId = srp.SecurityRequirementProjectId;
+
+        //}
 
         public SecurityRequirement ExcludeRequirement(int requirementId, int projectId, string reason)
         {
@@ -175,6 +183,16 @@ namespace Achmea.Core.SQL
             SaveChanges();
 
             return req;
+        }
+
+        public void UpdateRequirentStatus(SecurityRequirementProject givenRequirement, _Status newStatus)
+        {
+             givenRequirement.Status = newStatus;
+
+            SecurityRequirementProject.Attach(givenRequirement);
+            SecurityRequirementProject.Update(givenRequirement);
+
+            SaveChanges();
         }
     }
 }

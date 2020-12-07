@@ -1,4 +1,5 @@
 ﻿
+using Achmea.Core.Logic;
 using Achmea.Core.Model;
 using System;
 using System.Collections.Generic;
@@ -226,6 +227,19 @@ namespace AchmeaProject.Models.ViewModelConverter
             }
 
             return UserVMs;
+        }
+
+        public static SecurityRequirementProject SecurityRequirementProjectViewModelToModel(SecurityRequirementProjectViewModel req)
+        {
+            return new SecurityRequirementProject
+            {
+                SecurityRequirementProjectId = req.SecurityRequirementProjectId,
+                ProjectId = req.ProjectId,
+                SecurityRequirementId = req.SecurityRequirementId,
+                Excluded = req.Excluded,
+                Reason = req.Reason,
+                Status = (_Status)Enum.Parse(typeof(_Status), req.Status)
+        };
         }
     }
 }

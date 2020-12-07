@@ -4,6 +4,7 @@ using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -65,22 +66,28 @@ namespace Achmea.Core.Logic
             throw new ArgumentException();
         }
 
+        public void UpdateRequirentStatus(SecurityRequirementProject requirement, _Status newStatus)
+        {
+            _IReq.UpdateRequirentStatus(requirement, newStatus);
+        }
     }
+
+    [Flags]
     public enum _Status
     {
-        [Description("Submit evidence")]
+        [Display(Name = "Bewijs toevoegen")]
         Submit_evidence,
 
-        [Description("Under Review")]
+        [Display(Name = "Onder inspectie")]
         Under_review,
 
-        [Description("Approved")]
+        [Display(Name = "Geaccepteerd")]
         Approved,
 
-        [Description("Declined")]
+        [Display(Name = "Geweigerd")]
         Declined,
 
-        [Description("Excluded")]
+        [Display(Name = "Uitgezonderd")]
         Excluded
     }
 

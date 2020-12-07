@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Achmea.Core.SQL;
 using Microsoft.AspNetCore.Http;
 using Achmea.Core.Logic;
+using Microsoft.AspNetCore.Hosting;
+using Google.Apis.Drive.v3;
 
 namespace AchmeaProject.Controllers
 {
@@ -19,12 +21,25 @@ namespace AchmeaProject.Controllers
         private readonly ProjectLogic _ProjectLogic;
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;
+        private readonly CommentLogic commentLogic;
+        private readonly UserLogic userLogic;
 
-        public OverviewController(IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly DriveService service;
+
+        public OverviewController(IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser, IComment iComment, IWebHostEnvironment webHost)
         {
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
             _UserLogic = new UserLogic(iUser);
+            commentLogic = new CommentLogic(iComment);
+            userLogic = new UserLogic(iUser);
+
+            _webHostEnvironment = webHost;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string serviceAccountEmail = config.GetSection("ServiceAccountGoogleDrive:ServiceAccountEmail").Value;
+            service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath, serviceAccountEmail);
         }
 
         public IActionResult Index()
@@ -60,6 +75,27 @@ namespace AchmeaProject.Controllers
             {
                 Project project = _ProjectLogic.GetProject(projectId);
 
+
+                var comments = commentLogic.GetAllComments();
+
+
+
+                List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+
+                foreach (var comment in comments)
+                {
+                    CommentViewModel commentViewModel = new CommentViewModel
+                    {
+                        Message = comment.Content,
+                        UserName = userLogic.GetUserByID(comment.UserId).Firstname,
+                        ProjectReqId = comment.SecurityRequirementProjectId,
+                        PostDateTime = comment.PostDateTime
+                    };
+                    commentViewModels.Add(commentViewModel);
+                }
+
+                ViewBag.Comments = commentViewModels;
+
                 ProjectDetailViewModel model = new ProjectDetailViewModel()
                 {
                     ProjectId = project.ProjectId,
@@ -69,8 +105,16 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    User = _UserLogic.GetUserByID(project.UserId)
+                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
                 };
+
+                foreach (var item in model.RequirementProject)
+                {
+                    if (item.FileOfProof != null)
+                    {
+                        model.Files.Add(GoogleDriveConnection.GetFileById(service, item.FileOfProof.FileLocation));
+                    }
+                }
 
                 return View(model);
             }

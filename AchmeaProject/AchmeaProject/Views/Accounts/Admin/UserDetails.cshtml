@@ -21,31 +21,31 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
+            Wachtwoord
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Password)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Firstname)
+            Voornaam
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Firstname)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lastname)
+            Achternaam
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Lastname)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            Telefoonnummer
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoleID)
+            Type medewerker
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RoleID)
@@ -54,7 +54,7 @@
 </div>
 <div>
     <div class="nav-item" id="Edit_User">
-        <a asp-area="" asp-controller="Admin" asp-route-id="@Model.UserID" asp-action="Edit_User">Edit</a>
+        <a asp-area="" asp-controller="Admin" asp-route-id="@Model.UserID" asp-action="Edit_User">Bewerk</a>
     </div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Terug naar lijst</a>
 </div>
