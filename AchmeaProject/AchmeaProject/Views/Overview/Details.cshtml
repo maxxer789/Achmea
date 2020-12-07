@@ -36,11 +36,7 @@
             @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
         </div>
         <div class="requirement-check">
-            @{
-                string status = req.Status.ToString();
-                status = status.Replace("_", " ");
-            }
-            @status
+            @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
         </div>
         <div class="collapsible">
             @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
@@ -164,13 +160,13 @@
         return console.error(err.toString());
     });
 
-    function ButtonClick(id, cancerID) {
+    function ButtonClick(id, messageID) {
 
         event.preventDefault();
         var requestData = {
             message: document.getElementById(id).value,
             id: id,
-            cancerID: cancerID
+            messageID: messageID
         };
 
         $.ajax({
