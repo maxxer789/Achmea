@@ -175,10 +175,22 @@ namespace Achmea.Core
         public List<Project> GetProjectsWithNeededActions(int userId)
         {
             List<Project> projects = this.GetProjectsFromUser(userId);
+            List<Project> ToDoList = new List<Project>();
 
-            return Project.Where(e => e.UserId == userId && e.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
-                .Include(p => p.SecurityRequirementProject)
-                .ToList();
+            foreach (Project project in projects)
+            {
+                Project prj = Project.Where(pr => pr.ProjectId == project.ProjectId && pr.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined)).SingleOrDefault();
+                if (prj != null)
+                {
+                    ToDoList.Add(prj);
+                }
+            }
+
+            return ToDoList;
+
+            //return Project.Where(e => e.UserId == userId && e.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
+            //    .Include(p => p.SecurityRequirementProject)
+            //    .ToList();
         }
 
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)
