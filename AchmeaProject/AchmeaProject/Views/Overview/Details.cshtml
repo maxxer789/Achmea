@@ -1,5 +1,4 @@
 ﻿@using Achmea.Core;
-@using AchmeaProject.Helpers;
 @model ProjectDetailViewModel
 @{
     ViewData["Title"] = "Details";
@@ -14,84 +13,92 @@
     <div class="header-title">
         <h4>@Model.Title</h4>
         <br /><br />
-        Aangemaakt op @Model.CreationDate
+        Created at @Model.CreationDate
     </div>
     <div class="header-desc">
         @Model.Description
         <br /><br />
-        Medewerkers:
-        @foreach (User User in Model.Users)
-        {
-            <br /><br />
-            @User.Firstname @User.Lastname
-        }
+        Client:
+        <br /><br />
+        @*Developer: @Model.User.Firstname @Model.User.Lastname*@
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <ul id="messageOutput"></ul>
+        </div>
     </div>
 </div>
 <div class="con-content">
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
-        <div class="con-requirements">
-            <div class="requirement-info">
-                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
-            </div>
-            <div class="requirement-check">
-                @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
-            </div>
-            <div class="collapsible">
-                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
-                <br /><br />
-                <form onsubmit="return false;">
-                    <label>Bewijsmateriaal uploaden: </label><br />
-                    <input type="file" name="evidence" /><br /><br />
-                    <input type="submit" value="Uploaden" />
-                </form>
-            </div>
+    <div class="con-requirements">
+        <div class="requirement-info">
+            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
         </div>
-        @if (req.FileOfProof != null)
-        {
-            <label>Huidige bewijsstuk:  </label>
-            <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
-        }
-        <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
-            <label>Bewijsmateriaal uploaden: </label><br />
-            <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
-            <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
-            @Html.HiddenFor(model => Model.ProjectId)
-            <input type="submit" value="Uploaden" />
-        </form>
-        <form>
-            <div class="container">
-                <div class="row">&nbsp;</div>
+        <div class="requirement-check">
+            @{
+                string status = req.Status.ToString();
+                status = status.Replace("_", " ");
+            }
+            @status
+        </div>
+        <div class="collapsible">
+            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+            <br /><br />
+            <div class="message-info">
+                Opmerkingen
+            </div>
+            <br />
+            <div class="collapsible message-board">
                 <div class="row">
-                    <div class="col-2">Message</div>
-                    <div class="col-4"><input type="text" id="@req.SecurityRequirementProjectId" /></div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                    <div class="col-12">
+                        <hr />
                     </div>
                 </div>
-                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="message-container" id="message-container">
+                        @foreach (var comment in comments)
+                        {
+                            if (comment.ProjectReqId == req.SecurityRequirementProjectId)
+                            {
+                                <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>
+                            }
+                        }
+                        <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
+                <form>
+                    <div class="container">
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <div>Message:</div>
+                            <div class="message-box"><input type="text" class="message-input" id="@req.SecurityRequirementProjectId" /></div>
+                            <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
             </div>
-        </form>
-        <div class="row">
-            <div class="col-12">
-                <hr />
-            </div>
+            <br /><br />
+            <form onsubmit="return false;">
+                <label>Bewijsmateriaal uploaden: </label><br />
+                <input type="file" name="evidence" /><br /><br />
+                <input type="submit" value="Uploaden" />
+            </form>
+            <br />
         </div>
-        <div class="row">
-            <div class="col-6">
-                @foreach (var comment in comments)
-                {
-                    if (comment.ProjectReqId == req.SecurityRequirementProjectId)
-                    {
-                        <ul id="existingcomments">@comment.UserName says @comment.Message</ul>
-                    }
-                }
-                <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
-            </div>
-        </div>
-    }
+    </div>
+     }
 </div>
 
 
@@ -114,20 +121,40 @@
         });
     }
 
+    var coll = document.getElementsByClassName("message-info");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+
+                var element = document.getElementById("message-container");
+                element.scrollTop = element.scrollHeight;
+            }
+        });
+    }
+
     var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
 
-
+    
     //Disable send button until connection is established
     document.getElementById("sendButton").disabled = true;
 
     connection.on("ReceiveMessage", function (user, message, id,) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + " says " + msg;
-        var li = document.createElement("li");
-        li.textContent = encodedMsg;
-        document.getElementById(id + '+messageOutput').appendChild(li);
+        var encodedMsg = user + ": " + msg;
+        var ul = document.createElement("ul");
+        ul.textContent = encodedMsg;
+        document.getElementById(id + '+messageOutput').appendChild(ul);
 
 
+        var element = document.getElementById("message-container");
+        element.scrollTop = element.scrollHeight;
     });
 
     connection.start().then(function () {
@@ -136,13 +163,13 @@
         return console.error(err.toString());
     });
 
-    function ButtonClick(id, messageID) {
+    function ButtonClick(id, cancerID) {
 
         event.preventDefault();
         var requestData = {
             message: document.getElementById(id).value,
             id: id,
-            messageID: messageID
+            cancerID: cancerID
         };
 
         $.ajax({
