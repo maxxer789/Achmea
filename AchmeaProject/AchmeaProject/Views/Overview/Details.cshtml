@@ -47,7 +47,18 @@
                 </form>
             </div>
         </div>
-
+        @if (req.FileOfProof != null)
+        {
+            <label>Huidige bewijsstuk:  </label>
+            <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
+        }
+        <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
+            <label>Bewijsmateriaal uploaden: </label><br />
+            <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
+            <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
+            @Html.HiddenFor(model => Model.ProjectId)
+            <input type="submit" value="Uploaden" />
+        </form>
         <form>
             <div class="container">
                 <div class="row">&nbsp;</div>
@@ -61,8 +72,6 @@
                     </div>
                 </div>
                 <div class="row">&nbsp;</div>
-
-
             </div>
         </form>
         <div class="row">
@@ -79,25 +88,10 @@
                         <ul id="existingcomments">@comment.UserName says @comment.Message</ul>
                     }
                 }
-                <ul id="@req.SecurityRequirementProjectId+messageOutput" ></ul>
+                <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
             </div>
         </div>
-
     }
-                @if (req.FileOfProof != null)
-                {
-                    <label>Huidige bewijsstuk:  </label>
-                    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
-                }
-                <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
-                    <label>Bewijsmateriaal uploaden: </label><br />
-                    <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
-                    <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
-                    @Html.HiddenFor(model => Model.ProjectId)
-                    <input type="submit" value="Uploaden" />
-                </form>
-            </div>
-        </div>}
 </div>
 
 
@@ -122,7 +116,7 @@
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
 
-    
+
     //Disable send button until connection is established
     document.getElementById("sendButton").disabled = true;
 
@@ -142,13 +136,13 @@
         return console.error(err.toString());
     });
 
-    function ButtonClick(id, cancerID) {
+    function ButtonClick(id, messageID) {
 
         event.preventDefault();
         var requestData = {
             message: document.getElementById(id).value,
             id: id,
-            cancerID: cancerID
+            messageID: messageID
         };
 
         $.ajax({

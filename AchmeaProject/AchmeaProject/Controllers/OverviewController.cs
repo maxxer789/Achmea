@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Achmea.Core.SQL;
 using Microsoft.AspNetCore.Http;
 using Achmea.Core.Logic;
+using Microsoft.AspNetCore.Hosting;
+using Google.Apis.Drive.v3;
 
 namespace AchmeaProject.Controllers
 {
@@ -19,21 +21,25 @@ namespace AchmeaProject.Controllers
         private readonly ProjectLogic _ProjectLogic;
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;
-        CommentLogic commentLogic;
-        CommentDAL commentDAL;
+        private readonly CommentLogic commentLogic;
         private readonly UserLogic userLogic;
-        UserDAL userDAL;
 
-        public OverviewController(IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly DriveService service;
+
+        public OverviewController(IConfiguration config, IProject iProject, IRequirement iRequirement, IUser iUser, IComment iComment, IWebHostEnvironment webHost)
         {
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
             _UserLogic = new UserLogic(iUser);
-            commentDAL = new CommentDAL();
-            commentLogic = new CommentLogic(commentDAL);
-            userDAL = new UserDAL();
-            userLogic = new UserLogic(userDAL);
+            commentLogic = new CommentLogic(iComment);
+            userLogic = new UserLogic(iUser);
 
+            _webHostEnvironment = webHost;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string serviceAccountEmail = config.GetSection("ServiceAccountGoogleDrive:ServiceAccountEmail").Value;
+            service = GoogleDriveConnection.GetDriveService(webRootPath, contentRootPath, serviceAccountEmail);
         }
 
         public IActionResult Index()
@@ -100,6 +106,14 @@ namespace AchmeaProject.Controllers
                     Requirements = _RequirementLogic.GetAllRequirements(),
                     Users = _UserLogic.GetMembersByProjectId(project.UserId)
                 };
+
+                foreach (var item in model.RequirementProject)
+                {
+                    if (item.FileOfProof != null)
+                    {
+                        model.Files.Add(GoogleDriveConnection.GetFileById(service, item.FileOfProof.FileLocation));
+                    }
+                }
 
                 return View(model);
             }
