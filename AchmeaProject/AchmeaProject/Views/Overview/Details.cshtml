@@ -152,6 +152,7 @@
         ul.textContent = encodedMsg;
         document.getElementById(id + '+messageOutput').appendChild(ul);
 
+        new Notification('message');
 
         var element = document.getElementById("message-container");
         element.scrollTop = element.scrollHeight;
