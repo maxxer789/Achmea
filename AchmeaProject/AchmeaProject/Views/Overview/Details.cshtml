@@ -87,11 +87,17 @@
                 </div>
             </div>
             <br /><br />
-            <form onsubmit="return false;">
-                <label>Bewijsmateriaal uploaden: </label><br />
-                <input type="file" name="evidence" /><br /><br />
-                <input type="submit" value="Uploaden" />
-            </form>
+                  <form onsubmit="return false;">
+                      @if (req.FileOfProof != null)
+                      {
+                          <label>Huidige bewijsstuk:  </label>
+                      <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
+                      }
+                      <br />
+                      <label>Bewijsmateriaal uploaden: </label><br />
+                      <input type="file" name="evidence" /><br /><br />
+                      <input type="submit" value="Uploaden" />
+                  </form>
             <br />
         </div>
     </div>
