@@ -37,7 +37,21 @@ namespace Achmea.Core
 
         public List<Project> GetProjectsFromUser(int userId)
         {
-            return Project.Where(p => p.UserId == userId).ToList();
+            List<Project> usersProjects = new List<Project>();
+
+            usersProjects.AddRange(Project.Where(p => p.UserId == userId).ToList());
+
+            List<ProjectMember> pms = ProjectMembers.Where(pms => pms.UserId == userId).ToList();
+
+            foreach(ProjectMember pm in pms)
+            {
+                if(usersProjects.Find(p => p.ProjectId == pm.ProjectId) == null)
+                {
+                    usersProjects.Add(Project.Find(pm.ProjectId));
+                }
+            }
+
+            return usersProjects;
         }
 
         public Project AddNewProject(Project newProject, int[] MemberIds)
