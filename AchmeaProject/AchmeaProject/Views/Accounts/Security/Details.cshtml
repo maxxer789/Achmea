@@ -54,13 +54,13 @@
                 <div>
                     <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
                         
-                        <input type="radio" name="Approved" value="true" /> Accepteer
+                        <input type="radio" name="Approved" value="true" onclick="myFunction()"/> Accepteer
                         <input type="radio" name="Approved" value="false" /> Weiger
 
                         <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
                         <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
 
-                        <input type="submit" id="submitButton" value="Bevestig"/>
+                        <input type="submit" id="submitButton" value="Bevestig" disabled/>
 
                     </form>
                 </div>
@@ -88,20 +88,18 @@
 </script>
 
 <script>
-    var i;
-    var button = document.getElementById("submitButton");
 
-    for (i = 0; i < button.length; i++) {  
-        document.getElementById("submitButton").disabled = true;
-        /*if (document.getElementById("rb").click)
-            $(function () {
-                var radios = $('[name="Approved"]:radio');
+    /*$('input[type=radio][name=Approved]').change(function () {
+        if (this.value == 'true') {
+            this.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.disabled = false;
+        }
+        else if (this.value == 'false') {
+            this.nextElementSibling.nextElementSibling.nextElementSibling.disabled = false;
+        }
+        });*/
 
-                radios.on("change", function () {
-                    if ($(this).prop("checked")) {
-                        document.getElementById("submitButton").disabled = false;
-                    }
-                });
-            });*/
-    }
+        function myFunction() {
+            this.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.disabled = false;
+        }
+    
 </script>
