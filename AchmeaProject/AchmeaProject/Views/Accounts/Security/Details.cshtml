@@ -33,30 +33,56 @@
 <div class="con-content">
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
-    <div class="con-requirements">
-        <div class="requirement-info">
-            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
-        </div>
+        <div class="con-requirements">
+            <div class="requirement-info">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
+            </div>
 
-        <div class="requirement-check">
-            @*@req.Status*@
-            @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
-        </div>
+            <div class="requirement-check">
+                @*@req.Status*@
+                @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
+            </div>
 
-        <div class="collapsible">
-            @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
-            <br /><br />
-            @if (Model.RequirementProject.Where(requirementP => requirementP.SecurityRequirementId == req.SecurityRequirementId).SingleOrDefault().FileOfProofId != null)
-            {
-                <div class="download"><a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink" class="btn btn-primary">Download File</a></div>
-            }
-            else
-            {
-                <div class="download">Geen bestand beschikbaar</div>
-            }
-
-            
-
+            <div class="collapsible">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+                <br /><br />
+                <div class="message-info">
+                    Opmerkingen
+                </div>
+                <br />
+                <div class="collapsible message-board">
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="message-container" id="message-container">
+                            @foreach (var comment in comments)
+                            {
+                                if (comment.ProjectReqId == req.SecurityRequirementProjectId)
+                                {
+                                    <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>
+                                }
+                            }
+                            <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <form>
+                        <div class="container">
+                            <div class="row">&nbsp;</div>
+                            <div class="row">
+                                <div>Message:</div>
+                                <div class="message-box"><input type="text" class="message-input" id="@req.SecurityRequirementProjectId" /></div>
+                                <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                            </div>
+                        </div>
+                    </form>
 
                     <div class="row">
                         <div class="col-12">
@@ -65,49 +91,41 @@
                     </div>
                 </div>
                 <br /><br />
-                <form onsubmit="return false;">
-                    <label>Bewijsmateriaal uploaden: </label><br />
-                    <input type="file" name="evidence" /><br /><br />
-                    <input type="submit" value="Uploaden" />
-                </form>
+                @if (Model.RequirementProject.Where(requirementP => requirementP.SecurityRequirementId == req.SecurityRequirementId).SingleOrDefault().FileOfProofId != null)
+                {
+                    <div class="download"><a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink" class="btn btn-primary">Download File</a></div>
+                }
+                else
+                {
+                    <div class="download">Geen bestand beschikbaar</div>
+                }
+                <div class="row">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
                 <br />
+
+                <div>
+                    <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
+
+                        <input type="radio" name="Approved" value="true" /> Accepteer
+                        <input type="radio" name="Approved" value="false" /> Weiger
+
+                        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+                        <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
+
+                        <input type="submit" id="submitButton" value="Bevestig" />
+
+                    </form>
+                </div>
             </div>
-
-        <div>
-            <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
-
-                <input type="radio" name="Approved" value="true" /> Accepteer
-                <input type="radio" name="Approved" value="false" /> Weiger
-
-                <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
-                <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
-
-                <input type="submit" id="submitButton" value="Bevestig" />
-
-            </form>
         </div>
+
 
 
     }
 </div>
-
-
-<script>
-    var coll = document.getElementsByClassName("requirement-info");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling.nextElementSibling;
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
-    }
-</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -164,11 +182,11 @@
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
 
-    
+
     //Disable send button until connection is established
     document.getElementById("sendButton").disabled = true;
 
-    connection.on("ReceiveMessage", function (user, message, id,) {
+    connection.on("ReceiveMessage", function (user, message, id, ) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = user + ": " + msg;
         var ul = document.createElement("ul");
