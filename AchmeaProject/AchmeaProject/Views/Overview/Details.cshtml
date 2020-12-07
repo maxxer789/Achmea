@@ -44,7 +44,51 @@
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
-                <br /><br />
+                <div class="message-info">
+                    Opmerkingen
+                </div>
+                <br />
+                <div class="collapsible message-board">
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="message-container" id="message-container">
+                            @foreach (var comment in comments)
+                            {
+                                if (comment.ProjectReqId == req.SecurityRequirementProjectId)
+                                {
+                                    <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>
+                                }
+                            }
+                            <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <form>
+                        <div class="container">
+                            <div class="row">&nbsp;</div>
+                            <div class="row">
+                                <div>Message:</div>
+                                <div class="message-box"><input type="text" class="message-input" id="@req.SecurityRequirementProjectId" /></div>
+                                <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+                <br />
                 @if (req.FileOfProof != null)
                 {
                     <label>Huidige bewijsstuk:  </label>
