@@ -75,19 +75,19 @@ namespace Achmea.Core.Logic
     [Flags]
     public enum _Status
     {
-        [Display(Name = "Submit evidence")]
+        [Display(Name = "Bewijs toevoegen")]
         Submit_evidence,
 
-        [Display(Name = "Under Review")]
+        [Display(Name = "Onder inspectie")]
         Under_review,
 
-        [Display(Name = "Approved")]
+        [Display(Name = "Geaccepteerd")]
         Approved,
 
-        [Display(Name = "Declined")]
+        [Display(Name = "Geweigerd")]
         Declined,
 
-        [Display(Name = "Excluded")]
+        [Display(Name = "Uitgezonderd")]
         Excluded
     }
 

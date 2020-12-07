@@ -56,7 +56,7 @@ namespace AchmeaProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string message, int id, int cancerID)
+        public async Task<IActionResult> SendMessage(string message, int id, int messageID)
         {
             string user = HttpContext.Session.GetString("Firstname");
 
@@ -70,7 +70,7 @@ namespace AchmeaProject.Controllers
 
 
 
-            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message, id, cancerID);
+            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message, id, messageID);
 
 
 

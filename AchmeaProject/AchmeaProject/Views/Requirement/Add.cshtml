@@ -24,18 +24,18 @@
                 </ul>
                 <div class="col-12">
                     <div class="col-12">
-                        Name: @Html.TextBoxFor(m => m.Name)<br />
-                        Family: @Html.DropDownListFor(m => m.Family, new SelectList(ViewBag.Families, "Name"))<br />
-                        Main Group: @Html.DropDownListFor(m => m.MainGroup, new SelectList(ViewBag.Groups, "Group"))
+                        Naam: @Html.TextBoxFor(m => m.Name)<br />
+                        Familie: @Html.DropDownListFor(m => m.Family, new SelectList(ViewBag.Families, "Name"))<br />
+                        Hoofd groep: @Html.DropDownListFor(m => m.MainGroup, new SelectList(ViewBag.Groups, "Group"))
                     </div>
                     <div class="col-4">
-                        Description: @Html.TextBoxFor(m => m.Description)
+                        Beschrijving: @Html.TextBoxFor(m => m.Description)
                     </div>
                     <div class="col-4">
                         Details: @Html.TextBoxFor(m => m.Details)
                     </div>
                     <div class="col-4">
-                        RequirementNumber: @Html.TextBoxFor(m => m.RequirementNumber)
+                        Requirementnummer: @Html.TextBoxFor(m => m.RequirementNumber)
                     </div>
                 </div>
             </div>
