@@ -36,7 +36,7 @@ main {
 .con-requirement {
 }
 
-.requirement-info {
+.requirement-info, .message-info {
     width: 80%;
     float: left;
     padding: 10px 10px;
@@ -46,6 +46,10 @@ main {
     user-select: none;
     float: left;
     border-bottom: 1px solid lightgray;
+}
+
+.message-info {
+    width: 100%;
 }
 
 
@@ -60,11 +64,11 @@ main {
     border-bottom: 1px solid lightgray;
 }
 
-.requirement-info:hover, .active {
+.requirement-info:hover, .message-info:hover, .active {
     background-color: lightgray;
 }
 
-.requirement-info:after {
+.requirement-info:after, .message-info:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
     color: black;
@@ -82,4 +86,33 @@ main {
     padding: 10px 10px;
     display: none;
     width: 80%;
+}
+
+.message-board {
+    border: 1px solid lightgray;
+    width: 100%;
+}
+
+.message-container {
+    max-height: 350px;
+    overflow: auto;
+    width: 99%;
+    display: flex;
+    flex: 1 0 auto;
+    flex-wrap: wrap;
+    max-width: 850px;
+}
+
+.message-box {
+    width:75%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.message-input {
+    width: 100%;
+}
+
+ul {
+    flex-basis: 99%;
 }
