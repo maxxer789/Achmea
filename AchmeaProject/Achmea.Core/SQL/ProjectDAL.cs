@@ -172,6 +172,15 @@ namespace Achmea.Core
 
         }
 
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            List<Project> projects = this.GetProjectsFromUser(userId);
+
+            return Project.Where(e => e.UserId == userId && e.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
+                .Include(p => p.SecurityRequirementProject)
+                .ToList();
+        }
+
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)
         //{
         //    //IQueryable<ProjectModel> query = (IQueryable<ProjectModel>)GetProjects();

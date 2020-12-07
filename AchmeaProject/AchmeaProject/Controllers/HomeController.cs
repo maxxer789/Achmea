@@ -34,11 +34,13 @@ namespace AchmeaProject.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("RoleID") != null)
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-
+                return RedirectToAction("Login", "User");
             }
-            return RedirectToAction("Login", "User");
+
+            return View();
+
         }
 
 
@@ -58,6 +60,14 @@ namespace AchmeaProject.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult ToDoList()
+        {
+            int Userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserID"));
+            List<Project> ToDoList = projectLogic.GetProjectsWithNeededActions(Userid);
+
+            return View(ToDoList);
         }
     }
 }

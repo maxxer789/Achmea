@@ -53,5 +53,10 @@ namespace Achmea.Core.Logic
         {
             return _IProject.GetProject(projectId);
         }
+
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            return _IProject.GetProjectsWithNeededActions(userId);
+        }
     }
 }
