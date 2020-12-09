@@ -22,7 +22,7 @@ namespace AchmeaProject.Models
         public string CreationDate { get; set; }
         [Required]
         public string Description { get; set; }
-        public string[] Members { get; set; }
+        public List<UserViewModel> Members { get; set; }
 
     }
 }
