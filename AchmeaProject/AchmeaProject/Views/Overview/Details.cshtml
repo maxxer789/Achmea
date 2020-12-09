@@ -44,18 +44,6 @@
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
-                @if (req.FileOfProof != null)
-                {
-                    <label>Huidige bewijsstuk:  </label>
-                    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>}
-                <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
-                    <label>Bewijsmateriaal uploaden: </label><br />
-                    <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
-                    <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
-                    @Html.HiddenFor(model => Model.ProjectId)
-                    <input type="submit" value="Uploaden" />
-                </form>
-
                 <div class="message-info">
                     Opmerkingen
                 </div>
@@ -100,7 +88,18 @@
                         </div>
                     </div>
                 </div>
-                <br />
+                <br /><br />
+                @if (req.FileOfProof != null)
+                {
+                    <label>Huidige bewijsstuk:  </label>
+                    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>}
+                <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
+                    <label>Bewijsmateriaal uploaden: </label><br />
+                    <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
+                    <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
+                    @Html.HiddenFor(model => Model.ProjectId)
+                    <input type="submit" value="Uploaden" />
+                </form>
             </div>
         </div>
     }

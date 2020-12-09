@@ -23,12 +23,16 @@ namespace AchmeaProject.Controllers
         private readonly ProjectLogic _ProjectLogic;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly DriveService service;
+        private readonly UserLogic userLogic;
+        private readonly CommentLogic commentLogic;
 
-        public SecurityController(IWebHostEnvironment webHost, IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement)
+        public SecurityController(IWebHostEnvironment webHost, IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement, IComment iComment)
         {
             _UserLogic = new UserLogic(iUser);
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
+            commentLogic = new CommentLogic(iComment);
+            userLogic = new UserLogic(iUser);
 
             _webHostEnvironment = webHost;
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -90,6 +94,23 @@ namespace AchmeaProject.Controllers
                     Requirements = _RequirementLogic.GetAllRequirements(),
                     Users = _UserLogic.GetMembersByProjectId(project.UserId)
                 };
+
+                var comments = commentLogic.GetAllComments();
+
+                List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+
+                foreach (var comment in comments)
+                {
+                    CommentViewModel commentViewModel = new CommentViewModel
+                    {
+                        Message = comment.Content,
+                        UserName = userLogic.GetUserByID(comment.UserId).Firstname,
+                        ProjectReqId = comment.SecurityRequirementProjectId,
+                    };
+                    commentViewModels.Add(commentViewModel);
+                }
+
+                ViewBag.Comments = commentViewModels;
 
                 foreach (var item in vm.RequirementProject)
                 {
