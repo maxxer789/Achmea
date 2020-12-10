@@ -109,13 +109,13 @@
                 <div>
                     <form enctype="multipart/form-data" asp-controller="Security" asp-action="UpdateRequirementStatus">
 
-                        <input type="radio" name="Approved" value="true" onclick="myFunction()" /> Accepteer
+                        <input type="radio" name="Approved" value="true" /> Accepteer
                         <input type="radio" name="Approved" value="false" /> Weiger
 
                         <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
                         <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
 
-                        <input type="submit" id="submitButton" value="Bevestig" disabled />
+                        <input type="submit" id="submitButton" value="Bevestig" disabled/>
 
                     </form>
                 </div>
@@ -128,7 +128,7 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+   /* $(document).ready(function () {
 
         $('#Approved').find('input').prop('checked', false);
         $('#submitButton').hide();
@@ -140,7 +140,7 @@
                 $('#submitButton').hide();
             }
         });
-    });
+    });*/
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -161,10 +161,4 @@
             }
         });
     }
-</script>
-
-<script>
-    function myFunction() {
-        this.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.disabled = false
-    };
 </script>
