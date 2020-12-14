@@ -35,6 +35,24 @@ namespace Achmea.Core
 
         }
 
+        public List<Project> GetProjectsFromUser(int userId)
+        {
+            List<Project> usersProjects = new List<Project>();
+
+            usersProjects.AddRange(Project.Where(p => p.UserId == userId).ToList());
+
+            List<ProjectMember> pms = ProjectMembers.Where(pms => pms.UserId == userId).ToList();
+
+            foreach(ProjectMember pm in pms)
+            {
+                if(usersProjects.Find(p => p.ProjectId == pm.ProjectId) == null)
+                {
+                    usersProjects.Add(Project.Find(pm.ProjectId));
+                }
+            }
+
+            return usersProjects;
+        }
 
         public Project AddNewProject(Project newProject, int[] MemberIds)
         {
@@ -152,6 +170,27 @@ namespace Achmea.Core
         public void GetReqIDs()
         {
 
+        }
+
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            List<Project> projects = this.GetProjectsFromUser(userId);
+            List<Project> ToDoList = new List<Project>();
+
+            foreach (Project project in projects)
+            {
+                Project prj = Project.Where(pr => pr.ProjectId == project.ProjectId && pr.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined)).SingleOrDefault();
+                if (prj != null)
+                {
+                    ToDoList.Add(prj);
+                }
+            }
+
+            return ToDoList;
+
+            //return Project.Where(e => e.UserId == userId && e.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
+            //    .Include(p => p.SecurityRequirementProject)
+            //    .ToList();
         }
 
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)

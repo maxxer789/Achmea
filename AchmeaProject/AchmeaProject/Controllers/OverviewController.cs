@@ -75,10 +75,7 @@ namespace AchmeaProject.Controllers
             {
                 Project project = _ProjectLogic.GetProject(projectId);
 
-
                 var comments = commentLogic.GetAllComments();
-
-
 
                 List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
 
@@ -89,7 +86,6 @@ namespace AchmeaProject.Controllers
                         Message = comment.Content,
                         UserName = userLogic.GetUserByID(comment.UserId).Firstname,
                         ProjectReqId = comment.SecurityRequirementProjectId,
-                        PostDateTime = comment.PostDateTime
                     };
                     commentViewModels.Add(commentViewModel);
                 }

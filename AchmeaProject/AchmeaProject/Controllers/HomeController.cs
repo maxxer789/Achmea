@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using AchmeaProject.Models;
 using Achmea.Core.Logic;
 using Achmea.Core.Interface;
-using Achmea.Core.SQL;
+using AchmeaProject.Models.ViewModelConverter;
 using Microsoft.AspNetCore.Http;
 
 
@@ -18,57 +18,35 @@ namespace AchmeaProject.Controllers
     public class HomeController : Controller
     {
         private readonly UserLogic userLogic;
-        UserDAL userDAL;
+        private readonly ProjectLogic projectLogic;
         private readonly ILogger<HomeController> _logger;
-        CommentLogic commentLogic;
-        CommentDAL commentDAL;
 
-
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUser iUser, IProject iPorject)
         {
-            commentDAL = new CommentDAL();
-            commentLogic = new CommentLogic(commentDAL);
-            userDAL = new UserDAL();
-            userLogic = new UserLogic(userDAL);
+            projectLogic = new ProjectLogic(iPorject);
+            userLogic = new UserLogic(iUser);
             _logger = logger;
         }
 
-
-
         public IActionResult Index()
         {
-            var comments = commentLogic.GetAllComments();
-
-
-
-            List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
-
-            foreach (var comment in comments)
+            if (HttpContext.Session.GetString("RoleID") == null)
             {
-                CommentViewModel commentViewModel = new CommentViewModel
-                {
-                    Message = comment.Content,
-                    UserName = userLogic.GetUserByID(comment.UserId).Firstname
-                };
-                commentViewModels.Add(commentViewModel);
+                return RedirectToAction("Login", "User");
             }
 
+            DashboardViewModel dbv = new DashboardViewModel();
 
-
-            ViewBag.Comments = commentViewModels;
-
-
-
-            if (HttpContext.Session.GetString("RoleID") != null)
+            dbv.Developer = ViewModelConverter.UserToVm(userLogic.GetUserByID((int)HttpContext.Session.GetInt32("UserID")));
+            dbv.Projects = ViewModelConverter.VmToProject(projectLogic.GetProjectsWithNeededActions(dbv.Developer.UserID));
+            foreach(ProjectViewModel pvm in dbv.Projects)
             {
-                ViewBag.Users = userLogic.GetAllUsers();
-                return View();
+                pvm.Members = ViewModelConverter.UserToVm( userLogic.GetMembersByProjectId(pvm.ProjectId));
             }
-            return RedirectToAction("Login", "User");
+            dbv.Projects.Reverse();
+
+            return View(dbv);
         }
-
-
 
         public IActionResult Privacy()
         {
@@ -79,12 +57,18 @@ namespace AchmeaProject.Controllers
             return RedirectToAction("Login", "User");
         }
 
-
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult ToDoList()
+        {
+            int Userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserID"));
+            List<Project> ToDoList = projectLogic.GetProjectsWithNeededActions(Userid);
+
+            return View(ToDoList);
         }
     }
 }

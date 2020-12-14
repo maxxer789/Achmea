@@ -1,1 +1,28 @@
-﻿@*test*@
+﻿@model DashboardViewModel
+
+<link rel="stylesheet" href="~/css/Overview.css" />
+
+<h1>Hallo @Model.Developer.Firstname</h1>
+<br />
+<br />
+<br />
+<br />
+<br />
+<h1>Overzicht</h1>
+<table>
+    <thead>
+        <tr class="table-header">
+            <th>Titel</th>
+            <th>Aanmaak datum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ProjectViewModel project in Model.Projects)
+        {
+            <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
+                <td>@project.Title</td>
+                <td>@project.CreationDate</td>
+            </tr>
+        }
+    </tbody>
+</table>

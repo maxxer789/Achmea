@@ -84,6 +84,24 @@ namespace AchmeaProject.Models.ViewModelConverter
                 RoleID = User.RoleId
             };
         }
+        public static List<UserViewModel> UserToVm(List<User> Users)
+        {
+            List<UserViewModel> uvms = new List<UserViewModel>();
+            foreach (User User in Users)
+            {
+                uvms.Add( new UserViewModel
+                {
+                    UserID = User.UserId,
+                    Email = User.Email,
+                    Password = User.Password,
+                    Firstname = User.Firstname,
+                    Lastname = User.Lastname,
+                    PhoneNumber = User.PhoneNumber,
+                    RoleID = User.RoleId
+                });
+            }
+            return uvms;
+        }
       
         public static BivViewModel BivModelToBivViewModel(Biv biv)
         {
@@ -145,13 +163,14 @@ namespace AchmeaProject.Models.ViewModelConverter
         {
             List<ProjectViewModel> vms = new List<ProjectViewModel>();
 
-            foreach (var model in Pmodel)
+            foreach (Project model in Pmodel)
             {
                 ProjectViewModel vm = new ProjectViewModel()
                 {
                     ProjectId = model.ProjectId,
                     Title = model.Title,
                     Description = model.Description,
+                    CreationDate = model.CreationDate.Value.ToShortDateString(),
                 };
                 vms.Add(vm);
             }
