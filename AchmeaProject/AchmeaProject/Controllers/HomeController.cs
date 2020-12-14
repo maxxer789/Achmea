@@ -39,11 +39,14 @@ namespace AchmeaProject.Controllers
 
             dbv.Developer = ViewModelConverter.UserToVm(userLogic.GetUserByID((int)HttpContext.Session.GetInt32("UserID")));
             dbv.Projects = ViewModelConverter.VmToProject(projectLogic.GetProjectsWithNeededActions(dbv.Developer.UserID));
-            foreach(ProjectViewModel pvm in dbv.Projects)
-            {
-                pvm.Members = ViewModelConverter.UserToVm( userLogic.GetMembersByProjectId(pvm.ProjectId));
-            }
+
             dbv.Projects.Reverse();
+
+            foreach (ProjectViewModel pvm in dbv.Projects)
+            {
+                List<SecurityRequirementProject> reqs = projectLogic.GetRequirementsForProject(pvm.ProjectId);
+                dbv.Actions.Add(new ActionViewModel(pvm.Title, reqs.Where(r => r.Status == _Status.Submit_evidence || r.Status == _Status.Declined).ToList().Count, reqs.Where(r => r.Status == _Status.Approved).ToList().Count, reqs.Where(r => r.Status == _Status.Excluded).ToList().Count));
+            }
 
             return View(dbv);
         }
