@@ -212,6 +212,24 @@ namespace AchmeaTestss.MockServices
                             RequirementNumber = "TE05",
                             MainGroup = "1. Testing"
                         }
+                    },
+                                        new SecurityRequirementProject()
+                    {
+                        SecurityRequirementProjectId = 6,
+                        ProjectId = 2,
+                        SecurityRequirementId = 6,
+                        Excluded = false,
+                        Status = _Status.Under_review,
+                        SecurityRequirement = new SecurityRequirement()
+                        {
+                            RequirementId = 6,
+                            Name = "Test Requirement 6",
+                            Description = "Description for test requirement 6",
+                            Details = "Details for test requirement 6",
+                            Family = "TE",
+                            RequirementNumber = "TE06",
+                            MainGroup = "1. Testing"
+                        }
                     }
                 }
             });
