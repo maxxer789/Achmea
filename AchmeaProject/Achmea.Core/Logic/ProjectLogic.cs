@@ -22,6 +22,10 @@ namespace Achmea.Core.Logic
 
         }
 
+        public List<Project> GetProjectsFromUser(int userId)
+        {
+            return _IProject.GetProjectsFromUser(userId);
+        }
 
         public Project MakeNewProject(Project projectModel, int[] members)
         {
@@ -48,6 +52,11 @@ namespace Achmea.Core.Logic
         public Project GetProject(int projectId)
         {
             return _IProject.GetProject(projectId);
+        }
+
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            return _IProject.GetProjectsWithNeededActions(userId);
         }
     }
 }

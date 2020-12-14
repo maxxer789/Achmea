@@ -75,10 +75,7 @@ namespace AchmeaProject.Controllers
             {
                 Project project = _ProjectLogic.GetProject(projectId);
 
-
                 var comments = commentLogic.GetAllComments();
-
-
 
                 List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
 
