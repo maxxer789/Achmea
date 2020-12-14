@@ -52,6 +52,15 @@ namespace AchmeaTestss.MockServices
             throw new NotImplementedException();
         }
 
+        public List<Project> GetProjectsFromUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Project> Populate()
         {
             List<Project> list = new List<Project>();
