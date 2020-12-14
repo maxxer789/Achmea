@@ -112,6 +112,12 @@ namespace AchmeaProject.Controllers
                     }
                 }
 
+                if (TempData["Message"] != null)
+                {
+                    string Message = TempData["Message"].ToString();
+                    ViewBag.Message = Message;
+                }
+
                 return View(model);
             }
             return RedirectToAction("Login", "User");
