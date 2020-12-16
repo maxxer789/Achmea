@@ -54,14 +54,14 @@ namespace AchmeaProject.Controllers
                 _AspectAreaLogic.SaveAspectToProject(aspects, proj);
 
                 _RequirementLogic.SaveReqruirementsToProject(aspects, classifications, proj);
+
+                _session.Remove("Project");
+                return RedirectToAction("Details", "Overview", new { projectId =  proj.ProjectId});
             }
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
-            _session.Remove("Project");
-            return RedirectToAction("index", "home");
         }
 
         public IActionResult GetRequirementsFromAreas(List<string> Ids)

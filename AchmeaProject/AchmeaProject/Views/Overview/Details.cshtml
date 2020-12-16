@@ -25,8 +25,9 @@
         Medewerkers:
         @foreach (User User in Model.Users)
         {
-            <br /><br />
-            @User.Firstname @User.Lastname}
+            <br />
+            @string.Format("{0} {1}", User.Firstname, User.Lastname)
+        }
     </div>
     <div class="row">
         <div class="col-6">
