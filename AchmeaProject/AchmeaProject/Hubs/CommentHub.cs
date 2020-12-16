@@ -11,14 +11,9 @@ namespace AchmeaProject.Hubs
 {
     public class CommentHub : Hub
     {
-        public async Task SendMessage(IHubContext<CommentHub> _commentHub,string user, string message, int id, int messageID)
+        public async Task SendMessage(string user, string message)
         {
-            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message, id, messageID);
-        }
-
-        public async Task projectNotification(IHubContext<CommentHub> _commentHub, string project, int[] Members)
-        {
-            await _commentHub.Clients.All.SendAsync("ReceiveProjectNotification", project, Members);
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 }

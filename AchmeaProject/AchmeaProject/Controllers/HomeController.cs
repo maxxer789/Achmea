@@ -32,7 +32,6 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == null)
             {
-
                 return RedirectToAction("Login", "User");
             }
 
@@ -59,37 +58,6 @@ namespace AchmeaProject.Controllers
                 return View();
             }
             return RedirectToAction("Login", "User");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
-                return RedirectToAction("Login", "User");
-            }
-
-            DashboardViewModel dbv = new DashboardViewModel();
-
-            dbv.Developer = ViewModelConverter.UserToVm(userLogic.GetUserByID((int)HttpContext.Session.GetInt32("UserID")));
-            dbv.Projects = ViewModelConverter.VmToProject(projectLogic.GetProjectsWithNeededActions(dbv.Developer.UserID));
-            foreach(ProjectViewModel pvm in dbv.Projects)
-            {
-                pvm.Members = ViewModelConverter.UserToVm( userLogic.GetMembersByProjectId(pvm.ProjectId));
-            }
-            dbv.Projects.Reverse();
-
-            return View(dbv);
-        }
-
-        public IActionResult Privacy()
-        {
-            if (HttpContext.Session.GetString("RoleID") != null)
-            {
-                return View();
-            }
-            return RedirectToAction("Login", "User");
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
