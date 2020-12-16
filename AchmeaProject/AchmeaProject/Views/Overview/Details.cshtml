@@ -1,15 +1,12 @@
-﻿@using Achmea.Core.Logic;
+﻿@using Achmea.Core;
 @using AchmeaProject.Helpers;
 @model ProjectDetailViewModel
-@{ ViewData["Title"] = "Details"; }
+@{
+    ViewData["Title"] = "Details";
+}
 
-@{ var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>; }
-
-@if (!string.IsNullOrEmpty(ViewBag.Message))
-{
-    <script type="text/javascript">
-        alert("@ViewBag.Message");
-    </script>
+@{
+    var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>;
 }
 
 <link rel="stylesheet" href="~/css/Details.css" />
@@ -63,7 +60,8 @@
                             {
                                 if (comment.ProjectReqId == req.SecurityRequirementProjectId)
                                 {
-                                    <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>}
+                                    <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>
+                                }
                             }
                             <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
                         </div>
@@ -91,35 +89,20 @@
                     </div>
                 </div>
                 <br /><br />
-                @if (req.Status != _Status.Excluded)
+                @if (req.FileOfProof != null)
                 {
-                    @if (req.FileOfProof != null)
-                    {
-                        <label>Huidige bewijsstuk:  </label>
-                        <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
-                    }
-                    <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
-                        <label>Bewijsmateriaal uploaden: </label><br />
-                        <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
-                        <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
-                        @Html.HiddenFor(model => Model.ProjectId)
-                        <input type="submit" value="Uploaden" />
-                    </form>
-                    <form asp-action="ExcludeRequirement" asp-controller="Requirement">
-                        <label>Requirement Uitzonderen: </label>
-                        <input type="hidden" name="requirementId" value="@req.SecurityRequirementId" />
-                        <input type="hidden" name="projectId" value="@Model.ProjectId" />
-                        <input required type="text" name="reason" placeholder="Reden voor uitzondering" />
-                        <input type="submit" value="Uitzonderen" />
-                    </form>
-                }
-                else
-                {
-                    <div>Reden voor uitzondering: @req.Reason</div>
-                }
+                    <label>Huidige bewijsstuk:  </label>
+                    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>}
+                <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
+                    <label>Bewijsmateriaal uploaden: </label><br />
+                    <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
+                    <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
+                    @Html.HiddenFor(model => Model.ProjectId)
+                    <input type="submit" value="Uploaden" />
+                </form>
             </div>
         </div>
-     }
+    }
 </div>
 
 

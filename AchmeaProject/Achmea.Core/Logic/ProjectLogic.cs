@@ -3,7 +3,6 @@ using Achmea.Core.Model;
 using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Achmea.Core.Logic
@@ -47,7 +46,7 @@ namespace Achmea.Core.Logic
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
         {
-            return _IProject.GetRequirementsForProject(projectId).OrderBy(x => x.Status).ToList();
+            return _IProject.GetRequirementsForProject(projectId);
         }
 
         public Project GetProject(int projectId)

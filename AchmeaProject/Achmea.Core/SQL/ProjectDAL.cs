@@ -39,7 +39,7 @@ namespace Achmea.Core
         {
             List<Project> usersProjects = new List<Project>();
 
-            usersProjects.AddRange(Project.Where(p => p.UserId == userId).Include(p => p.SecurityRequirementProject).ToList());
+            usersProjects.AddRange(Project.Where(p => p.UserId == userId).ToList());
 
             List<ProjectMember> pms = ProjectMembers.Where(pms => pms.UserId == userId).ToList();
 
@@ -47,7 +47,7 @@ namespace Achmea.Core
             {
                 if(usersProjects.Find(p => p.ProjectId == pm.ProjectId) == null)
                 {
-                    usersProjects.Add(Project.Where(p => p.ProjectId == pm.ProjectId).Include(p => p.SecurityRequirementProject).SingleOrDefault());
+                    usersProjects.Add(Project.Find(pm.ProjectId));
                 }
             }
 
@@ -179,9 +179,10 @@ namespace Achmea.Core
 
             foreach (Project project in projects)
             {
-                if (project.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
+                Project prj = Project.Where(pr => pr.ProjectId == project.ProjectId && pr.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined)).SingleOrDefault();
+                if (prj != null)
                 {
-                    ToDoList.Add(project);
+                    ToDoList.Add(prj);
                 }
             }
 

@@ -50,60 +50,6 @@ namespace AchmeaProject.Controllers
             else
             {
                 return RedirectToAction("Login", "User");
-
-            }
-        }
-
-        public IActionResult ProjectList()
-        {
-            if (HttpContext.Session.GetString("RoleID") == "Security")
-            {
-                List<Project> list = _ProjectLogic.GetProjects().ToList();
-
-                List<ProjectViewModel> vmList = new List<ProjectViewModel>();
-
-                foreach (Project model in list)
-                {
-                    ProjectViewModel viewModel = new ProjectViewModel()
-                    {
-                        ProjectId = model.ProjectId,
-                        Title = model.Title,
-                        Description = model.Description,
-                        CreationDate = model.CreationDate?.ToString("d")
-                    };
-                    if (_ProjectLogic.GetRequirementsForProject(model.ProjectId).Where(x => x.Status == _Status.Submit_evidence || x.Status == _Status.Declined).FirstOrDefault() != null)
-                    {
-                        viewModel.Done = false;
-                    }
-                    else
-                    {
-                        viewModel.Done = true;
-                    }
-                    vmList.Add(viewModel);
-
-                }
-                return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
-            }
-            return RedirectToAction("Login", "User");
-        }
-
-        public IActionResult Details(int projectId)
-        {
-            if (HttpContext.Session.GetString("RoleID") == "Security")
-            {
-                Project project = _ProjectLogic.GetProject(projectId);
-
-                ProjectDetailViewModel vm = new ProjectDetailViewModel()
-                {
-                    ProjectId = project.ProjectId,
-                    UserId = project.UserId,
-                    Title = project.Title,
-                    Description = project.Description,
-                    CreationDate = project.CreationDate?.ToString("d"),
-                    RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
-                    Requirements = _RequirementLogic.GetAllRequirements(),
-                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
-
             }
         }
 
@@ -147,7 +93,6 @@ namespace AchmeaProject.Controllers
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
                     Users = _UserLogic.GetMembersByProjectId(project.UserId)
-
                 };
 
                 var comments = commentLogic.GetAllComments();
