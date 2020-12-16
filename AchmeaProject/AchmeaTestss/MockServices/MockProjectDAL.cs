@@ -17,6 +17,16 @@ namespace AchmeaTestss.MockServices
             Projects = Populate();
         }
 
+        public List<Project> GetProjectsFromUser(int userId)
+        {
+            return Projects;
+        }
+
+        public List<Project> GetProjectsWithNeededActions(int i)
+        {
+            return Projects;
+        }
+
         public Project AddNewProject(Project project, int[] MemberIDs)
         {
             Project p = new Project(3, 3, "Test Project 3", "This is the description for test project 3.");
