@@ -58,10 +58,19 @@ namespace AchmeaProject.Controllers
                         Title = model.Title,
                         CreationDate = model.CreationDate?.ToString("d")
                     };
+                    if (_ProjectLogic.GetRequirementsForProject(model.ProjectId).Where(x => x.Status == _Status.Submit_evidence || x.Status == _Status.Declined).FirstOrDefault() != null)
+                    {
+                        viewModel.Done = false;
+                    }
+                    else
+                    {
+                        viewModel.Done = true;
+                    }
                     if (viewModel.CreationDate == "1-1-0001")
                     {
                         viewModel.CreationDate = "Unset";
                     }
+                    listModel = listModel.OrderByDescending(x => x.CreationDate).ToList();
                     listModel.Add(viewModel);
                 }
                 return View(listModel);

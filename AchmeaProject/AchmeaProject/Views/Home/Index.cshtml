@@ -5,24 +5,51 @@
 <h1>Hallo @Model.Developer.Firstname</h1>
 <br />
 <br />
-<br />
-<br />
-<br />
+
+@if (Model.Projects.Count > 0)
+{
 <h1>Overzicht</h1>
-<table>
-    <thead>
-        <tr class="table-header">
-            <th>Titel</th>
-            <th>Aanmaak datum</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (ProjectViewModel project in Model.Projects)
-        {
-            <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
-                <td>@project.Title</td>
-                <td>@project.CreationDate</td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+                <table>
+                    <thead>
+                        <tr class="table-header">
+                            <th>Titel</th>
+                            <th>Aanmaak datum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ProjectViewModel project in Model.Projects)
+                        {
+        <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
+            <td>@project.Title</td>
+            <td>@project.CreationDate</td>
+        </tr>}
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr class="table-header">
+                            <th>Project</th>
+                            <th>Vereiste acties</th>
+                            <th>Geaccepteerd</th>
+                            <th>Uitgezonderd</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ActionViewModel avm in Model.Actions)
+                        {
+        <tr class="table-item">
+            <td>@avm.Title</td>
+            <td>@avm.OpenActions</td>
+            <td>@avm.Accepted</td>
+            <td>@avm.Excluded</td>
+        </tr>}
+                    </tbody>
+                </table>
+ }
+else
+{
+    <h1>U hebt nog geen projecten</h1>
+    <br />
+    <h1><a asp-action="Create" asp-controller="Project" class="btn btn-primary">Nieuw project aanmaken</a></h1>
+}
