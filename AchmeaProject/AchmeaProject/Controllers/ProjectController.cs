@@ -78,13 +78,16 @@ namespace AchmeaProject.Controllers
             }
 
             List<User> users = userLogic.GetAllUsers().ToList();
-            List<SelectListItem> SelectUsers = new List<SelectListItem>();
+            List<UserSelectionViewModel> SelectUsers = new List<UserSelectionViewModel>();
             foreach (var user in users)
             {
-                SelectUsers.Add(new SelectListItem(user.Firstname + " " + user.Lastname, user.UserId.ToString()));
+                if (user.RoleId == "Developer")
+                {
+                    SelectUsers.Add(new UserSelectionViewModel(user.UserId, user.Firstname + " " + user.Lastname, user.RoleId.ToString()));
+                }
             }
 
-            ViewBag.Users = ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetAllUsers().ToList());
+            ViewBag.Users = SelectUsers;
 
             return View(vm);
         }

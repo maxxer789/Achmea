@@ -63,16 +63,18 @@ namespace AchmeaProject.Controllers
 
                 _RequirementLogic.SaveReqruirementsToProject(aspects, classifications, proj);
 
+
+                _session.Remove("Project");
+                return RedirectToAction("Details", "Overview", new { projectId =  proj.ProjectId});
+
                 await comment.projectNotification(_commentHub, proj.Title, pvm.Members);
+
 
             }
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
-            _session.Remove("Project");
-            return RedirectToAction("index", "home");
         }
 
         public IActionResult GetRequirementsFromAreas(List<string> Ids)
@@ -108,11 +110,11 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult ExcludeRequirement([FromBody] ExcludeRequirementViewModel ervm)
+        public IActionResult ExcludeRequirement(int requirementId, int projectId, string reason)
         {
-            _RequirementLogic.ExcludeRequirement(ervm.RequirementId, ervm.ProjectId, ervm.Reason);
+            _RequirementLogic.ExcludeRequirement(requirementId, projectId, reason);
 
-            return RedirectToAction("Details", "Overview", ervm.ProjectId);
+            return RedirectToAction("Details", "Overview", new { projectId = projectId });
         }
 
         [HttpGet]

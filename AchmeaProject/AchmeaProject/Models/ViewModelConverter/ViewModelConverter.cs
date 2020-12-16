@@ -229,7 +229,8 @@ namespace AchmeaProject.Models.ViewModelConverter
             return new UserSelectionViewModel
             {
                 UserID = user.UserId,
-                Name = user.Firstname + " " + user.Lastname
+                Name = user.Firstname + " " + user.Lastname,
+                RoleId = user.RoleId
             };
         }
 
@@ -241,7 +242,8 @@ namespace AchmeaProject.Models.ViewModelConverter
                 UserVMs.Add(new UserSelectionViewModel
                 {
                     UserID = user.UserId,
-                    Name = user.Firstname + " " + user.Lastname
+                    Name = user.Firstname + " " + user.Lastname,
+                    RoleId = user.RoleId
                 });
             }
 

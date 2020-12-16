@@ -2,9 +2,11 @@ using Achmea.Core.Interface;
 using Achmea.Core.Logic;
 using AchmeaProject.Models;
 using AchmeaTestss.MockServices;
+using DeepEqual.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AchmeaTestss.TestClasses
 {
@@ -84,6 +86,57 @@ namespace AchmeaTestss.TestClasses
 
             Assert.IsNotNull(requirements);
             Assert.AreEqual(project.SecurityRequirementProject.Count, requirements.Count);
+        }
+
+        [TestMethod]
+        public void CanGetProjectsForUser()
+        {
+            int userId = 1;
+            List<Project> projects = _ProjectLogic.GetProjectsFromUser(userId);
+            Project Expected = _ProjectLogic.GetProject(1);
+
+            Assert.AreEqual(projects.Count, 1);
+            Assert.IsTrue(projects[0].IsDeepEqual(Expected));
+        }
+
+        [TestMethod]
+        public void ReturnsEmptyListWhenUserHasNoProjects()
+        {
+            int userId = 3;
+            List<Project> projects = _ProjectLogic.GetProjectsFromUser(userId);
+
+            Assert.AreEqual(projects.Count, 0);
+        }
+
+        [TestMethod]
+        public void ReturnsEmptyListWhenNoProjectsRequireActions()
+        {
+            int userId = 1;
+            List<Project> ActionList = _ProjectLogic.GetProjectsWithNeededActions(userId);
+
+            Assert.AreEqual(ActionList.Count, 0);
+        }
+
+        [TestMethod]
+        public void ReturnsActionListForUser()
+        {
+            int userId = 2;
+            List<Project> ActionList = _ProjectLogic.GetProjectsWithNeededActions(userId);
+            ActionList[0].SecurityRequirementProject = ActionList[0].SecurityRequirementProject.ToList();
+            Project Expected = _ProjectLogic.GetProject(2);
+
+            int expectedAmountOfActions = AmountOfActions(Expected);
+            int resultAmountOfActions = AmountOfActions(ActionList[0]);
+
+
+            Assert.AreEqual(ActionList.Count, 1);
+            Assert.IsTrue(ActionList[0].IsDeepEqual(Expected));
+            Assert.AreEqual(expectedAmountOfActions, resultAmountOfActions);
+        }
+
+        public int AmountOfActions(Project project)
+        {
+           return project.SecurityRequirementProject.Count(p => p.Status == _Status.Declined || p.Status == _Status.Under_review);
         }
     }
 }

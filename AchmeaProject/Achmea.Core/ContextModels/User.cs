@@ -14,6 +14,8 @@ namespace AchmeaProject.Models
 
         public int UserId { get; set; }
         public string Email { get; set; }
+
+        [Column(TypeName = "nvarchar(MAX)")]
         public string Password { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
