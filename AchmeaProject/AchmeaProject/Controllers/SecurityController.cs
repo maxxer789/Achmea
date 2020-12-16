@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class SecurityController : Controller
+    public class SecurityController : BaseController
     {
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;

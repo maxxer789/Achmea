@@ -13,11 +13,18 @@ using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
 using Microsoft.AspNetCore.Http;
 using AchmeaProject.Sessions;
+using AchmeaProject.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AchmeaProject.Controllers
 {
-    public class RequirementController : Controller
+    public class RequirementController : BaseController
     {
+
+        private readonly IHubContext<CommentHub> _commentHub;
+        CommentHub comment;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
@@ -29,17 +36,18 @@ namespace AchmeaProject.Controllers
 
         private readonly RequirementLogic _RequirementLogic;
 
-        public RequirementController(IHttpContextAccessor httpContextAccessor, IProject iProject, IAspectArea iAspectArea, IBiv iBiv, IRequirement iRequirement)
+        public RequirementController(IHttpContextAccessor httpContextAccessor, IProject iProject, IAspectArea iAspectArea, IBiv iBiv, IRequirement iRequirement, [NotNull] IHubContext<CommentHub> commentHub)
         {
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
             _AspectAreaLogic = new AspectAreaLogic(iAspectArea);
             _BivLogic = new BivLogic(iBiv);
-
+            comment = new CommentHub();
+            _commentHub = commentHub;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public IActionResult SaveReqruirementsToProject()
+        public async Task<IActionResult> SaveReqruirementsToProject()
         {
             try
             {
@@ -54,6 +62,9 @@ namespace AchmeaProject.Controllers
                 _AspectAreaLogic.SaveAspectToProject(aspects, proj);
 
                 _RequirementLogic.SaveReqruirementsToProject(aspects, classifications, proj);
+
+                await comment.projectNotification(_commentHub, proj.Title, pvm.Members);
+
             }
             catch(Exception ex)
             {

@@ -14,11 +14,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace AchmeaProject.Controllers
 {
-    public class CommentController : Controller
+    public class CommentController : BaseController
     {
         private readonly IHubContext<CommentHub> _commentHub;
         CommentLogic commentLogic;
         CommentDAL commentDAL;
+        CommentHub signalHub;
 
 
 
@@ -27,6 +28,7 @@ namespace AchmeaProject.Controllers
             commentDAL = new CommentDAL();
             commentLogic = new CommentLogic(commentDAL);
             _commentHub = commentHub;
+            signalHub = new CommentHub();
         }
 
 
@@ -56,7 +58,7 @@ namespace AchmeaProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string message, int id, int messageID)
+        public async Task<IActionResult> SendMessage( string message, int id, int messageID)
         {
             string user = HttpContext.Session.GetString("Firstname");
 
@@ -70,7 +72,7 @@ namespace AchmeaProject.Controllers
 
 
 
-            await _commentHub.Clients.All.SendAsync("ReceiveMessage", user, message, id, messageID);
+            await signalHub.SendMessage(_commentHub, user, message, id, messageID);
 
 
 
