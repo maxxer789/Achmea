@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {
-    public class UserController : BaseController
+    public class UserController : Controller
     {
         private readonly UserLogic _UserLogic;
         public UserController(IConfiguration config, IUser iUser)
