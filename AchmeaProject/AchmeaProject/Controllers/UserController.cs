@@ -34,12 +34,12 @@ namespace AchmeaProject.Controllers
                 try
                 {
                     User User = _UserLogic.Login(VM.Email);
-
-                    if (VM.Password == User.Password)
+                    bool verified = BCrypt.Net.BCrypt.Verify(VM.Password, User.Password);
+                    if (verified == true)
                     {
                         HttpContext.Session.SetInt32("UserID", User.UserId);
                         HttpContext.Session.SetString("Firstname", User.Firstname);
-                        HttpContext.Session.SetString("RoleID", User.RoleId);      
+                        HttpContext.Session.SetString("RoleID", User.RoleId);
 
                         if (User.RoleId == "Admin")
                         {
