@@ -32,40 +32,6 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") == null)
             {
-
-                return RedirectToAction("Login", "User");
-            }
-
-            DashboardViewModel dbv = new DashboardViewModel();
-
-            dbv.Developer = ViewModelConverter.UserToVm(userLogic.GetUserByID((int)HttpContext.Session.GetInt32("UserID")));
-            dbv.Projects = ViewModelConverter.VmToProject(projectLogic.GetProjectsWithNeededActions(dbv.Developer.UserID));
-
-            dbv.Projects.Reverse();
-
-            foreach (ProjectViewModel pvm in dbv.Projects)
-            {
-                List<SecurityRequirementProject> reqs = projectLogic.GetRequirementsForProject(pvm.ProjectId);
-                dbv.Actions.Add(new ActionViewModel(pvm.Title, reqs.Where(r => r.Status == _Status.Submit_evidence || r.Status == _Status.Declined).ToList().Count, reqs.Where(r => r.Status == _Status.Approved).ToList().Count, reqs.Where(r => r.Status == _Status.Excluded).ToList().Count));
-            }
-
-            return View(dbv);
-        }
-
-        public IActionResult Privacy()
-        {
-            if (HttpContext.Session.GetString("RoleID") != null)
-            {
-                return View();
-            }
-            return RedirectToAction("Login", "User");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
                 return RedirectToAction("Login", "User");
             }
 
@@ -89,7 +55,6 @@ namespace AchmeaProject.Controllers
                 return View();
             }
             return RedirectToAction("Login", "User");
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

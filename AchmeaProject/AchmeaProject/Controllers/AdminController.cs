@@ -51,7 +51,6 @@ namespace AchmeaProject.Controllers
                 try
                 {
                     User user = ViewModelConverter.VmtoUser(VM);
-                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
                     user = _UserLogic.InsertUser(user);
 
                     return RedirectToAction("UserList", "Admin");

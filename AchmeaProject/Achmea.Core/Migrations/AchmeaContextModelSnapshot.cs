@@ -419,7 +419,7 @@ namespace Achmea.Core.Migrations
                         .IsUnicode(false);
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(MAX)")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<int>("PhoneNumber")
