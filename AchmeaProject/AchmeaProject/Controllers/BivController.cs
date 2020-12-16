@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class BivController : Controller
+    public class BivController : BaseController
     {
         private readonly BivLogic _BivLogic;
 

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly UserLogic userLogic;
         private readonly ProjectLogic projectLogic;

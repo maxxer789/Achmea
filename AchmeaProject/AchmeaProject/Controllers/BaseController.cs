@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace AchmeaProject.Controllers
 {
     public class BaseController : Controller
@@ -12,19 +13,25 @@ namespace AchmeaProject.Controllers
 
         public BaseController()
         {
-            if (HttpContext != null)
+            var user = GetUser();
+            
+            if(user != 0)
             {
-                if (HttpContext.Session.GetInt32("UserID") != null)
-                {
-                    ViewBag.User = HttpContext.Session.GetString("UserID");
-                }
+                ViewBag.User = user;
             }
 
         }
 
-        public IActionResult Index()
+        public int GetUser()
         {
-            return View();
+            if (HttpContext != null)
+            {
+                if (HttpContext.Session.GetInt32("UserID") != null)
+                {
+                    return HttpContext.Session.GetString("UserID").FirstOrDefault();
+                }
+            }
+            return 0;
         }
     }
 }

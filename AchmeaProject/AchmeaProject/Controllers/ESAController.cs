@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class ESAController : Controller
+    public class ESAController : BaseController
     {
         private readonly AspectAreaLogic _AspectAreaLogic;
 

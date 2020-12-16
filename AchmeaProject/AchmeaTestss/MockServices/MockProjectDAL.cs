@@ -172,5 +172,15 @@ namespace AchmeaTestss.MockServices
             });
             return list;
         }
+
+        public List<Project> GetProjectsFromUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

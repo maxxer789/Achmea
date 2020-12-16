@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace AchmeaProject.Controllers
 {
-    public class CommentController : Controller
+    public class CommentController : BaseController
     {
         private readonly IHubContext<CommentHub> _commentHub;
         CommentLogic commentLogic;

@@ -16,7 +16,7 @@ using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
         private readonly ProjectLogic projectLogic;
         private readonly UserLogic userLogic;
