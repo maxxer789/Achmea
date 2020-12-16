@@ -9,6 +9,6 @@ namespace AchmeaProject.Models
     {
         public UserViewModel Developer { get; set; }
         public List<ProjectViewModel> Projects { get; set; }
-        public List<ActionViewModel> Actions { get; set; }
+        public List<ActionViewModel> Actions { get; set; } = new List<ActionViewModel>();
     }
 }
