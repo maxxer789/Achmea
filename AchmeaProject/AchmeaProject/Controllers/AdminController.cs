@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         private readonly UserLogic _UserLogic;
 

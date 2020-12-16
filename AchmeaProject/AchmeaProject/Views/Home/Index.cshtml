@@ -10,6 +10,7 @@
 {
 <h1>Overzicht</h1>
 
+
                 <table>
                     <thead>
                         <tr class="table-header">
@@ -53,3 +54,46 @@ else
     <br />
     <h1><a asp-action="Create" asp-controller="Project" class="btn btn-primary">Nieuw project aanmaken</a></h1>
 }
+
+<table>
+    <thead>
+        <tr class="table-header">
+            <th>Titel</th>
+            <th>Aanmaak datum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ProjectViewModel project in Model.Projects)
+        {
+            <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Overview", new { projectId = project.ProjectId})'">
+                <td>@project.Title</td>
+                <td>@project.CreationDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
+
+
+    connection.on("ReceiveProjectNotification", function (project) {
+        //var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        //var encodedMsg = user + ": " + msg;
+        //var ul = document.createElement("ul");
+        //ul.textContent = encodedMsg;
+        //document.getElementById(id + '+messageOutput').appendChild(ul);
+
+        alert("heyyyy someone made a project called " + project + "!!")
+
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+</script>
+

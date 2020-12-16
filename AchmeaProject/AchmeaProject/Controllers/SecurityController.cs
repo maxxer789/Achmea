@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class SecurityController : Controller
+    public class SecurityController : BaseController
     {
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;
@@ -50,6 +50,7 @@ namespace AchmeaProject.Controllers
             else
             {
                 return RedirectToAction("Login", "User");
+
             }
         }
 
@@ -102,6 +103,51 @@ namespace AchmeaProject.Controllers
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
                     Users = _UserLogic.GetMembersByProjectId(project.UserId)
+
+            }
+        }
+
+        public IActionResult ProjectList()
+        {
+            if (HttpContext.Session.GetString("RoleID") == "Security")
+            {
+                List<Project> list = _ProjectLogic.GetProjects().ToList();
+
+                List<ProjectViewModel> vmList = new List<ProjectViewModel>();
+
+                foreach (Project model in list)
+                {
+                    ProjectViewModel viewModel = new ProjectViewModel()
+                    {
+                        ProjectId = model.ProjectId,
+                        Title = model.Title,
+                        Description = model.Description,
+                        CreationDate = model.CreationDate?.ToString("d")
+                    };
+                    vmList.Add(viewModel);
+                }
+                return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
+            }
+            return RedirectToAction("Login", "User");
+        }
+
+        public IActionResult Details(int projectId)
+        {
+            if (HttpContext.Session.GetString("RoleID") == "Security")
+            {
+                Project project = _ProjectLogic.GetProject(projectId);
+
+                ProjectDetailViewModel vm = new ProjectDetailViewModel()
+                {
+                    ProjectId = project.ProjectId,
+                    UserId = project.UserId,
+                    Title = project.Title,
+                    Description = project.Description,
+                    CreationDate = project.CreationDate?.ToString("d"),
+                    RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
+                    Requirements = _RequirementLogic.GetAllRequirements(),
+                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
+
                 };
 
                 var comments = commentLogic.GetAllComments();

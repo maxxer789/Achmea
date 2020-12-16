@@ -13,11 +13,14 @@ using AchmeaProject.Sessions;
 using Achmea.Core.SQL;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AchmeaProject.Models.ViewModelConverter;
+using AchmeaProject.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AchmeaProject.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
+
         private readonly ProjectLogic projectLogic;
         private readonly UserLogic userLogic;
 

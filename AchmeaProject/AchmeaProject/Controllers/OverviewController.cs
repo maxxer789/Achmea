@@ -16,7 +16,7 @@ using Google.Apis.Drive.v3;
 
 namespace AchmeaProject.Controllers
 {
-    public class OverviewController : Controller
+    public class OverviewController : BaseController
     {
         private readonly ProjectLogic _ProjectLogic;
         private readonly RequirementLogic _RequirementLogic;

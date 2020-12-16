@@ -22,7 +22,7 @@ using File = Google.Apis.Drive.v3.Data.File;
 
 namespace AchmeaProject.Controllers
 {
-    public class EvidenceController : Controller
+    public class EvidenceController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly DriveService service;
