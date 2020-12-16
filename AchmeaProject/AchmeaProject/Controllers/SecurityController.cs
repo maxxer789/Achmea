@@ -70,7 +70,16 @@ namespace AchmeaProject.Controllers
                         Description = model.Description,
                         CreationDate = model.CreationDate?.ToString("d")
                     };
+                    if (_ProjectLogic.GetRequirementsForProject(model.ProjectId).Where(x => x.Status == _Status.Submit_evidence || x.Status == _Status.Declined).FirstOrDefault() != null)
+                    {
+                        viewModel.Done = false;
+                    }
+                    else
+                    {
+                        viewModel.Done = true;
+                    }
                     vmList.Add(viewModel);
+
                 }
                 return View("Views/Accounts/Security/ProjectView.cshtml", vmList);
             }
@@ -92,7 +101,7 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
+                    Users = _UserLogic.GetMembersByProjectId(project.ProjectId)
                 };
 
                 var comments = commentLogic.GetAllComments();

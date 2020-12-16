@@ -19,14 +19,14 @@
         <p>@Model.CreationDate</p>
     </div>
     <div class="header-desc">
-        @*<h3>@Model.Employee</h3>*@
+        <h4>Beschrijving:</h4>
+        <p>@Model.Description</p>
+
         <h4>Medewerkers:</h4>
         @foreach (User User in Model.Users)
         {
-            <p>@User.Firstname</p>
-        }
-        <h4>Beschrijving:</h4>
-        <p>@Model.Description</p>
+    @string.Format("{0} {1}", User.Firstname, User.Lastname)
+                    <br />}
     </div>
 </div>
 <br />
