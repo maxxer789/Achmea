@@ -7,25 +7,13 @@
 
 <div class="container" style="margin-bottom:50px">
 
-    @*@if (Model.Project != null)
-            {
-        <div class="row">
-            <div class="col-6" style="text-align: right">
-                <h3>Projecttitle: @Model.Project.Title</h3>
-            </div>
-            <div class="col-6" style="text-align: left">
-                <p>Description: @Model.Project.Description</p>
-            </div>
-        </div>}*@
-
-
     <form asp-controller="ESA" asp-action="Select" method="post">
 
         <!-- title -->
         <div class="row  d-flex justify-content-center">
             <h2>ESA Aspectgebieden</h2>
         </div>
-        <div asp-validation-summary="All" class="text-danger"></div>
+        <div asp-validation-summary="All" class="text-danger d-flex justify-content-center"></div>
 
         @Html.HiddenFor(model => Model.Project.Title)
         @Html.HiddenFor(model => Model.Project.Description)
@@ -84,11 +72,12 @@
         <br />
         <input type="hidden" name="submitclicked" value="">
         <div class="row">
-            <div class="col-8"></div>
-            <div class="col-1">
+            <div class="col-5"></div>
+            <div class="col-2 d-flex justify-content-center">
                 <button class="btn btn-primary" type="submit" value="back" onclick="submitClick(this)" name="submitButton">Vorige</button>
             </div>
-            <div class="col-1">
+            <div class="col-1"></div>
+            <div class="col-2 d-flex justify-content-center">
                 <button class="btn btn-primary" type="submit" value="next" onclick="submitClick(this)" name="submitButton">Volgende</button>
             </div>
         </div>
