@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-3 d-flex justify-content-center">
-                    <p>Naam van project</p>
+                    <p>Projectnaam</p>
                 </div>
                 <div class="col-3 d-flex justify-content-center">
                     <p> @Model.Project.Title</p>
@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-3 d-flex justify-content-center">
-                    <p>Beschrijving van het project</p>
+                    <p>Projectbeschrijving</p>
                 </div>
                 <div class="col-3 d-flex justify-content-center">
                     <p> @Model.Project.Description</p>
@@ -58,7 +58,7 @@
             }
 
         <div class=" row d-flex justify-content-center">
-        <h4>Geselecteerde BIV classificates</h4>
+        <h4>Geselecteerde BIV classificaties</h4>
         </div>
 
 
@@ -119,15 +119,15 @@
             }
         }
 
-        <div class="row">
-            <div class="col-5"></div>
-            <div class="col-1">
-                <a class="btn btn-primary" asp-action="Select" asp-controller="Biv">Terug</a>
-            </div>
-            <div class="4"></div>
-            <div class="col-1">
-                <button class="btn btn-primary" type="submit">Bevestig</button>
-            </div>
+        <br/>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-2 d-flex justify-content-center">
+            <a class="btn btn-primary" asp-action="Select" asp-controller="Biv">Terug</a>
         </div>
+        <div class="col-2 d-flex justify-content-center">
+            <button class="btn btn-primary" type="submit">Bevestig</button>
+        </div>
+    </div>
     </form>
 </body>

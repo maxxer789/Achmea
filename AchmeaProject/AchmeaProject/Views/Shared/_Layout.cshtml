@@ -10,9 +10,13 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #DFBCC0;">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AchmeaProject</a>
+                <div>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/achmea.jpg" alt="Achmea" style="width:16.7vw;">
+                    </a>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,19 +25,18 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (Context.Session.GetInt32("UserID") != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Create">Nieuw project</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Overview" asp-action="Index">Overzicht</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Log_Out" onclick="return confirm('Weet je zeker dat je wilt uitloggen?')">Uitloggen</a>
-                            </li>
-                        }
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Overview" asp-action="Index">Overzicht</a>
+                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Log_Out" onclick="return confirm('Weet je zeker dat je wilt uitloggen?')">Uitloggen</a>
+                                                            </li>}
                     </ul>
                 </div>
             </div>
