@@ -50,16 +50,15 @@
         @for (var i = 0; i < @Model.AspectAreas.Count; i++)
         {<!-- Selection form -->
                             <div class="form-row align-items-center">
-                                <div class="col-11">
+                                <div class="col-10">
                                     <button type="button" class="collapsible" style="background-color: #D29FA5">@Model.AspectAreas[i].Title</button>
-                                    <div class="content" style="background-color: white;  border: 1px solid #D29FA5;">
-                                        <br/>
+                                    <div class="content" style="background-color:white;">
                                         <p>
-                                            @Model.AspectAreas[i].Description
+                                        @Model.AspectAreas[i].Description
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-1">
+                                <div class="col-2">
 
                                     <label class="checkboxlabel">
                                         @Html.HiddenFor(model => Model.AspectAreas[i].ID)
