@@ -160,4 +160,65 @@
             }
         });
     }
+
+    var coll = document.getElementsByClassName("message-info");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+
+                var element = document.getElementById("message-container");
+                element.scrollTop = element.scrollHeight;
+            }
+        });
+    }
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/comment").build();
+
+
+    //Disable send button until connection is established
+    document.getElementById("sendButton").disabled = true;
+
+    connection.on("ReceiveMessage", function (user, message, id,) {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = user + ": " + msg;
+        var ul = document.createElement("ul");
+        ul.textContent = encodedMsg;
+        document.getElementById(id + '+messageOutput').appendChild(ul);
+
+        new Notification('message');
+
+        var element = document.getElementById("message-container");
+        element.scrollTop = element.scrollHeight;
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    function ButtonClick(id, cancerID) {
+
+        event.preventDefault();
+        var requestData = {
+            message: document.getElementById(id).value,
+            id: id,
+            cancerID: cancerID
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Comment/SendMessage",
+            dataType: "json",
+            traditional: true,
+            data: requestData,
+        });
+    };
 </script>
