@@ -33,7 +33,8 @@ main {
     height: 100%;
 }
 
-.con-requirement {
+.con-requirements {
+    /*background-color: #DFBCC0;*/
 }
 
 .requirement-info, .message-info {

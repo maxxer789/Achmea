@@ -78,17 +78,16 @@ namespace Achmea.Core.Logic
         [Display(Name = "Bewijs toevoegen")]
         Submit_evidence,
 
-        [Display(Name = "Geweigerd")]
-        Declined,
-
         [Display(Name = "Onder inspectie")]
         Under_review,
 
         [Display(Name = "Geaccepteerd")]
         Approved,
 
+        [Display(Name = "Geweigerd")]
+        Declined,
+
         [Display(Name = "Uitgezonderd")]
         Excluded
     }
-
 }
