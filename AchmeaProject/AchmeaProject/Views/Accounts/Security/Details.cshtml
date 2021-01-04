@@ -36,7 +36,7 @@
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
         <div class="con-requirements" >
-            <div class="requirement-info">
+            <div class="requirement-info" style="background-color: #DFBCC0;">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
             </div>
 
