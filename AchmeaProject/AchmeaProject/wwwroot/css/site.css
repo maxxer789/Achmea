@@ -77,3 +77,11 @@ body {
     overflow: hidden;
     margin-top: -6px;
 }
+
+.mobile-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2000;
+    background-color: #DFBCC0;
+}
