@@ -1,0 +1,36 @@
+﻿body {
+    
+}
+
+/* unvisited link */
+a:link {
+    color: #D18189;
+}
+
+/* visited link */
+a:visited {
+    color: #D18189;
+}
+
+/* mouse over link */
+a:hover {
+    color: #1b6ec2;
+}
+
+/* selected link */
+a:active {
+    color: #1b6ec2;
+}
+
+.btn-primary {
+    background-color: #D29FA5;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    padding: 12px 28px;
+    border-radius: 8px;
+}
