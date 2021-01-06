@@ -17,14 +17,15 @@
 }
 
 <body style="margin-bottom:50px;">
-    <div class="con-header">
+    <div class="con-header" style="border:1px solid pink;">
         <div class="header-title">
             <h4>@Model.Title</h4>
-            <br /><br />
+            <br />
+            @Model.Description
+            <br/>
             Aangemaakt op @Model.CreationDate
         </div>
         <div class="header-desc">
-            @Model.Description
             <br /><br />
             Medewerkers:
             @foreach (User User in Model.Users)
@@ -39,6 +40,7 @@
             </div>
         </div>
     </div>
+    <br/>
     <div class="con-content">
         @foreach (SecurityRequirementProject req in Model.RequirementProject)
         {
@@ -130,6 +132,7 @@
         }
     </div>
 </body>
+<br/>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
