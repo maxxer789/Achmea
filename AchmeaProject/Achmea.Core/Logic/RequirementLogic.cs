@@ -68,6 +68,7 @@ namespace Achmea.Core.Logic
 
         public void UpdateRequirentStatus(SecurityRequirementProject requirement, _Status newStatus)
         {
+
             _IReq.UpdateRequirentStatus(requirement, newStatus);
         }
     }

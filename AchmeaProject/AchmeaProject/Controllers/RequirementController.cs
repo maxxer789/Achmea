@@ -63,7 +63,10 @@ namespace AchmeaProject.Controllers
 
                 _RequirementLogic.SaveReqruirementsToProject(aspects, classifications, proj);
 
-                await comment.projectNotification(_commentHub, proj.Title, pvm.Members);
+                if(pvm.Members != null)
+                {
+                    await comment.projectNotification(_commentHub, proj.Title, pvm.Members);
+                }
             }
             catch(Exception ex)
             {

@@ -113,7 +113,37 @@ return console.error(err.toString());
         for ( i = 0; i < Members.length; i++) {
 
             if (Members[i] == @user) {
-                alert("het werkt");
+                alert("U bent toegevoegd aan project: " + project);
+            }
+
+        }
+
+    });
+
+    connection.on("RecieveReqNotification", function (status, project, projectMembers) {
+
+        console.log(projectMembers);
+        console.log(@user);
+
+        for (i = 0; i < projectMembers.length; i++) {
+
+            if (projectMembers[i] == @user) {
+                alert("een requirement van project: " + project + " is veranderd naar status: " + status);
+            }
+
+        }
+
+    });
+
+    connection.on("RecieveMessageNotification", function (user, reqName, project, membersIds) {
+
+        console.log(membersIds);
+        console.log(@user);
+
+        for (i = 0; i < membersIds.length; i++) {
+
+            if (membersIds[i] == @user) {
+                alert(user + " has send a message at " + reqName + " int project: " + project);
             }
 
         }

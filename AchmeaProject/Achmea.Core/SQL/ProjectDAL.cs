@@ -79,7 +79,17 @@ namespace Achmea.Core
             return project;
 
         }
-       
+
+        public List<ProjectMember> GetProjectMembers(int projectID)
+        {
+
+            List<ProjectMember> pms = ProjectMembers.Where(pms => pms.ProjectId == projectID).ToList();
+            SaveChanges();
+
+            return pms;
+
+        }
+
         //public List<ProjectModel> GetProjects()
         //{
         //    string sql = "SELECT * FROM [Project]";
@@ -191,6 +201,24 @@ namespace Achmea.Core
             //return Project.Where(e => e.UserId == userId && e.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
             //    .Include(p => p.SecurityRequirementProject)
             //    .ToList();
+        }
+
+        public Project GetReqProject(int reqID)
+        {
+            int projectID = SecurityRequirementProject.Where(x => x.SecurityRequirementProjectId == reqID).FirstOrDefault().ProjectId;
+
+            return Project.Where(x => x.ProjectId == projectID).FirstOrDefault();
+
+
+        }
+
+        public string GetSecReqProjName(int reqID)
+        {
+            int secReqId = SecurityRequirementProject.Where(x => x.SecurityRequirementProjectId == reqID).FirstOrDefault().SecurityRequirementId;
+
+            return SecurityRequirement.Where(x => x.RequirementId == secReqId).FirstOrDefault().Name;
+
+
         }
 
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)
