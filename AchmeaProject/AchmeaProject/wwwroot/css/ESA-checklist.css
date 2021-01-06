@@ -28,7 +28,7 @@ h1 {
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
     background-color: #D29FA5;
-    color: #D29FA5;
+    color: white;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -48,7 +48,8 @@ h1 {
     padding: 0 18px;
     display: none;
     overflow: hidden;
-    background-color: #D29FA5;
+    background-color: white;
+    border: 1px solid #D29FA5;
 }
 
 .collapsible:after {
@@ -66,4 +67,15 @@ h1 {
 .checkbox{
    
     
+}
+
+.block {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #D29FA5;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
 }
