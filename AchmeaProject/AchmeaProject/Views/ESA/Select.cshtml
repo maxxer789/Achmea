@@ -6,7 +6,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script> 
 }
 
-<div class="container" style="margin-bottom:50px">
+<div class="container-fluid" style="margin-bottom:50px">
 
     <form asp-controller="ESA" asp-action="Select" method="post">
 
@@ -23,11 +23,13 @@
 
         @if (Model.Bivs.Count > 0)
         {<!-- Biv information to pass through -->
-                            @for (int i = 0; i < @Model.Bivs.Count; i++)
-                            {
-            @Html.HiddenFor(model => Model.Bivs[i].Id)
-                                @Html.HiddenFor(model => Model.Bivs[i].Name)
-                                                    @Html.HiddenFor(model => Model.Bivs[i].isSelected)}}
+            @for (int i = 0; i < @Model.Bivs.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.Bivs[i].Id)
+                @Html.HiddenFor(model => Model.Bivs[i].Name)
+                @Html.HiddenFor(model => Model.Bivs[i].isSelected)
+            }
+        }
 
 
         @if (Model.Members.Length > 0)
@@ -77,15 +79,15 @@
         <br />
         <input type="hidden" name="submitclicked" value="">
         <div class="form-row">
-            <div class="col-2">
-                <button style="background-color: #D29FA5; float:left;" type="submit" value="back" onclick="submitClick(this)" name="submitButton">Vorige</button>
+            <div class="col-6">
+                <button style="background-color: #D29FA5; float:right;" type="submit" value="back" onclick="submitClick(this)" name="submitButton">Vorige</button>
             </div>
-            <div class="col-7"></div>
-            <div class="col-2">
-                <button style="background-color: #D29FA5; float:right;" type="submit" value="next" onclick="submitClick(this)" name="submitButton">Volgende</button>
+            <div class="col-6">
+                <button style="background-color: #D29FA5; float:left;" type="submit" value="next" onclick="submitClick(this)" name="submitButton">Volgende</button>
             </div>
         </div>
     </form>
+    <br/>
 </div>
 
 

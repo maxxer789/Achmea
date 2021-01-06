@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div id="content" style="margin-bottom:50px">
+    <div id="content" style="margin-bottom:50px; margin-top:20vh;">
         <div class="row">
             <div class="col-1"></div>
             <div class="col-10">
@@ -89,9 +89,11 @@
                             @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
                         }
                     }
-
-                    <button style="background-color: #D29FA5; float:right;" type="submit" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
-
+                <div class="form-row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button style="background-color: #D29FA5;" type="submit" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
+                    </div>
+                </div>
                 </form>
             </div>
         </div>
