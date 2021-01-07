@@ -1,11 +1,12 @@
 ﻿@model ProjectCreateViewModel;
 @{
-                <link rel="stylesheet" href="~/css/BIV-checklist.css" />
-                            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-                                        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-                                                    <script src="~/lib/jquery/dist/jquery.min.js"></script> }
+<link rel="stylesheet" href="~/css/BIV-checklist.css" />
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+Layout = "~/Views/Shared/_Layout.cshtml";}
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-bottom:50px; margin-top:20vh;">
         <form asp-controller="Biv" asp-action="Select" method="post">
 
             <!-- title -->
@@ -14,7 +15,7 @@
             </div>
             <div asp-validation-summary="All" class="text-danger d-flex justify-content-center"></div>
 
-
+            <br/>
             <!-- Project information to pass through -->
             @Html.HiddenFor(model => Model.Project.Title)
             @Html.HiddenFor(model => Model.Project.CreationDate)
@@ -24,25 +25,27 @@
             <!-- AspectAreas information to pass through -->
             @for (int i = 0; i < @Model.AspectAreas.Count; i++)
             {
-@Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                @Html.HiddenFor(model => Model.AspectAreas[i].ID)
                 @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                                @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                                                @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)}
+                @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
+            }
 
             @if (Model.Members.Length > 0)
             {
                 for (int i = 0; i < Model.Members.Length; i++)
                 {
-@Html.HiddenFor(model => Model.Members[i])}
+                    @Html.HiddenFor(model => Model.Members[i])}
             }
 
             @if (Model.Users.Count > 0)
             {
                 for (int i = 0; i < Model.Users.Count; i++)
                 {
-@Html.HiddenFor(model => Model.Users[i].UserID)
-                    @Html.HiddenFor(model => Model.Users[i].Name)}
-                                }
+                    @Html.HiddenFor(model => Model.Users[i].UserID)
+                    @Html.HiddenFor(model => Model.Users[i].Name)
+                }
+            }
 
             <div class="row">
                 <div class="col-3">
@@ -50,16 +53,19 @@
                 </div>
                 @for (var j = 0; j < @Model.Bivs.Count(e => e.Name.Contains("b")); j++)
                 {
-    <div class="col-3">
-        <label class="checkboxlabel">
-            @Model.Bivs[j].Name.Substring(1)
-            @Html.HiddenFor(model => Model.Bivs[j].Name)
-            @Html.HiddenFor(model => Model.Bivs[j].Id)
-            @Html.CheckBoxFor(model => Model.Bivs[j].isSelected, new { @class = "bbb" })
-            <span class="checkmark"></span>
-        </label>
-    </div>}
+                    <div class="col-3">
+                <label class="checkboxlabel">
+                    @Model.Bivs[j].Name.Substring(1)
+                    @Html.HiddenFor(model => Model.Bivs[j].Name)
+                    @Html.HiddenFor(model => Model.Bivs[j].Id)
+                    @Html.CheckBoxFor(model => Model.Bivs[j].isSelected, new { @class = "bbb" })
+                    <span class="checkmark"></span>
+                </label>
+                        </div>
+                 }
             </div>
+            
+            <br/>
 
             <div class="row">
                 <div class="col-3">
@@ -67,16 +73,20 @@
                 </div>
                 @for (var k = 3; k < 6; k++)
                 {
-    <div class="col-3">
-        <label class="checkboxlabel">
-            @Model.Bivs[k].Name.Substring(1)
-            @Html.HiddenFor(model => Model.Bivs[k].Name)
-            @Html.HiddenFor(model => Model.Bivs[k].Id)
-            @Html.CheckBoxFor(model => Model.Bivs[k].isSelected, new { @class = "iii" })
-            <span class="checkmark"></span>
-        </label>
-    </div>}
+                    <div class="col-3">
+                <label class="checkboxlabel">
+                    @Model.Bivs[k].Name.Substring(1)
+                    @Html.HiddenFor(model => Model.Bivs[k].Name)
+                    @Html.HiddenFor(model => Model.Bivs[k].Id)
+                    @Html.CheckBoxFor(model => Model.Bivs[k].isSelected, new { @class = "iii" })
+                    <span class="checkmark"></span>
+                </label>
+                        </div>
+                 }
             </div>
+            
+            <br/>
+
             <div class="row">
                 <div class="col-3">
                     <h3>V</h3>
@@ -95,15 +105,14 @@
     </div>}
             </div>
             <br />
+            <br/>
             <input type="hidden" name="submitclicked" value="">
             <div class="row">
-                <div class="col-5"></div>
-                <div class="col-2 d-flex justify-content-center">
-                    <button style=" background-color: #D29FA5;" type="submit" value="back" onclick="submitClick(this)" name="submitButton">Vorige</button>
+                <div class="col-6">
+                    <button style="background-color: #D29FA5; float:right;" type="submit" value="back" onclick="submitClick(this)" name="submitButton">Vorige</button>
                 </div>
-                <div class="col-1"></div>
-                <div class="col-2 d-flex justify-content-center">
-                    <button style=" background-color: #D29FA5" type="submit" value="next" onclick="submitClick(this)" name="submitButton">Volgende</button>
+                <div class="col-6">
+                    <button style="background-color: #D29FA5; float:left;" type="submit" value="next" onclick="submitClick(this)" name="submitButton">Volgende</button>
                 </div>
             </div>
         </form>

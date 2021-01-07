@@ -13,51 +13,56 @@
     @inject IHttpContextAccessor HttpContextAccessor
 </head>
 
-<body style="min-height:100vh;">
-    <div id="content">
+<body>
+    <div id="content" style="margin-bottom:50px; margin-top:20vh;">
         <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">
-                <h1>Project gegevens</h1>
-                <form asp-controller="Project" asp-action="Create" id="myform">
-                    <div class="form-group">
-                        <label asp-for="@Model.Project.Title" class="control-label">Titel</label>
-                        <input asp-for="@Model.Project.Title" class="form-control" />
-                        <span asp-validation-for="@Model.Project.Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Project.Description" class="control-label">Beschrijving</label>
-                        <input asp-for="@Model.Project.Description" class="form-control" />
-                        <span asp-validation-for="@Model.Project.Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group" hidden="hidden">
-                        <input asp-for="@Model.Project.CreationDate" class="form-control" />
-                    </div>
-                    <div class="form-group" hidden="hidden">
-                        <input asp-for="@Model.Project.UserID" class="form-control" />
-                    </div>
-                    <div class="form-group" style="float: right">
-                    </div>
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="control-label d-flex justify-content-center">
+                    <h1>Project gegevens</h1>
+                </div>
+                <br/>
+                <form asp-controller="Project" asp-action="Create">
+                    <div>
+                        <div class="form-group ">
+                            <label asp-for="@Model.Project.Title" class="control-label d-flex justify-content-center">Titel</label>
+                            <input asp-for="@Model.Project.Title" class="form-control d-flex justify-content-center" />
+                            <span asp-validation-for="@Model.Project.Title" class="text-danger d-flex justify-content-center"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Project.Description" class="control-label d-flex justify-content-center">Beschrijving</label>
+                            <input asp-for="@Model.Project.Description" class="form-control" />
+                            <span asp-validation-for="@Model.Project.Description" class="text-danger d-flex justify-content-center"></span>
+                        </div>
+                        <div class="form-group" hidden="hidden">
+                            <input asp-for="@Model.Project.CreationDate" class="form-control" />
+                        </div>
+                        <div class="form-group" hidden="hidden">
+                            <input asp-for="@Model.Project.UserID" class="form-control" />
+                        </div>
+                        <div class="form-group" style="float: right">
+                        </div>
 
-                    <br />
+                        <br />
 
-                    <select asp-for="Members" data-placeholder="Selecteer uw projectleden" class="chosen-select" multiple>
-                        @foreach (var user in users)
-                        {
-                            if (user.UserID == HttpContextAccessor.HttpContext.Session.GetInt32("UserID"))
+                        <select asp-for="Members" data-placeholder="Selecteer uw projectleden" class="chosen-select" multiple>
+                            @foreach (var user in users)
                             {
+                                if (user.UserID == HttpContextAccessor.HttpContext.Session.GetInt32("UserID"))
+                                {
 
+                                }
+                                else if (Model.Members.Contains(user.UserID))
+                                {
+                                    <option value="@user.UserID" selected="selected">@user.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@user.UserID">@user.Name</option>
+                                }
                             }
-                            else if (Model.Members.Contains(user.UserID))
-                            {
-                                <option value="@user.UserID" selected="selected">@user.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@user.UserID">@user.Name</option>
-                            }
-                        }
-                    </select>
+                        </select>
+                    </div>
 
                     <br />
                     <br />
@@ -84,9 +89,11 @@
                             @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
                         }
                     }
-
-                    <button style=" background-color: #D29FA5" type="submit" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
-
+                <div class="form-row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button style="background-color: #D29FA5;" type="submit" id="NextBtn" name="nextbtn" value="Volgende">Volgende</button>
+                    </div>
+                </div>
                 </form>
             </div>
         </div>

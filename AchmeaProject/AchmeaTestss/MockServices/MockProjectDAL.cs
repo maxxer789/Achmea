@@ -17,15 +17,15 @@ namespace AchmeaTestss.MockServices
             Projects = Populate();
         }
 
-        public List<Project> GetProjectsFromUser(int userId)
-        {
-            return Projects;
-        }
+        //public List<Project> GetProjectsFromUser(int userId)
+        //{
+        //    return Projects;
+        //}
 
-        public List<Project> GetProjectsWithNeededActions(int i)
-        {
-            return Projects;
-        }
+        //public List<Project> GetProjectsWithNeededActions(int i)
+        //{
+        //    return Projects;
+        //}
 
         public Project AddNewProject(Project project, int[] MemberIDs)
         {
