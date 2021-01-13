@@ -14,7 +14,7 @@
             <div class="container">
                 <div>
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="~/img/Achmea.png" alt="Achmea" style="width:8.7vw;">
+                        <img src="~/img/Achmea.png" alt="Achmea" style="width:16.7vw;" />
                     </a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,18 +25,16 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (Context.Session.GetInt32("UserID") != null)
                         {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-            </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Create">Nieuw project</a>
+                                <a class="nav-link text-dark" style="font-weight: bold" asp-area="" asp-controller="Project" asp-action="Create">Nieuw project</a>
                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link text-dark" asp-area="" asp-controller="Overview" asp-action="Index">Overzicht</a>
+                                                <a class="nav-link text-dark" style="font-weight: bold" asp-area="" asp-controller="Overview" asp-action="Index">Overzicht</a>
                                             </li>
                                                             <li class="nav-item">
-                                                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Log_Out" onclick="return confirm('Weet je zeker dat je wilt uitloggen?')">Uitloggen</a>
-                                                            </li>}
+                                                                <a class="nav-link text-dark" style="font-weight: bold" asp-area="" asp-controller="User" asp-action="Log_Out" onclick="return confirm('Weet je zeker dat je wilt uitloggen?')">Uitloggen</a>
+                                                            </li>
+}
                     </ul>
                 </div>
             </div>
@@ -59,3 +57,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
