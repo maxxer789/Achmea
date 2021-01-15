@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Achmea.Core;
-using Achmea.Core.ContextModels;
 using Achmea.Core.Interface;
 using Achmea.Core.Logic;
 using Achmea.Core.SQL;
-using AchmeaProject.Hubs;
 using AchmeaProject.Models;
 using AchmeaProject.Models.ViewModelConverter;
 using Google.Apis.Drive.v3;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class SecurityController : BaseController
+    public class SecurityController : Controller
     {
         private readonly RequirementLogic _RequirementLogic;
         private readonly UserLogic _UserLogic;
@@ -29,18 +25,14 @@ namespace AchmeaProject.Controllers
         private readonly DriveService service;
         private readonly UserLogic userLogic;
         private readonly CommentLogic commentLogic;
-        private readonly IHubContext<CommentHub> _commentHub;
-        CommentHub comment;
 
-        public SecurityController(IWebHostEnvironment webHost, IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement, IComment iComment, [NotNull] IHubContext<CommentHub> commentHub)
+        public SecurityController(IWebHostEnvironment webHost, IConfiguration config, IProject iProject, IUser iUser, IRequirement iRequirement, IComment iComment)
         {
             _UserLogic = new UserLogic(iUser);
             _ProjectLogic = new ProjectLogic(iProject);
             _RequirementLogic = new RequirementLogic(iRequirement);
             commentLogic = new CommentLogic(iComment);
             userLogic = new UserLogic(iUser);
-            comment = new CommentHub();
-            _commentHub = commentHub;
 
             _webHostEnvironment = webHost;
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -109,7 +101,7 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
+                    Users = _UserLogic.GetMembersByProjectId(project.ProjectId)
                 };
 
                 var comments = commentLogic.GetAllComments();
@@ -143,29 +135,18 @@ namespace AchmeaProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateRequirementStatus(bool Approved, int ProjectId, int ReqId)
+        public IActionResult UpdateRequirementStatus(bool Approved, int ProjectId, int ReqId)
         {
-            Project project = _ProjectLogic.GetProject(ProjectId);
-            List<ProjectMember> projectMembers = _ProjectLogic.GetProjectMembers(ProjectId);
-            List<int> members = new List<int>();
-
-            foreach(var member in projectMembers)
-            {
-                members.Add(member.UserId);
-            }
-
             SecurityRequirementProject req = _ProjectLogic.GetRequirementsForProject(ProjectId).Where(x => x.SecurityRequirementProjectId == ReqId).SingleOrDefault();
             if (Approved)
             {
                 _Status status = _Status.Approved;
                 _RequirementLogic.UpdateRequirentStatus(req, status);
-                await comment.ReqStatusChange(_commentHub, req.Status.ToString(), project.Title, members);
             }
             else
             {
                 _Status status = _Status.Declined;
                 _RequirementLogic.UpdateRequirentStatus(req, status);
-                await comment.ReqStatusChange(_commentHub, req.Status.ToString(), project.Title, members);
             }
 
             return RedirectToAction("Details", new { projectId = ProjectId });

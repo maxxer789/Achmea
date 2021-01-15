@@ -10,9 +10,9 @@
 @{
     var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>;
 }
-
 <link rel="stylesheet" href="~/css/Details.css" />
-<div class="con-header">
+
+<div class="con-header" style="border:1px solid pink;">
     <div class="header-title">
         <h4>@Model.Title</h4>
         <br />
@@ -30,12 +30,14 @@
         }
     </div>
 </div>
+
 <br />
-<div class="con-content">
+
+<div class="con-content" >
     @foreach (SecurityRequirementProject req in Model.RequirementProject)
     {
-        <div class="con-requirements">
-            <div class="requirement-info">
+        <div class="con-requirements" >
+            <div class="requirement-info" style="background-color: #DFBCC0;">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
             </div>
 
@@ -47,7 +49,7 @@
             <div class="collapsible">
                 @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
                 <br /><br />
-                <div class="message-info">
+                <div class="message-info" style="background-color: #DFBCC0;">
                     Opmerkingen
                 </div>
                 <br />
@@ -116,20 +118,18 @@
                         <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
                         <input type="hidden" name="ReqId" value="@req.SecurityRequirementProjectId" />
 
-                        <input type="submit" id="submitButton" value="Bevestig" />
+                        <input type="submit" id="submitButton" value="Bevestig" style="background-color: #D29FA5;"/>
 
                     </form>
                 </div>
             </div>
         </div>
-
-
-
+        <br/>
     }
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+   /* $(document).ready(function () {
 
         $('#Approved').find('input').prop('checked', false);
         $('#submitButton').hide();
@@ -141,7 +141,7 @@
                 $('#submitButton').hide();
             }
         });
-    });
+    });*/
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -188,7 +188,7 @@
     //Disable send button until connection is established
     document.getElementById("sendButton").disabled = true;
 
-    connection.on("ReceiveMessage", function (user, message, id, ) {
+    connection.on("ReceiveMessage", function (user, message, id,) {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = user + ": " + msg;
         var ul = document.createElement("ul");

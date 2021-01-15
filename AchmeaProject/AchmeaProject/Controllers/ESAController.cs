@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class ESAController : BaseController
+    public class ESAController : Controller
     {
         private readonly AspectAreaLogic _AspectAreaLogic;
 
@@ -60,7 +60,7 @@ namespace AchmeaProject.Controllers
         {
             if (vm.AspectAreas.Count(e => e.isSelected == true) == 0 && submitButton == "next")
             {
-                ModelState.AddModelError(string.Empty, "Please select atleast one applicable aspect area");
+                ModelState.AddModelError(string.Empty, "Selecteer minimaal één aspectgebied om verder te gaan");
                 return View(vm);
             }
 

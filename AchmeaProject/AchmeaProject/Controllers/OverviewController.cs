@@ -16,7 +16,7 @@ using Google.Apis.Drive.v3;
 
 namespace AchmeaProject.Controllers
 {
-    public class OverviewController : BaseController
+    public class OverviewController : Controller
     {
         private readonly ProjectLogic _ProjectLogic;
         private readonly RequirementLogic _RequirementLogic;
@@ -46,7 +46,8 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") != null)
             {
-                List<Project> list = _ProjectLogic.GetProjects().ToList();
+                int userId = (int)HttpContext.Session.GetInt32("UserID");
+                List<Project> list = _ProjectLogic.GetProjectsFromUser(userId).ToList();
 
                 List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 
@@ -58,10 +59,19 @@ namespace AchmeaProject.Controllers
                         Title = model.Title,
                         CreationDate = model.CreationDate?.ToString("d")
                     };
+                    if (_ProjectLogic.GetRequirementsForProject(model.ProjectId).Where(x => x.Status == _Status.Submit_evidence || x.Status == _Status.Declined).FirstOrDefault() != null)
+                    {
+                        viewModel.Done = false;
+                    }
+                    else
+                    {
+                        viewModel.Done = true;
+                    }
                     if (viewModel.CreationDate == "1-1-0001")
                     {
                         viewModel.CreationDate = "Unset";
                     }
+                    listModel = listModel.OrderByDescending(x => x.CreationDate).ToList();
                     listModel.Add(viewModel);
                 }
                 return View(listModel);
@@ -101,7 +111,7 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
+                    Users = _UserLogic.GetMembersByProjectId(project.ProjectId)
                 };
 
                 foreach (var item in model.RequirementProject)
@@ -110,6 +120,12 @@ namespace AchmeaProject.Controllers
                     {
                         model.Files.Add(GoogleDriveConnection.GetFileById(service, item.FileOfProof.FileLocation));
                     }
+                }
+
+                if (TempData["Message"] != null)
+                {
+                    string Message = TempData["Message"].ToString();
+                    ViewBag.Message = Message;
                 }
 
                 return View(model);

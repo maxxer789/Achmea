@@ -1,5 +1,4 @@
 ﻿
-using Achmea.Core.ContextModels;
 using Achmea.Core.Model;
 using AchmeaProject.Models;
 using System;
@@ -19,8 +18,5 @@ namespace Achmea.Core.Interface
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId);
         public List<Project> GetProjectsWithNeededActions(int userId);
-        public List<ProjectMember> GetProjectMembers(int projectID);
-        public Project GetReqProject(int reqID);
-        public string GetSecReqProjName(int reqID);
     }
 }

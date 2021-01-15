@@ -68,7 +68,6 @@ namespace Achmea.Core.Logic
 
         public void UpdateRequirentStatus(SecurityRequirementProject requirement, _Status newStatus)
         {
-
             _IReq.UpdateRequirentStatus(requirement, newStatus);
         }
     }
@@ -91,5 +90,4 @@ namespace Achmea.Core.Logic
         [Display(Name = "Uitgezonderd")]
         Excluded
     }
-
 }

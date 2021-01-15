@@ -1,9 +1,9 @@
-﻿using Achmea.Core.ContextModels;
-using Achmea.Core.Interface;
+﻿using Achmea.Core.Interface;
 using Achmea.Core.Model;
 using AchmeaProject.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Achmea.Core.Logic
@@ -47,7 +47,7 @@ namespace Achmea.Core.Logic
 
         public List<SecurityRequirementProject> GetRequirementsForProject(int projectId)
         {
-            return _IProject.GetRequirementsForProject(projectId);
+            return _IProject.GetRequirementsForProject(projectId).OrderBy(x => x.Status).ToList();
         }
 
         public Project GetProject(int projectId)
@@ -58,21 +58,6 @@ namespace Achmea.Core.Logic
         public List<Project> GetProjectsWithNeededActions(int userId)
         {
             return _IProject.GetProjectsWithNeededActions(userId);
-        }
-
-        public List<ProjectMember> GetProjectMembers(int projectID)
-        {
-            return _IProject.GetProjectMembers(projectID);
-        }
-
-        public Project GetReqProject(int reqID)
-        {
-            return _IProject.GetReqProject(reqID);
-        }
-
-        public string GetSecReqProjName(int reqID)
-        {
-            return _IProject.GetSecReqProjName(reqID);
         }
     }
 }
