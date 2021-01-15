@@ -91,5 +91,4 @@ namespace Achmea.Core.Logic
         [Display(Name = "Uitgezonderd")]
         Excluded
     }
-
 }

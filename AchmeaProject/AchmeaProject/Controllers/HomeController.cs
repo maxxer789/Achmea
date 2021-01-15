@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
         private readonly UserLogic userLogic;
         private readonly ProjectLogic projectLogic;
@@ -50,7 +50,7 @@ namespace AchmeaProject.Controllers
 
             return View(dbv);
         }
-
+        
         public IActionResult Privacy()
         {
             if (HttpContext.Session.GetString("RoleID") != null)
