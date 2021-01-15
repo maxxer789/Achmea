@@ -62,33 +62,6 @@ namespace AchmeaTestss.MockServices
             throw new NotImplementedException();
         }
 
-        public List<Project> GetProjectsFromUser(int userId)
-        {
-            List<Project> projects = new List<Project>();
-            foreach (Project project in Projects)
-            {
-                if (project.UserId == userId)
-                {
-                    projects.Add(project);
-                }
-            }
-            return projects;
-        }
-        public List<Project> GetProjectsWithNeededActions(int userId)
-        {
-            List<Project> projects = GetProjectsFromUser(userId);
-            List<Project> ActionList = new List<Project>();
-            foreach (Project project in projects)
-            {
-                if (project.SecurityRequirementProject.Any(p => p.Status == Achmea.Core.Logic._Status.Declined || p.Status == Achmea.Core.Logic._Status.Under_review))
-                {
-                    ActionList.Add(project);
-                }
-            }
-
-            return ActionList;
-        }
-
         public List<Project> Populate()
         {
             List<Project> list = new List<Project>();
@@ -204,46 +177,20 @@ namespace AchmeaTestss.MockServices
                             RequirementNumber = "TE04",
                             MainGroup = "1. Testing"
                         }
-                    },
-                    new SecurityRequirementProject()
-                    {
-                        SecurityRequirementProjectId = 5,
-                        ProjectId = 2,
-                        SecurityRequirementId = 5,
-                        Excluded = false,
-                        Status = _Status.Declined,
-                        SecurityRequirement = new SecurityRequirement()
-                        {
-                            RequirementId = 5,
-                            Name = "Test Requirement 5",
-                            Description = "Description for test requirement 5",
-                            Details = "Details for test requirement 5",
-                            Family = "TE",
-                            RequirementNumber = "TE05",
-                            MainGroup = "1. Testing"
-                        }
-                    },
-                                        new SecurityRequirementProject()
-                    {
-                        SecurityRequirementProjectId = 6,
-                        ProjectId = 2,
-                        SecurityRequirementId = 6,
-                        Excluded = false,
-                        Status = _Status.Under_review,
-                        SecurityRequirement = new SecurityRequirement()
-                        {
-                            RequirementId = 6,
-                            Name = "Test Requirement 6",
-                            Description = "Description for test requirement 6",
-                            Details = "Details for test requirement 6",
-                            Family = "TE",
-                            RequirementNumber = "TE06",
-                            MainGroup = "1. Testing"
-                        }
                     }
                 }
             });
             return list;
+        }
+
+        public List<Project> GetProjectsFromUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Project> GetProjectsWithNeededActions(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Achmea.Core
         {
             List<Project> usersProjects = new List<Project>();
 
-            usersProjects.AddRange(Project.Where(p => p.UserId == userId).Include(p => p.SecurityRequirementProject).ToList());
+            usersProjects.AddRange(Project.Where(p => p.UserId == userId).ToList());
 
             List<ProjectMember> pms = ProjectMembers.Where(pms => pms.UserId == userId).ToList();
 
@@ -47,7 +47,7 @@ namespace Achmea.Core
             {
                 if(usersProjects.Find(p => p.ProjectId == pm.ProjectId) == null)
                 {
-                    usersProjects.Add(Project.Where(p => p.ProjectId == pm.ProjectId).Include(p => p.SecurityRequirementProject).SingleOrDefault());
+                    usersProjects.Add(Project.Find(pm.ProjectId));
                 }
             }
 
@@ -79,7 +79,17 @@ namespace Achmea.Core
             return project;
 
         }
-       
+
+        public List<ProjectMember> GetProjectMembers(int projectID)
+        {
+
+            List<ProjectMember> pms = ProjectMembers.Where(pms => pms.ProjectId == projectID).ToList();
+            SaveChanges();
+
+            return pms;
+
+        }
+
         //public List<ProjectModel> GetProjects()
         //{
         //    string sql = "SELECT * FROM [Project]";
@@ -179,9 +189,10 @@ namespace Achmea.Core
 
             foreach (Project project in projects)
             {
-                if (project.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
+                Project prj = Project.Where(pr => pr.ProjectId == project.ProjectId && pr.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined)).SingleOrDefault();
+                if (prj != null)
                 {
-                    ToDoList.Add(project);
+                    ToDoList.Add(prj);
                 }
             }
 
@@ -190,6 +201,24 @@ namespace Achmea.Core
             //return Project.Where(e => e.UserId == userId && e.SecurityRequirementProject.Any(sec => sec.Status == Logic._Status.Submit_evidence || sec.Status == Logic._Status.Declined))
             //    .Include(p => p.SecurityRequirementProject)
             //    .ToList();
+        }
+
+        public Project GetReqProject(int reqID)
+        {
+            int projectID = SecurityRequirementProject.Where(x => x.SecurityRequirementProjectId == reqID).FirstOrDefault().ProjectId;
+
+            return Project.Where(x => x.ProjectId == projectID).FirstOrDefault();
+
+
+        }
+
+        public string GetSecReqProjName(int reqID)
+        {
+            int secReqId = SecurityRequirementProject.Where(x => x.SecurityRequirementProjectId == reqID).FirstOrDefault().SecurityRequirementId;
+
+            return SecurityRequirement.Where(x => x.RequirementId == secReqId).FirstOrDefault().Name;
+
+
         }
 
         //Task<IEnumerable<ProjectModel>> Search(string SearchTerm)

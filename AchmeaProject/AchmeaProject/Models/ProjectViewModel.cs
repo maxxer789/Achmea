@@ -24,5 +24,6 @@ namespace AchmeaProject.Models
         public string Description { get; set; }
         public List<UserViewModel> Members { get; set; }
         public bool Done { get; set; }
+
     }
 }

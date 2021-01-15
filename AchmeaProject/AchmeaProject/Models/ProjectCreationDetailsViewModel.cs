@@ -11,11 +11,11 @@ namespace AchmeaProject.Models
 {
     public class ProjectCreationDetailsViewModel
     {
-        [Required(ErrorMessage = "Projectnaam is vereist")]
+        [Required]
         public string Title { get; set; }
         public string CreationDate { get; set; }
         public int UserID { get; set; }
-        [Required(ErrorMessage = "Projectbeschrijving is vereist")]
+        [Required]
         public string Description { get; set; }
 
         public ProjectCreationDetailsViewModel()

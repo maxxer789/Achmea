@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly UserLogic _UserLogic;
         public UserController(IConfiguration config, IUser iUser)
@@ -43,7 +43,7 @@ namespace AchmeaProject.Controllers
                     {
                         HttpContext.Session.SetInt32("UserID", User.UserId);
                         HttpContext.Session.SetString("Firstname", User.Firstname);
-                        HttpContext.Session.SetString("RoleID", User.RoleId);      
+                        HttpContext.Session.SetString("RoleID", User.RoleId);
 
                         if (User.RoleId == "Admin")
                         {

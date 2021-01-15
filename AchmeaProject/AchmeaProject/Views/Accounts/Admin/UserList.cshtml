@@ -4,17 +4,19 @@
     ViewData["Title"] = "UserList";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<link rel="stylesheet" href="~/css/admin.css" />
 
 <div class="container">
     <table class="table">
         <thead>
-            <tr style="background-color: #DFBCC0;">
+            <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.UserID)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    Wachtwoord
                 </th>
                 <th>
                     Voornaam
@@ -31,7 +33,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody class="tablebody">
+        <tbody>
             @foreach (var item in Model)
             {
             <tr>
@@ -40,6 +42,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Firstname)
@@ -56,7 +61,7 @@
                 <td>
                     <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Edit_User">Bewerken</a> |
                     <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Details_User">Details</a> |
-                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Delete_User">Verwijder</a>
+                    <a asp-area="" asp-controller="Admin" asp-route-id="@item.UserID" asp-action="Delete_User">Verwijderen</a>
                 </td>
                 
             </tr>

@@ -16,7 +16,7 @@ using AchmeaProject.Models.ViewModelConverter;
 
 namespace AchmeaProject.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
         private readonly ProjectLogic projectLogic;
         private readonly UserLogic userLogic;
@@ -75,16 +75,13 @@ namespace AchmeaProject.Controllers
             }
 
             List<User> users = userLogic.GetAllUsers().ToList();
-            List<UserSelectionViewModel> SelectUsers = new List<UserSelectionViewModel>();
+            List<SelectListItem> SelectUsers = new List<SelectListItem>();
             foreach (var user in users)
             {
-                if (user.RoleId == "Developer")
-                {
-                    SelectUsers.Add(new UserSelectionViewModel(user.UserId, user.Firstname + " " + user.Lastname, user.RoleId.ToString()));
-                }
+                SelectUsers.Add(new SelectListItem(user.Firstname + " " + user.Lastname, user.UserId.ToString()));
             }
 
-            ViewBag.Users = SelectUsers;
+            ViewBag.Users = ViewModelConverter.UserToUserSelectionViewModel(userLogic.GetAllUsers().ToList());
 
             return View(vm);
         }

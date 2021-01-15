@@ -9,17 +9,5 @@ namespace AchmeaProject.Models
     {
         public int UserID { get; set; }
         public string Name { get; set; }
-        public string RoleId { get; set; }
-
-        public UserSelectionViewModel()
-        {
-
-        }
-        public UserSelectionViewModel(int userID, string name, string roleId)
-        {
-            UserID = userID;
-            Name = name;
-            RoleId = roleId;
-        }
     }
 }

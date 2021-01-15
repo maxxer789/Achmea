@@ -1,4 +1,7 @@
-﻿main {
+﻿body {
+}
+
+main {
     display: grid;
 }
 
@@ -15,9 +18,9 @@ h1 {
     border-color: darkgray;
 }
 
-    .table-item:hover {
-        background-color: lightgray;
-    }
+.table-item:hover {
+    background-color: lightgray;
+}
 
 .table-header {
     word-wrap: break-word;
@@ -27,8 +30,4 @@ h1 {
 
 td, th {
     padding: 10px;
-}
-
-.btn-primary {
-    background-color: #D29FA5;
 }

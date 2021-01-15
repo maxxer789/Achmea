@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AchmeaProject.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         private readonly UserLogic _UserLogic;
 
@@ -51,7 +51,6 @@ namespace AchmeaProject.Controllers
                 try
                 {
                     User user = ViewModelConverter.VmtoUser(VM);
-                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
                     user = _UserLogic.InsertUser(user);
 
                     return RedirectToAction("UserList", "Admin");

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AchmeaProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly UserLogic userLogic;
         private readonly ProjectLogic projectLogic;
@@ -45,7 +45,7 @@ namespace AchmeaProject.Controllers
             foreach (ProjectViewModel pvm in dbv.Projects)
             {
                 List<SecurityRequirementProject> reqs = projectLogic.GetRequirementsForProject(pvm.ProjectId);
-                dbv.Actions.Add(new ActionViewModel(pvm.ProjectId, pvm.Title, reqs.Where(r => r.Status == _Status.Submit_evidence || r.Status == _Status.Declined).ToList().Count, reqs.Where(r => r.Status == _Status.Approved).ToList().Count, reqs.Where(r => r.Status == _Status.Excluded).ToList().Count, pvm.CreationDate));
+                dbv.Actions.Add(new ActionViewModel(pvm.Title, reqs.Where(r => r.Status == _Status.Submit_evidence || r.Status == _Status.Declined).ToList().Count, reqs.Where(r => r.Status == _Status.Approved).ToList().Count, reqs.Where(r => r.Status == _Status.Excluded).ToList().Count));
             }
 
             return View(dbv);

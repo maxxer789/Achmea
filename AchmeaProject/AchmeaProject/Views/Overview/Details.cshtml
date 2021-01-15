@@ -1,138 +1,110 @@
-﻿@using Achmea.Core.Logic;
+﻿@using Achmea.Core;
 @using AchmeaProject.Helpers;
 @model ProjectDetailViewModel
 @{
     ViewData["Title"] = "Details";
-    <link rel="stylesheet" href="~/css/Details.css" />
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{ var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>; }
-
-@if (!string.IsNullOrEmpty(ViewBag.Message))
-{
-    <script type="text/javascript">
-        alert("@ViewBag.Message");
-    </script>
+@{
+    var comments = ViewBag.Comments as IEnumerable<AchmeaProject.Models.CommentViewModel>;
 }
 
-<body style="margin-bottom:50px;">
-    <div class="con-header" style="border:1px solid pink;">
-        <div class="header-title">
-            <h4>@Model.Title</h4>
-            <br />
-            @Model.Description
-            <br/>
-            Aangemaakt op @Model.CreationDate
-        </div>
-        <div class="header-desc">
-            <br /><br />
-            Medewerkers:
-            @foreach (User User in Model.Users)
-            {
-                <br />
-                @string.Format("{0} {1}", User.Firstname, User.Lastname)
-            }
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <ul id="messageOutput"></ul>
-            </div>
-        </div>
+<link rel="stylesheet" href="~/css/Details.css" />
+<div class="con-header">
+    <div class="header-title">
+        <h4>@Model.Title</h4>
+        <br /><br />
+        Aangemaakt op @Model.CreationDate
     </div>
-    <br/>
-    <div class="con-content">
-        @foreach (SecurityRequirementProject req in Model.RequirementProject)
+    <div class="header-desc">
+        @Model.Description
+        <br /><br />
+        Medewerkers:
+        @foreach (User User in Model.Users)
         {
-            <div class="con-requirements">
-                <div class="requirement-info">
-                    @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
-                </div>
-                <div class="requirement-check">
-                    @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
-                </div>
-                <div class="collapsible">
-                    <br />
-                    <br />
-                    <p>@Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description</p>
-                    <br />
-                    <div class="message-info">
-                        Opmerkingen
-                    </div>
-                    <br />
-                    <div class="collapsible message-board">
-                        <div class="row">
-                            <div class="col-12">
-                                <hr />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="message-container" id="message-container">
-                                @foreach (var comment in comments)
-                                {
-                                    if (comment.ProjectReqId == req.SecurityRequirementProjectId)
-                                    {
-                                        <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>}
-                                }
-                                <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <hr />
-                            </div>
-                        </div>
-                        <form>
-                            <div class="container">
-                                <div class="row">&nbsp;</div>
-                                <div class="row">
-                                    <div>Message:</div>
-                                    <div class="message-box"><input type="text" class="message-input" id="@req.SecurityRequirementProjectId" /></div>
-                                    <input class="pinkbutton" onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
-                                </div>
-                            </div>
-                        </form>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <hr />
-                            </div>
-                        </div>
-                    </div>
-                    <br /><br />
-                    @if (req.Status != _Status.Excluded)
-                    {
-                        @if (req.FileOfProof != null)
-                        {
-                            <label>Huidige bewijsstuk:  </label>
-                            <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>
-                        }
-                        <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
-                            <label>Bewijsmateriaal uploaden: </label><br />
-                            <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
-                            <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
-                            @Html.HiddenFor(model => Model.ProjectId)
-                            <input class="pinkbutton" type="submit" value="Uploaden" />
-                        </form>
-                        <form asp-action="ExcludeRequirement" asp-controller="Requirement">
-                            <label>Requirement Uitzonderen: </label>
-                            <input type="hidden" name="requirementId" value="@req.SecurityRequirementId" />
-                            <input type="hidden" name="projectId" value="@Model.ProjectId" />
-                            <input required type="text" name="reason" placeholder="Reden voor uitzondering" />
-                            <input class="pinkbutton" type="submit" value="Uitzonderen" />
-                        </form>
-                    }
-                    else
-                    {
-                        <div>Reden voor uitzondering: @req.Reason</div>
-                    }
-                </div>
-            </div>
-            <br />
-        }
+            <br /><br />
+            @User.Firstname @User.Lastname}
     </div>
-</body>
-<br/>
+    <div class="row">
+        <div class="col-6">
+            <ul id="messageOutput"></ul>
+        </div>
+    </div>
+</div>
+<div class="con-content">
+    @foreach (SecurityRequirementProject req in Model.RequirementProject)
+    {
+        <div class="con-requirements">
+            <div class="requirement-info">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Name
+            </div>
+            <div class="requirement-check">
+                @{ Achmea.Core.Logic._Status status = req.Status;} @status.GetDisplayName()
+            </div>
+            <div class="collapsible">
+                @Model.Requirements.Where(requirement => requirement.RequirementId == req.SecurityRequirementId).SingleOrDefault().Description
+                <br /><br />
+                <div class="message-info">
+                    Opmerkingen
+                </div>
+                <br />
+                <div class="collapsible message-board">
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="message-container" id="message-container">
+                            @foreach (var comment in comments)
+                            {
+                                if (comment.ProjectReqId == req.SecurityRequirementProjectId)
+                                {
+                                    <ul id="existingcomments">@comment.UserName: &nbsp;&nbsp; @comment.Message</ul>
+                                }
+                            }
+                            <ul id="@req.SecurityRequirementProjectId+messageOutput"></ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                    <form>
+                        <div class="container">
+                            <div class="row">&nbsp;</div>
+                            <div class="row">
+                                <div>Message:</div>
+                                <div class="message-box"><input type="text" class="message-input" id="@req.SecurityRequirementProjectId" /></div>
+                                <input onclick="ButtonClick(@req.SecurityRequirementProjectId, i)" type="submit" id="sendButton" value="Send Message" />
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                @if (req.FileOfProof != null)
+                {
+                    <label>Huidige bewijsstuk:  </label>
+                    <a href="@Model.Files.Where(file => file.Id == req.FileOfProof.FileLocation).SingleOrDefault().WebContentLink"> @req.FileOfProof.DocumentTitle</a>}
+                <form asp-action="Upload" asp-controller="Evidence" enctype="multipart/form-data">
+                    <label>Bewijsmateriaal uploaden: </label><br />
+                    <input type="hidden" name="SecurityRequirementProjectID" value=@req.SecurityRequirementProjectId />
+                    <input required name="File" type="file" accept=".doc,.docx,.pdf,.png" /><br /><br />
+                    @Html.HiddenFor(model => Model.ProjectId)
+                    <input type="submit" value="Uploaden" />
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
@@ -149,7 +121,6 @@
                 content.style.display = "none";
             } else {
                 content.style.display = "block";
-                content.style.border = "1px solid #D29FA5";
             }
         });
     }
