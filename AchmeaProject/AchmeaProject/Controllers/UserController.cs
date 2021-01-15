@@ -33,8 +33,12 @@ namespace AchmeaProject.Controllers
             {
                 try
                 {
+                    bool verified = false;
                     User User = _UserLogic.Login(VM.Email);
-                    bool verified = BCrypt.Net.BCrypt.Verify(VM.Password, User.Password);
+                    if (User != null)
+                    {
+                        verified = BCrypt.Net.BCrypt.Verify(VM.Password, User.Password);
+                    }
                     if (verified == true)
                     {
                         HttpContext.Session.SetInt32("UserID", User.UserId);
