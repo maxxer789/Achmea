@@ -8,7 +8,7 @@
 <h1>Overzicht</h1>
 <table>
     <thead>
-        <tr class="table-header" style="background-color: #DFBCC0;">
+        <tr class="table-header">
             <th>Titel</th>
             <th>Aanmaak datum</th>
         </tr>
@@ -16,37 +16,10 @@
     <tbody>
         @foreach (ProjectViewModel P in Model)
         {
-            @if (!project.Done)
-            {
-                <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = project.ProjectId})'">
-                    <td>@project.Title</td>
-                    <td>@project.CreationDate</td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-<br />
-   
-<h2>Completed tasks:</h2>
-
-<table>
-    <thead>
-        <tr class="table-header" style="background-color: #DFBCC0;">
-            <th>Titel</th>
-            <th>Aanmaak datum</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (ProjectViewModel project in Model)
-        {
-            @if (project.Done)
-            {
-                <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = project.ProjectId})'">
-                    <td>@project.Title</td>
-                    <td>@project.CreationDate</td>
-                </tr>
-            }
+            <tr class="table-item" onclick="window.location.href='@Url.Action("Details", "Security", new { projectId = P.ProjectId})'">
+                <th>@P.Title</th>
+                <td>@P.CreationDate</td>
+            </tr>
         }
     </tbody>
 </table>

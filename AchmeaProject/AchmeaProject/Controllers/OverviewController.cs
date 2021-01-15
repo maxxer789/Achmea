@@ -46,8 +46,7 @@ namespace AchmeaProject.Controllers
         {
             if (HttpContext.Session.GetString("RoleID") != null)
             {
-                int userId = (int)HttpContext.Session.GetInt32("UserID");
-                List<Project> list = _ProjectLogic.GetProjectsFromUser(userId).ToList();
+                List<Project> list = _ProjectLogic.GetProjects().ToList();
 
                 List<ProjectViewModel> listModel = new List<ProjectViewModel>();
 

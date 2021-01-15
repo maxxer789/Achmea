@@ -69,20 +69,3 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
-
-.logo-image {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-top: -6px;
-}
-
-.mobile-bar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 2000;
-    background-color: #DFBCC0;
-}
-

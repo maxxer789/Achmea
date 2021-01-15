@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -109,7 +109,7 @@ namespace AchmeaProject.Controllers
                     CreationDate = project.CreationDate?.ToString("d"),
                     RequirementProject = _ProjectLogic.GetRequirementsForProject(projectId),
                     Requirements = _RequirementLogic.GetAllRequirements(),
-                    Users = _UserLogic.GetMembersByProjectId(project.ProjectId)
+                    Users = _UserLogic.GetMembersByProjectId(project.UserId)
                 };
 
                 var comments = commentLogic.GetAllComments();

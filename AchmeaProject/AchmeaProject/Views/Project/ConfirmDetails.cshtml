@@ -3,8 +3,7 @@
 
 
 <body>
-    <div style="margin-bottom: 50px; margin-top: 10vh;">
-        <form asp-action="ConfirmDetails" asp-controller="Project">
+    <form asp-action="ConfirmDetails" asp-controller="Project">
             <div class="row d-flex justify-content-center">
                 <h2>Overzicht geselecteerde opties</h2>
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -14,7 +13,7 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-3 d-flex justify-content-center">
-                    <p>Projectnaam</p>
+                    <p>Naam van project</p>
                 </div>
                 <div class="col-3 d-flex justify-content-center">
                     <p> @Model.Project.Title</p>
@@ -23,7 +22,7 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-3 d-flex justify-content-center">
-                    <p>Projectbeschrijving</p>
+                    <p>Beschrijving van het project</p>
                 </div>
                 <div class="col-3 d-flex justify-content-center">
                     <p> @Model.Project.Description</p>
@@ -35,34 +34,32 @@
             <div class="row d-flex justify-content-center">
                 <h4>Toegevoegde Personen</h4>
             </div>
-
+            
             @for (int i = 0; i < Model.Users.Count; i++)
-            {
+             {
                 <div class="row d-flex justify-content-center">
                     <p>@Model.Users[i].Name</p>
                 </div>
-            }
+             }
 
-            <br/>
+
             <div class="row d-flex justify-content-center">
-                <h4>Geselecteerde aspectgebieden</h4>
+               <h4>Geselecteerde aspectgebieden</h4>
             </div>
 
             @for (int i = 0; i < Model.AspectAreas.Count; i++)
             {
                 if (Model.AspectAreas[i].isSelected == true)
                 {
-                    <div class="row d-flex justify-content-center">
-                        <p>@Model.AspectAreas[i].Title</p>
-                    </div>
+                <div class="row d-flex justify-content-center">
+                <p>@Model.AspectAreas[i].Title</p>
+                </div>
                 }
             }
 
-            <br/>
-
-            <div class="row d-flex justify-content-center">
-                <h4>Geselecteerde BIV classificaties</h4>
-            </div>
+        <div class=" row d-flex justify-content-center">
+        <h4>Geselecteerde BIV classificates</h4>
+        </div>
 
 
             @for (int j = 0; j < Model.Bivs.Count; j++)
@@ -70,67 +67,67 @@
                 if (Model.Bivs[j].isSelected == true)
                 {
                     <div class="row d-flex justify-content-center">
-                        <p>@Model.Bivs[j].Name</p>
+                    <p>@Model.Bivs[j].Name</p>
                     </div>
                 }
             }
 
-            <!-- Project information to pass through -->
-            @if (Model.Project != null)
+        <!-- Project information to pass through -->
+        @if (Model.Project != null)
+        {
+            @Html.HiddenFor(model => Model.Project.Title)
+            @Html.HiddenFor(model => Model.Project.CreationDate)
+            @Html.HiddenFor(model => Model.Project.Description)
+            @Html.HiddenFor(model => @Model.Project.UserID)
+        }
+
+        @if (Model.Members.Length > 0)
+        {
+            for (int i = 0; i < Model.Members.Length; i++)
             {
-                @Html.HiddenFor(model => Model.Project.Title)
-                @Html.HiddenFor(model => Model.Project.CreationDate)
-                @Html.HiddenFor(model => Model.Project.Description)
-                @Html.HiddenFor(model => @Model.Project.UserID)
+                @Html.HiddenFor(model => Model.Members[i])
             }
+        }
 
-            @if (Model.Members.Length > 0)
+        @if (Model.Users.Count > 0)
+        {
+            for (int i = 0; i < Model.Users.Count; i++)
             {
-                for (int i = 0; i < Model.Members.Length; i++)
-                {
-                    @Html.HiddenFor(model => Model.Members[i])
-                }
+                @Html.HiddenFor(model => Model.Users[i].UserID)
+                @Html.HiddenFor(model => Model.Users[i].Name)
             }
+        }
 
-            @if (Model.Users.Count > 0)
+        @if (Model.Bivs.Count > 0)
+        {<!-- Biv information to pass through --> 
+            for (int i = 0; i < @Model.Bivs.Count; i++)
             {
-                for (int i = 0; i < Model.Users.Count; i++)
-                {
-                    @Html.HiddenFor(model => Model.Users[i].UserID)
-                    @Html.HiddenFor(model => Model.Users[i].Name)
-                }
+                @Html.HiddenFor(model => Model.Bivs[i].Id)
+                @Html.HiddenFor(model => Model.Bivs[i].Name)
+                @Html.HiddenFor(model => Model.Bivs[i].isSelected)
             }
+        }
 
-            @if (Model.Bivs.Count > 0)
-            {<!-- Biv information to pass through -->
-                for (int i = 0; i < @Model.Bivs.Count; i++)
-                {
-                    @Html.HiddenFor(model => Model.Bivs[i].Id)
-                    @Html.HiddenFor(model => Model.Bivs[i].Name)
-                    @Html.HiddenFor(model => Model.Bivs[i].isSelected)
-                }
+        @if (Model.AspectAreas.Count > 0)
+        {<!-- AspectAreas information to pass through --> 
+            for (int i = 0; i < @Model.AspectAreas.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.AspectAreas[i].ID)
+                @Html.HiddenFor(model => Model.AspectAreas[i].Title)
+                @Html.HiddenFor(model => Model.AspectAreas[i].Description)
+                @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
             }
+        }
 
-            @if (Model.AspectAreas.Count > 0)
-            {<!-- AspectAreas information to pass through -->
-                for (int i = 0; i < @Model.AspectAreas.Count; i++)
-                {
-                    @Html.HiddenFor(model => Model.AspectAreas[i].ID)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Title)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].Description)
-                    @Html.HiddenFor(model => Model.AspectAreas[i].isSelected)
-                }
-            }
-
-            <br />
-            <div class="row">
-                <div class="col-6">
-                    <input type="button" value="Terug" style="background-color: #D29FA5; float:right;" onclick="location.href='@Url.Action("Select", "Biv")'" />
-                </div>
-                <div class="col-6">
-                    <button style="background-color: #D29FA5; float:left;" type="submit">Bevestig</button>
-                </div>
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-1">
+                <a class="btn btn-primary" asp-action="Select" asp-controller="Biv">Terug</a>
             </div>
-        </form>
-    </div>
+            <div class="4"></div>
+            <div class="col-1">
+                <button class="btn btn-primary" type="submit">Bevestig</button>
+            </div>
+        </div>
+    </form>
 </body>
